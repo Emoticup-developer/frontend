@@ -77,7 +77,7 @@ const SampleForm = () => {
               </div>
               <div className="flex items-center gap-2">
                 <label className="text-sm font-medium">Role:</label>
-                <span className="text-sm">Admin</span>
+                <span className="text-sm ml-2">Admin</span>
               </div>
             </div>
           </div>
@@ -90,7 +90,7 @@ const SampleForm = () => {
             <div className="flex items-center gap-2">
               <label
                 htmlFor="company_code"
-                className="w-full text-sm font-medium text-black bg-white p-2 rounded-sm"
+                className="w-[80px] text-sm font-medium text-black bg-white p-2 rounded-sm"
               >
                 T Code:<span className="text-red-500"> *</span>
               </label>
@@ -100,7 +100,7 @@ const SampleForm = () => {
                 name="company_code"
                 placeholder="007"
                 required
-                className="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                className="w-[80px] h-10 p-2 border text-center border-gray-500 rounded-sm text-sm text-black bg-amber-400"
               />
             </div>
           </div>
@@ -187,7 +187,7 @@ const SampleForm = () => {
                 name="company_code"
                 placeholder="0007"
                 required
-                class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                class="w-full h-10 p-2 border text-center border-gray-500 rounded-sm text-sm text-black bg-amber-400"
               />
             </div>
 
@@ -204,7 +204,7 @@ const SampleForm = () => {
                 name="invoice_type"
                 placeholder="Sales Invoice"
                 required
-                class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                class="w-full h-10 p-2 border text-center border-gray-500 rounded-sm text-sm text-black bg-amber-400"
               />
             </div>
 
@@ -220,7 +220,7 @@ const SampleForm = () => {
                 id="invoice_date"
                 name="invoice_date"
                 required
-                class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                class="w-full h-10 p-2 border text-center border-gray-500 rounded-sm text-sm text-black bg-amber-400"
               />
             </div>
 
@@ -236,7 +236,7 @@ const SampleForm = () => {
                 id="posting_date"
                 name="posting_date"
                 required
-                class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                class="w-full h-10 p-2 border text-center border-gray-500 rounded-sm text-sm text-black bg-amber-400"
               />
             </div>
 
@@ -253,7 +253,7 @@ const SampleForm = () => {
                 name="month"
                 placeholder="June"
                 required
-                class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                class="w-full h-10 p-2 border text-center border-gray-500 rounded-sm text-sm text-black bg-amber-400"
               />
             </div>
 
@@ -270,7 +270,7 @@ const SampleForm = () => {
                 name="year"
                 placeholder="2025"
                 required
-                class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                class="w-full h-10 p-2 border text-center border-gray-500 rounded-sm text-sm text-black bg-amber-400"
               />
             </div>
 
@@ -278,7 +278,7 @@ const SampleForm = () => {
               {/* Description */}
               <button
                 type="submit"
-                class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-white"
+                class="w-full h-10 p-2 border text-center border-gray-500 rounded-sm text-sm text-black bg-white"
               >
                 Description
               </button>
@@ -297,7 +297,7 @@ const SampleForm = () => {
                 name="invoice_number"
                 placeholder="123458"
                 required
-                class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                class="w-full h-10 p-2 border text-center border-gray-500 rounded-sm text-sm text-black bg-amber-400"
               />
             </div>
           </div>
@@ -317,7 +317,7 @@ const SampleForm = () => {
                 name="debt"
                 placeholder="D1"
                 required
-                class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                class="w-full h-10 p-2 border text-center border-gray-500 rounded-sm text-sm text-black bg-amber-400"
               />
             </div>
 
@@ -334,7 +334,7 @@ const SampleForm = () => {
                 name="gl_account"
                 placeholder="000001"
                 required
-                class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                class="w-full h-10 p-2 border text-center border-gray-500 rounded-sm text-sm text-black bg-amber-400"
               />
             </div>
 
@@ -351,7 +351,7 @@ const SampleForm = () => {
                 name="debt_amount"
                 placeholder="10000"
                 required
-                class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                class="w-full h-10 p-2 border text-center border-gray-500 rounded-sm text-sm text-black bg-amber-400"
               />
             </div>
 
@@ -359,7 +359,7 @@ const SampleForm = () => {
               {/* Description */}
               <button
                 type="submit"
-                class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-white"
+                class="w-full h-10 p-2 border text-center border-gray-500 rounded-sm text-sm text-black bg-white"
               >
                 Description
               </button>
@@ -378,7 +378,7 @@ const SampleForm = () => {
                 name="cred"
                 placeholder="C1"
                 required
-                class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                class="w-full h-10 p-2 border text-center border-gray-500 rounded-sm text-sm text-black bg-amber-400"
               />
             </div>
 
@@ -395,7 +395,7 @@ const SampleForm = () => {
                 name="cred_gl_account"
                 placeholder="000002"
                 required
-                class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                class="w-full h-10 p-2 border text-center border-gray-500 rounded-sm text-sm text-black bg-amber-400"
               />
             </div>
 
@@ -412,7 +412,7 @@ const SampleForm = () => {
                 name="cred_amount"
                 placeholder="10000"
                 required
-                class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                class="w-full h-10 p-2 border text-center border-gray-500 rounded-sm text-sm text-black bg-amber-400"
               />
             </div>
 
@@ -420,7 +420,7 @@ const SampleForm = () => {
               {/* Description */}
               <button
                 type="submit"
-                class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-white"
+                class="w-full h-10 p-2 border text-center border-gray-500 rounded-sm text-sm text-black bg-white"
               >
                 Description
               </button>

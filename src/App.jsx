@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Login from "./pages/Login";
 import DashboardPage from "./pages/DashboardPage";
 import SampleForm from "./pages/SampleForm";
+import SAPMenuTree from "./pages/SAPMenuTree";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/customize" element={<ThemeCustomizer />} />
           <Route path="/employees/create" element={<SampleForm />} />
+          <Route path="/hirarchy" element={<SAPMenuTree />} />
         </Routes>
 
         {/* ToastContainer placed globally */}

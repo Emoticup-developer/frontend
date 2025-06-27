@@ -58,7 +58,7 @@ const SampleForm = () => {
        */}
 
       {/* Main Content */}
-      <main className="flex-1 lg:my-4 lg:mx-10 bg-white text-black p-4">
+      <main className="flex-1 lg:my-4 lg:mx-10 bg-blue-900 text-black p-4">
         <form onSubmit={handleSubmit}>
           {/* Top Info Row */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4 lg:px-4">

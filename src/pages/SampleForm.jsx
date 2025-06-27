@@ -7,7 +7,7 @@ const SampleForm = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("Invoice");
-  const tabs = ["Dashboard", "Invoice", "Master Setup", "Settings"];
+  const tabs = ["Dashboard", "Invoice", "Master Data", "Settings"];
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -35,10 +35,9 @@ const SampleForm = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Topbar 
-      <Topbar onMenuClick={handleDrawerToggle} isMobile={isMobile} /> */}
+      {/*
+      <Topbar onMenuClick={handleDrawerToggle} isMobile={isMobile} />
 
-      {/* Sidebar 
       {isMobile ? (
         mobileOpen && (
           <div className="fixed inset-0 z-40 flex">
@@ -55,10 +54,11 @@ const SampleForm = () => {
         <div className="w-[300px] bg-white border-r">
           <Sidebar />
         </div>
-      )} */}
+      )}
+       */}
 
       {/* Main Content */}
-      <main className="flex-1 mt-5 lg:mb-5 lg:mx-5 bg-white text-black p-4">
+      <main className="flex-1 lg:my-4 lg:mx-10 bg-white text-black p-4">
         <form onSubmit={handleSubmit}>
           {/* Top Info Row */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4 lg:px-4">
@@ -85,15 +85,20 @@ const SampleForm = () => {
 
             {/* Right: Help above, T Code below */}
             <div className="flex flex-col items-start sm:items-end gap-2">
-              <button className="px-3 py-1 rounded bg-white border border-black text-black">
-                Help
-              </button>
+              <div className="flex gap-2">
+                <button className="px-3 py-1 rounded bg-white border border-black text-black">
+                  Logout
+                </button>
+                <button className="px-3 py-1 rounded bg-white border border-black text-black">
+                  Help
+                </button>
+              </div>
               <div className="flex items-center gap-2">
                 <label
                   htmlFor="company_code"
-                  className="w-[74px] text-sm font-medium text-black bg-white p-2 rounded-sm"
+                  className="w-[63px] text-sm font-medium text-black bg-white p-2 rounded-sm"
                 >
-                  T Code:<span className="text-red-500"> *</span>
+                  Code:<span className="text-red-500"> *</span>
                 </label>
                 <input
                   type="text"
@@ -101,13 +106,13 @@ const SampleForm = () => {
                   name="company_code"
                   placeholder="007"
                   required
-                  className="w-[100px] h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                  className="w-[60px] h-7 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
                 />
               </div>
             </div>
           </div>
 
-          <div className="flex flex-wrap justify-between items-center bg-green-100 p-2 rounded mb-4 lg:mx-4">
+          <div className="flex flex-wrap justify-between items-center bg-green-100 p-2 rounded mb-4 lg:mx-2">
             {/* Left Side Tabs */}
             <div className="flex gap-2 flex-wrap">
               {tabs.map((tab) => (
@@ -133,9 +138,9 @@ const SampleForm = () => {
             </div>
           </div>
 
-          <div className="flex flex-wrap justify-between items-center p-2 rounded mb-4 lg:mx-4">
+          <div className="flex flex-wrap justify-between items-center p-2 rounded mb-4">
             {/* Scrollable Form Container */}
-            <div className="max-h-[500px] overflow-y-scroll">
+            <div className="w-full max-h-[295px] overflow-y-scroll">
               {/* Action Buttons */}
               <div className="flex flex-wrap gap-1 justify-end mb-5 lg:px-4">
                 <button
@@ -175,11 +180,11 @@ const SampleForm = () => {
               </div>
 
               {/* Top Input Rows */}
-              <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 space-y-4 lg:grid-cols-3 lg:px-4 gap-4 mb-5">
+              <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-4 lg:px-4 mb-5">
                 <div class="flex items-center gap-2">
                   <label
                     for="company_code"
-                    class="w-full text-sm font-medium text-black bg-white pt-2 pr-2 pb-2 rounded-sm"
+                    class="w-[130px] text-sm font-medium text-black bg-white pt-2 pr-2 pb-2 rounded-sm"
                   >
                     Company Code<span class="text-red-500"> *</span>
                   </label>
@@ -189,14 +194,14 @@ const SampleForm = () => {
                     name="company_code"
                     placeholder="0007"
                     required
-                    class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                    class="w-[60px] h-7 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
                   />
                 </div>
 
                 <div class="flex items-center gap-2">
                   <label
                     for="invoice_type"
-                    class="w-full text-sm font-medium text-black bg-white p-2 rounded-sm"
+                    class="w-[130px] text-sm font-medium text-black bg-white p-2 rounded-sm"
                   >
                     Invoice Type<span class="text-red-500"> *</span>
                   </label>
@@ -206,14 +211,14 @@ const SampleForm = () => {
                     name="invoice_type"
                     placeholder="Sales Invoice"
                     required
-                    class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                    class="w-[100px] h-7 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
                   />
                 </div>
 
                 <div class="flex items-center gap-2">
                   <label
                     for="invoice_date"
-                    class="w-full text-sm font-medium text-black bg-white p-2 rounded-sm"
+                    class="w-[130px] text-sm font-medium text-black bg-white p-2 rounded-sm"
                   >
                     Invoice Date<span class="text-red-500"> *</span>
                   </label>
@@ -222,14 +227,14 @@ const SampleForm = () => {
                     id="invoice_date"
                     name="invoice_date"
                     required
-                    class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                    class="w-[122px] h-7 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
                   />
                 </div>
 
                 <div class="flex items-center gap-2">
                   <label
                     for="posting_date"
-                    class="w-full text-sm font-medium text-black bg-white pt-2 pr-2 pb-2 rounded-sm"
+                    class="w-[130px] text-sm font-medium text-black bg-white pt-2 pr-2 pb-2 rounded-sm"
                   >
                     Posting Date<span class="text-red-500"> *</span>
                   </label>
@@ -238,14 +243,14 @@ const SampleForm = () => {
                     id="posting_date"
                     name="posting_date"
                     required
-                    class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                    class="w-[122px] h-7 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
                   />
                 </div>
 
                 <div class="flex items-center gap-2">
                   <label
                     for="month"
-                    class="w-full text-sm font-medium text-black bg-white p-2 rounded-sm"
+                    class="w-[130px] text-sm font-medium text-black bg-white p-2 rounded-sm"
                   >
                     Month<span class="text-red-500"> *</span>
                   </label>
@@ -255,14 +260,14 @@ const SampleForm = () => {
                     name="month"
                     placeholder="June"
                     required
-                    class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                    class="w-[100px] h-7 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
                   />
                 </div>
 
                 <div class="flex items-center gap-2">
                   <label
                     for="year"
-                    class="w-full text-sm font-medium text-black bg-white p-2 rounded-sm"
+                    class="w-[130px] text-sm font-medium text-black bg-white p-2 rounded-sm"
                   >
                     Year<span class="text-red-500"> *</span>
                   </label>
@@ -272,7 +277,7 @@ const SampleForm = () => {
                     name="year"
                     placeholder="2025"
                     required
-                    class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                    class="w-[55px] h-7 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
                   />
                 </div>
 
@@ -280,7 +285,7 @@ const SampleForm = () => {
                   {/* Description */}
                   <button
                     type="submit"
-                    class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-white"
+                    class="w-[260px] h-7 border border-gray-500 rounded-sm text-sm text-black bg-white"
                   >
                     Description
                   </button>
@@ -289,7 +294,7 @@ const SampleForm = () => {
                 <div class="flex items-center gap-2">
                   <label
                     for="invoice_number"
-                    class="w-full text-sm font-medium text-black bg-white p-2 rounded-sm"
+                    class="w-[130px] text-sm font-medium text-black bg-white p-2 rounded-sm"
                   >
                     Invoice Number<span class="text-red-500"> *</span>
                   </label>
@@ -299,7 +304,7 @@ const SampleForm = () => {
                     name="invoice_number"
                     placeholder="123458"
                     required
-                    class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                    class="w-[100px] h-7 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
                   />
                 </div>
               </div>
@@ -309,7 +314,7 @@ const SampleForm = () => {
                 <div class="flex items-center gap-2">
                   <label
                     for="debt"
-                    class="w-full text-sm font-medium text-black bg-white pt-2 pr-2 pb-2 rounded-sm"
+                    class="w-[130px] text-sm font-medium text-black bg-white pt-2 pr-2 pb-2 rounded-sm"
                   >
                     Debt<span class="text-red-500"> *</span>
                   </label>
@@ -319,14 +324,14 @@ const SampleForm = () => {
                     name="debt"
                     placeholder="D1"
                     required
-                    class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                    class="w-[40px] h-7 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
                   />
                 </div>
 
                 <div class="flex items-center gap-2">
                   <label
                     for="gl_account"
-                    class="w-full text-sm font-medium text-black bg-white p-2 rounded-sm"
+                    class="w-[130px] text-sm font-medium text-black bg-white p-2 rounded-sm"
                   >
                     GL Account<span class="text-red-500"> *</span>
                   </label>
@@ -336,14 +341,14 @@ const SampleForm = () => {
                     name="gl_account"
                     placeholder="000001"
                     required
-                    class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                    class="w-[65px] h-7 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
                   />
                 </div>
 
                 <div class="flex items-center gap-2">
                   <label
                     for="debt_amount"
-                    class="w-full text-sm font-medium text-black bg-white p-2 rounded-sm"
+                    class="w-[130px] text-sm font-medium text-black bg-white p-2 rounded-sm"
                   >
                     Amount<span class="text-red-500"> *</span>
                   </label>
@@ -353,7 +358,7 @@ const SampleForm = () => {
                     name="debt_amount"
                     placeholder="10000"
                     required
-                    class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                    class="w-[90px] h-7 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
                   />
                 </div>
 
@@ -361,7 +366,7 @@ const SampleForm = () => {
                   {/* Description */}
                   <button
                     type="submit"
-                    class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-white"
+                    class="w-full h-7 border border-gray-500 rounded-sm text-sm text-black bg-white"
                   >
                     Description
                   </button>
@@ -369,8 +374,8 @@ const SampleForm = () => {
 
                 <div class="flex items-center gap-2">
                   <label
-                    for="debt"
-                    class="w-full text-sm font-medium text-black bg-white pt-2 pr-2 pb-2 rounded-sm"
+                    for="cred"
+                    class="w-[130px] text-sm font-medium text-black bg-white pt-2 pr-2 pb-2 rounded-sm"
                   >
                     Cred<span class="text-red-500"> *</span>
                   </label>
@@ -380,14 +385,14 @@ const SampleForm = () => {
                     name="cred"
                     placeholder="C1"
                     required
-                    class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                    class="w-[40px] h-7 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
                   />
                 </div>
 
                 <div class="flex items-center gap-2">
                   <label
                     for="cred_gl_account"
-                    class="w-full text-sm font-medium text-black bg-white p-2 rounded-sm"
+                    class="w-[130px] text-sm font-medium text-black bg-white p-2 rounded-sm"
                   >
                     GL Account<span class="text-red-500"> *</span>
                   </label>
@@ -397,14 +402,14 @@ const SampleForm = () => {
                     name="cred_gl_account"
                     placeholder="000002"
                     required
-                    class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                    class="w-[65px] h-7 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
                   />
                 </div>
 
                 <div class="flex items-center gap-2">
                   <label
                     for="cred_amount"
-                    class="w-full text-sm font-medium text-black bg-white p-2 rounded-sm"
+                    class="w-[130px] text-sm font-medium text-black bg-white p-2 rounded-sm"
                   >
                     Amount<span class="text-red-500"> *</span>
                   </label>
@@ -414,7 +419,7 @@ const SampleForm = () => {
                     name="cred_amount"
                     placeholder="10000"
                     required
-                    class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
+                    class="w-[90px] h-7 p-2 border border-gray-500 rounded-sm text-sm text-black bg-amber-400"
                   />
                 </div>
 
@@ -422,7 +427,7 @@ const SampleForm = () => {
                   {/* Description */}
                   <button
                     type="submit"
-                    class="w-full h-10 p-2 border border-gray-500 rounded-sm text-sm text-black bg-white"
+                    class="w-full h-7 border border-gray-500 rounded-sm text-sm text-black bg-white"
                   >
                     Description
                   </button>

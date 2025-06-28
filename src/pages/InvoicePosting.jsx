@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import ResizableSAPSidebar from "./TreeItem";
 import { FaBell, FaUser } from "react-icons/fa";
 
-const InvoicePosting = () => {
+const SampleForm = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -436,4 +436,4 @@ const InvoicePosting = () => {
   );
 };
 
-export default InvoicePosting;
+export default SampleForm;

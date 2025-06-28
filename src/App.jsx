@@ -7,7 +7,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Login from "./pages/Login";
 import DashboardPage from "./pages/DashboardPage";
 import SampleForm from "./pages/SampleForm";
-import SAPMenuTree from "./pages/SAPMenuTree";
+import ResizableSAPSidebar from "./pages/TreeItem";
+import InvoicePosting from "./pages/SampleForm";
 
 export default function App() {
   return (
@@ -17,8 +18,8 @@ export default function App() {
           <Route path="/" element={<Login />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/customize" element={<ThemeCustomizer />} />
-          <Route path="/employees/create" element={<SampleForm />} />
-          <Route path="/hirarchy" element={<SAPMenuTree />} />
+          <Route path="/employees/create" element={<InvoicePosting />} />
+          <Route path="/hirarchy" element={<ResizableSAPSidebar />} />
         </Routes>
 
         {/* ToastContainer placed globally */}

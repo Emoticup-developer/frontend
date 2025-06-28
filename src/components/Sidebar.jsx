@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   FaTachometerAlt,
   FaUsers,
@@ -11,34 +11,62 @@ import {
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Lottie from "lottie-react";
-import loadingAnimation from "../assets/success.json"; // Update path if needed
+import loadingAnimation from "../assets/success.json";
 
 const Sidebar = () => {
   const [employeeOpen, setEmployeeOpen] = useState(false);
   const [loadingRoute, setLoadingRoute] = useState(false);
   const [redirectMessage, setRedirectMessage] = useState("");
+  const [sidebarWidth, setSidebarWidth] = useState(280);
+  const isResizing = useRef(false);
   const navigate = useNavigate();
+
+  // Handle window resizing
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (isResizing.current) {
+        const newWidth = Math.max(180, Math.min(e.clientX, 500));
+        setSidebarWidth(newWidth);
+      }
+    };
+
+    const stopResize = () => {
+      isResizing.current = false;
+      document.body.style.cursor = "default";
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", stopResize);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", stopResize);
+    };
+  }, []);
+
+  const startResize = () => {
+    isResizing.current = true;
+    document.body.style.cursor = "ew-resize";
+  };
 
   const toggleEmployeeMenu = () => setEmployeeOpen(!employeeOpen);
 
   const handleRoute = (e, path, pageName) => {
-    e.preventDefault(); // Prevent default anchor tag behavior
+    e.preventDefault();
     setRedirectMessage(`Redirecting to ${pageName}...`);
     setLoadingRoute(true);
     setTimeout(() => {
       setLoadingRoute(false);
       navigate(path);
-    }, 2000); // Adjust delay as per your Lottie duration
+    }, 2000);
   };
 
   const linkStyle =
-    "w-full flex items-center px-4 py-3 hover:bg-amber-400 cursor-pointer";
+    "w-full flex items-center px-4 py-3 hover:bg-amber-400 cursor-pointer whitespace-nowrap";
   const subLinkStyle =
-    "w-full flex items-center py-2 hover:bg-amber-400 cursor-pointer";
+    "w-full flex items-center py-2 pl-4 hover:bg-amber-400 cursor-pointer whitespace-nowrap";
 
   return (
     <>
-      {/* Lottie Loader Overlay */}
       {loadingRoute && (
         <div className="fixed top-0 left-0 w-full h-full bg-white z-50 flex flex-col items-center justify-center">
           <div className="w-56">
@@ -50,8 +78,11 @@ const Sidebar = () => {
         </div>
       )}
 
-      <aside className="w-full mt-5 lg:w-[300px] h-screen bg-amber-500 text-black fixed top-0 left-0 pt-16 border-r border-gray-300 overflow-y-auto">
-        <ul className="flex flex-col">
+      <aside
+        className="h-screen bg-amber-500 text-black fixed top-0 left-0 border-r border-gray-300 z-40 overflow-x-auto overflow-y-auto"
+        style={{ width: sidebarWidth }}
+      >
+        <ul className="flex flex-col min-w-max">
           <li>
             <a
               href="/dashboard"
@@ -82,7 +113,7 @@ const Sidebar = () => {
             </a>
 
             {employeeOpen && (
-              <ul className="pl-12">
+              <ul className="pl-6">
                 <li>
                   <a
                     href="/employees/create"
@@ -133,6 +164,12 @@ const Sidebar = () => {
             </a>
           </li>
         </ul>
+
+        {/* Drag Handle */}
+        <div
+          onMouseDown={startResize}
+          className="absolute right-0 top-0 h-full w-2 bg-gray-300 hover:bg-gray-500 cursor-ew-resize"
+        />
       </aside>
     </>
   );

@@ -1,137 +1,145 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { FaFolder, FaFolderOpen } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 // Reusable TreeItem component
-const TreeItem = ({ label, children }) => {
+const TreeItem = ({ label, link, children }) => {
   const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    if (children) setOpen(!open);
+  };
 
   return (
     <div className="pl-2">
       <div
-        className="flex items-center gap-2 cursor-pointer select-none py-1"
-        onClick={() => setOpen(!open)}
+        className="flex items-center gap-2 cursor-pointer select-none py-2 px-2 rounded-md transition duration-200 hover:bg-blue-100"
+        onClick={handleClick}
       >
-        {open ? <FaFolderOpen /> : <FaFolder />}
-        <span className="text-sm font-medium">{label}</span>
+        {children ? (
+          open ? (
+            <FaFolderOpen className="text-[#151b54]" />
+          ) : (
+            <FaFolder className="text-[#151b54]" />
+          )
+        ) : (
+          <FaFolder className="text-[#151b54]" />
+        )}
+
+        {link ? (
+          <Link
+            to={link}
+            className="text-sm font-medium text-[#151b54] no-underline hover:no-underline w-full"
+          >
+            {label}
+          </Link>
+        ) : (
+          <span className="text-sm font-medium text-[#151b54]">{label}</span>
+        )}
       </div>
-      {open && <div className="ml-4">{children}</div>}
+
+      {open && children && (
+        <div className="ml-4">
+          {children.map((child, idx) => (
+            <TreeItem
+              key={idx}
+              label={child.label}
+              link={child.link}
+              children={child.children}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
 
-// Menu data
+// Sidebar menu data
 const menuData = [
   {
     label: "Client",
+    link: "/client",
+  },
+  {
+    label: "Company",
+    link: "/company",
+  },
+  {
+    label: "Company Code",
     children: [
-      {
-        label: "MM Codes",
-        items: [
-          { label: "ME21N - Create Purchase Order", link: "/me21n" },
-          { label: "MIGO - Goods Movement", link: "/migo" },
-          { label: "MIRO - Enter Incoming Invoice", link: "/miro" },
-        ],
-      },
-      {
-        label: "SD Codes",
-        items: [
-          { label: "XD01 - Create Customer", link: "/xd01" },
-          { label: "VA01 - Create Sales Order", link: "/va01" },
-        ],
-      },
+      { label: "Create Code", link: "/hr/create" },
+      { label: "Edit Code", link: "/hr/edit" },
     ],
   },
-  { label: "Company", link: "/accounting" },
-  { label: "Company Code", link: "/hr" },
-  { label: "Business Area", link: "/tools" },
-  { label: "Plant", link: "/tools" },
-  { label: "General Ledger Account (FI-GL)", link: "/tools" },
-  { label: "Chart of Accounts (CoA)", link: "/tools" },
-  { label: "Field Status Group (FSG)", link: "/tools" },
-  { label: "Invoice Posting", link: "/tools" },
+  {
+    label: "Business Area",
+    children: [
+      { label: "Area Overview", link: "/tools/area-overview" },
+      { label: "Manage Areas", link: "/tools/manage-areas" },
+    ],
+  },
+  {
+    label: "Plant",
+    children: [
+      { label: "Plant Master", link: "/tools/plant-master" },
+      { label: "Add New Plant", link: "/tools/add-plant" },
+    ],
+  },
+  {
+    label: "Enterprise Structure",
+    link: "/enterprise-structure",
+  },
+  {
+    label: "General Ledger Account (FI-GL)",
+    children: [
+      { label: "Create GL", link: "/tools/create-gl" },
+      { label: "Edit GL", link: "/tools/edit-gl" },
+    ],
+  },
+  {
+    label: "Chart of Accounts (CoA)",
+    children: [
+      { label: "CoA List", link: "/tools/coa-list" },
+      { label: "Create CoA", link: "/tools/create-coa" },
+    ],
+  },
+  {
+    label: "Field Status Group (FSG)",
+    children: [
+      { label: "FSG Master", link: "/tools/fsg-master" },
+      { label: "Add FSG", link: "/tools/add-fsg" },
+    ],
+  },
+  {
+    label: "Invoice Posting",
+    link: "/invoice-posting",
+  },
 ];
 
 export default function ResizableSAPSidebar() {
-  const [width, setWidth] = useState(300);
-  const sidebarRef = useRef();
-  const isDragging = useRef(false);
-
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      if (isDragging.current) {
-        const newWidth = e.clientX;
-        if (newWidth >= 180 && newWidth <= 500) {
-          setWidth(newWidth);
-        }
-      }
-    };
-
-    const handleMouseUp = () => {
-      isDragging.current = false;
-      document.body.style.cursor = "default";
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", handleMouseUp);
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, []);
-
-  const handleMouseDown = () => {
-    isDragging.current = true;
-    document.body.style.cursor = "ew-resize";
-  };
-
   return (
     <div
-      ref={sidebarRef}
-      className="fixed top-0 left-0 h-screen z-50 border-r border-gray-300 bg-white overflow-x-auto overflow-y-auto relative"
-      style={{ width }}
+      className="fixed top-0 left-0 h-screen z-50 border-r bg-gradient-to-b from-blue-50 to-white shadow-md"
+      style={{ width: 300 }}
     >
-      <div className="absolute top-0 left-0 w-full border-b-4 border-black p-2 text-center font-bold text-lg bg-white z-10">
+      {/* Header */}
+      <div className="w-full border-b p-4 text-center font-bold text-lg bg-white shadow-sm sticky top-0 text-[#151b54]">
         AERP
       </div>
 
-      {/* Scrollable Menu Content below AERP */}
-      <div className="p-3 pt-12 min-w-[280px] text-blue-900">
-        {menuData.map((section, idx) => (
-          <TreeItem key={idx} label={section.label}>
-            {section.children?.map((sub, subIdx) => (
-              <TreeItem key={subIdx} label={sub.label}>
-                {sub.items?.map((item, i) => (
-                  <div key={i} className="ml-4 my-1">
-                    <Link
-                      to={item.link}
-                      className="text-sm text-blue-700 hover:underline block"
-                    >
-                      {item.label}
-                    </Link>
-                  </div>
-                ))}
-              </TreeItem>
-            )) ||
-              (section.link && (
-                <div className="ml-4 my-1">
-                  <Link
-                    to={section.link}
-                    className="text-sm text-blue-700 hover:underline block"
-                  >
-                    {section.label}
-                  </Link>
-                </div>
-              ))}
-          </TreeItem>
-        ))}
+      {/* Scrollable Content (Y and X) */}
+      <div className="overflow-x-auto overflow-y-auto h-[calc(100vh-64px)] p-3 text-[#151b54]">
+        <div className="min-w-[300px]">
+          {menuData.map((section, idx) => (
+            <TreeItem
+              key={idx}
+              label={section.label}
+              link={section.link}
+              children={section.children}
+            />
+          ))}
+        </div>
       </div>
-
-      {/* Resizable drag handle */}
-      <div
-        onMouseDown={handleMouseDown}
-        className="absolute right-0 top-0 h-full w-2 bg-gray-300 hover:bg-gray-500 cursor-ew-resize"
-      />
     </div>
   );
 }

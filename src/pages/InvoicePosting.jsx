@@ -1,8 +1,49 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ResizableSAPSidebar from "./TreeItem";
 import { FaBell, FaUser } from "react-icons/fa";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
-const SampleForm = () => {
+const ExpandableTextarea = ({ id, name, placeholder }) => {
+  const textAreaRef = useRef(null);
+
+  const handleInput = (e) => {
+    e.target.style.height = "auto";
+    e.target.style.height = e.target.scrollHeight + "px";
+  };
+
+  const handleFocus = () => {
+    const el = textAreaRef.current;
+    if (el) {
+      el.style.height = "auto";
+      el.style.height = el.scrollHeight + "px";
+    }
+  };
+
+  const handleBlur = () => {
+    const el = textAreaRef.current;
+    if (el) {
+      el.style.height = "28px";
+    }
+  };
+
+  return (
+    <textarea
+      id={id}
+      name={name}
+      ref={textAreaRef}
+      rows={1}
+      placeholder={placeholder}
+      onInput={handleInput}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+      className="min-h-[28px] max-h-[200px] w-full placeholder:text-center px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400 resize-none overflow-hidden transition-all duration-200"
+    />
+  );
+};
+
+const InvoicePosting = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -28,6 +69,15 @@ const SampleForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     alert(JSON.stringify(formData, null, 2));
+  };
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    Cookies.remove("client");
+    Cookies.remove("user");
+    toast.success("Logged out successfully");
+    navigate("/");
   };
 
   return (
@@ -88,7 +138,10 @@ const SampleForm = () => {
                 <button className="h-7 px-1 rounded text-amber-500">
                   <FaBell />
                 </button>
-                <button className="text-sm h-7 px-2 py-0.5 rounded bg-white border cursor-pointer border-black text-black">
+                <button
+                  onClick={handleLogout}
+                  className="text-sm h-7 px-2 py-0.5 rounded bg-white border cursor-pointer border-black text-black"
+                >
                   Logout
                 </button>
               </div>
@@ -170,10 +223,7 @@ const SampleForm = () => {
 
           <div className="flex flex-wrap justify-between items-center p-2 rounded lg:p-4 lg:mt-5">
             {/* Scrollable Form Container */}
-            <div
-              className="w-full overflow-y-scroll"
-              style={{ maxHeight: "calc(100vh - 250px)" }}
-            >
+            <div className="w-full h-[350px] overflow-y-scroll">
               {/* Top Input Rows */}
               <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-4 lg:px-4 mb-5">
                 <div className="flex items-center gap-2">
@@ -196,7 +246,7 @@ const SampleForm = () => {
                 <div className="flex items-center gap-2">
                   <label
                     htmlFor="invoice_type"
-                    className="w-[130px] h-7 p-2 ml-5 text-sm font-medium text-white rounded-sm"
+                    className="w-[130px] h-7 px-2 py-0.5 ml-7 text-sm text-white rounded-sm"
                   >
                     Invoice Type<span className="text-amber-500"> *</span>
                   </label>
@@ -206,14 +256,14 @@ const SampleForm = () => {
                     name="invoice_type"
                     placeholder="Sales Invoice"
                     required
-                    className="w-[100px] h-7 p-2 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                    className="w-[125px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                   />
                 </div>
 
                 <div className="flex items-center gap-2">
                   <label
                     htmlFor="invoice_date"
-                    className="w-[130px] h-7 p-2 ml-8 text-sm font-medium text-white rounded-sm"
+                    className="w-[130px] h-7 px-2 py-0.5 ml-8 text-sm text-white rounded-sm"
                   >
                     Invoice Date<span className="text-amber-500"> *</span>
                   </label>
@@ -222,14 +272,14 @@ const SampleForm = () => {
                     id="invoice_date"
                     name="invoice_date"
                     required
-                    className="w-[122px] h-7 p-2 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                    className="w-[122px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                   />
                 </div>
 
                 <div className="flex items-center gap-2">
                   <label
                     htmlFor="posting_date"
-                    className="w-[130px] h-7 p-2 text-sm font-medium text-white rounded-sm"
+                    className="w-[130px] h-7 px-2 py-0.5 text-sm text-white rounded-sm"
                   >
                     Posting Date<span className="text-amber-500"> *</span>
                   </label>
@@ -238,14 +288,14 @@ const SampleForm = () => {
                     id="posting_date"
                     name="posting_date"
                     required
-                    className="w-[122px] h-7 p-2 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                    className="w-[122px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                   />
                 </div>
 
                 <div className="flex items-center gap-2">
                   <label
                     htmlFor="month"
-                    className="w-[130px] h-7 p-2 ml-5 text-sm font-medium text-white rounded-sm"
+                    className="w-[130px] h-7 px-2 py-0.5 ml-7 text-sm text-white rounded-sm"
                   >
                     Month<span className="text-amber-500"> *</span>
                   </label>
@@ -255,14 +305,14 @@ const SampleForm = () => {
                     name="month"
                     placeholder="June"
                     required
-                    className="w-[100px] h-7 p-2 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                    className="w-[125px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                   />
                 </div>
 
                 <div className="flex items-center gap-2">
                   <label
                     htmlFor="year"
-                    className="w-[126px] h-7 p-2 ml-8 text-sm font-medium text-white rounded-sm"
+                    className="w-[128px] h-7 px-2 py-0.5 ml-8 text-sm text-white rounded-sm"
                   >
                     Year<span className="text-amber-500"> *</span>
                   </label>
@@ -272,24 +322,22 @@ const SampleForm = () => {
                     name="year"
                     placeholder="2025"
                     required
-                    className="w-[65px] h-7 p-2 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                    className="w-[65px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                   />
                 </div>
 
-                <div className="flex items-center gap-2 col-span-2">
-                  {/* Description */}
-                  <button
-                    type="submit"
-                    className="w-[562px] h-7 border border-gray-500 rounded-sm text-sm text-black bg-white"
-                  >
-                    Description
-                  </button>
+                <div className="flex items-start gap-2 col-span-2">
+                  <ExpandableTextarea
+                    id="description"
+                    name="description"
+                    placeholder="Description"
+                  />
                 </div>
 
                 <div className="flex items-center gap-2">
                   <label
                     htmlFor="invoice_number"
-                    className="w-[128px] h-7 p-2 ml-8 text-sm font-medium text-white rounded-sm"
+                    className="w-[128px] h-7 px-2 py-0.5 ml-8 text-sm text-white rounded-sm"
                   >
                     Invoice Number<span className="text-amber-500"> *</span>
                   </label>
@@ -299,7 +347,7 @@ const SampleForm = () => {
                     name="invoice_number"
                     placeholder="123458"
                     required
-                    className="w-[65px] h-7 p-2 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                    className="w-[65px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                   />
                 </div>
               </div>
@@ -309,7 +357,7 @@ const SampleForm = () => {
                 <div className="flex items-center gap-2">
                   <label
                     htmlFor="debt"
-                    className="w-[130px] h-7 p-2 text-sm font-medium text-white rounded-sm"
+                    className="w-[130px] h-7 px-2 py-0.5 text-sm text-white rounded-sm"
                   >
                     Debt<span className="text-amber-500"> *</span>
                   </label>
@@ -319,14 +367,14 @@ const SampleForm = () => {
                     name="debt"
                     placeholder="D1"
                     required
-                    className="w-[40px] h-7 p-2 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                    className="w-[40px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                   />
                 </div>
 
                 <div className="flex items-center gap-2">
                   <label
                     htmlFor="gl_account"
-                    className="w-[130px] h-7 p-2 text-sm font-medium text-white rounded-sm"
+                    className="w-[130px] h-7 px-2 py-0.5 text-sm text-white rounded-sm"
                   >
                     GL Account<span className="text-amber-500"> *</span>
                   </label>
@@ -336,14 +384,14 @@ const SampleForm = () => {
                     name="gl_account"
                     placeholder="000001"
                     required
-                    className="w-[65px] h-7 p-2 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                    className="w-[65px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                   />
                 </div>
 
                 <div className="flex items-center gap-2">
                   <label
                     htmlFor="debt_amount"
-                    className="w-[130px] h-7 p-2 text-sm font-medium text-white rounded-sm"
+                    className="w-[130px] h-7 px-2 py-0.5 text-sm text-white rounded-sm"
                   >
                     Amount<span className="text-amber-500"> *</span>
                   </label>
@@ -353,24 +401,22 @@ const SampleForm = () => {
                     name="debt_amount"
                     placeholder="10000"
                     required
-                    className="w-[90px] h-7 p-2 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                    className="w-[90px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                   />
                 </div>
 
-                <div className="flex items-center gap-2">
-                  {/* Description */}
-                  <button
-                    type="submit"
-                    className="w-full h-7 border border-gray-500 rounded-sm text-sm text-black bg-white"
-                  >
-                    Description
-                  </button>
+                <div className="flex items-start gap-2">
+                  <ExpandableTextarea
+                    id="description2"
+                    name="description2"
+                    placeholder="Description"
+                  />
                 </div>
 
                 <div className="flex items-center gap-2">
                   <label
                     htmlFor="cred"
-                    className="w-[130px] h-7 p-2 text-sm font-medium text-white rounded-sm"
+                    className="w-[130px] h-7 px-2 py-0.5 text-sm text-white rounded-sm"
                   >
                     Cred<span className="text-amber-500"> *</span>
                   </label>
@@ -380,14 +426,14 @@ const SampleForm = () => {
                     name="cred"
                     placeholder="C1"
                     required
-                    className="w-[40px] h-7 p-2 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                    className="w-[40px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                   />
                 </div>
 
                 <div className="flex items-center gap-2">
                   <label
                     htmlFor="cred_gl_account"
-                    className="w-[130px] h-7 p-2 text-sm font-medium text-white rounded-sm"
+                    className="w-[130px] h-7 px-2 py-0.5 text-sm text-white rounded-sm"
                   >
                     GL Account<span className="text-amber-500"> *</span>
                   </label>
@@ -397,14 +443,14 @@ const SampleForm = () => {
                     name="cred_gl_account"
                     placeholder="000002"
                     required
-                    className="w-[65px] h-7 p-2 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                    className="w-[65px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                   />
                 </div>
 
                 <div className="flex items-center gap-2">
                   <label
                     htmlFor="cred_amount"
-                    className="w-[130px] h-7 p-2 text-sm font-medium text-white rounded-sm"
+                    className="w-[130px] h-7 px-2 py-0.5 text-sm text-white rounded-sm"
                   >
                     Amount<span className="text-amber-500"> *</span>
                   </label>
@@ -414,18 +460,16 @@ const SampleForm = () => {
                     name="cred_amount"
                     placeholder="10000"
                     required
-                    className="w-[90px] h-7 p-2 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                    className="w-[90px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                   />
                 </div>
 
-                <div className="flex items-center gap-2">
-                  {/* Description */}
-                  <button
-                    type="submit"
-                    className="w-full h-7 border border-gray-500 rounded-sm text-sm text-black bg-white"
-                  >
-                    Description
-                  </button>
+                <div className="flex items-start gap-2">
+                  <ExpandableTextarea
+                    id="description2"
+                    name="description2"
+                    placeholder="Description"
+                  />
                 </div>
               </div>
             </div>
@@ -436,4 +480,4 @@ const SampleForm = () => {
   );
 };
 
-export default SampleForm;
+export default InvoicePosting;

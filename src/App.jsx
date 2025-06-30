@@ -2,13 +2,14 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "./context/ThemeContext";
 import ThemeCustomizer from "./pages/ThemeCustomizer";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import Login from "./pages/Login";
 import DashboardPage from "./pages/DashboardPage";
-import SampleForm from "./pages/SampleForm";
 import ResizableSAPSidebar from "./pages/TreeItem";
-import InvoicePosting from "./pages/SampleForm";
+import InvoicePosting from "./pages/InvoicePosting";
+import Client from "./pages/Client";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
   return (
@@ -17,13 +18,24 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/client" element={<Client />} />
           <Route path="/customize" element={<ThemeCustomizer />} />
-          <Route path="/employees/create" element={<InvoicePosting />} />
+          <Route path="/invoice-posting" element={<InvoicePosting />} />
           <Route path="/hirarchy" element={<ResizableSAPSidebar />} />
         </Routes>
 
-        {/* ToastContainer placed globally */}
-        <ToastContainer position="top-right" autoClose={3000} />
+        {/* Global Toast Notifications */}
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
       </BrowserRouter>
     </ThemeProvider>
   );

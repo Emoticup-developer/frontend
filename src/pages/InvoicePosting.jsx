@@ -68,7 +68,7 @@ const InvoicePosting = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(JSON.stringify(formData, null, 2));
+    // alert(JSON.stringify(formData, null, 2));
   };
 
   const navigate = useNavigate();
@@ -103,7 +103,7 @@ const InvoicePosting = () => {
       )}
 
       {/* Main Content */}
-      <main className="flex-1 max-w-6xl h-screen bg-[#151b54] border bg-gradient-to-b from-blue-[#151b54] to-blue-500 border-black lg:p-0 p-4">
+      <main className="flex-1 max-w-6xl h-screen bg-[#d2ecf7] border bg-gradient-to-b from-blue-[#d2ecf7] to-blue-[#d2ecf7] border-black lg:p-0 p-4">
         <form onSubmit={handleSubmit}>
           {/* Top Info Row */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4 lg:px-4">
@@ -118,16 +118,20 @@ const InvoicePosting = () => {
               </div>
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-2">
-                  <label className="text-sm font-medium text-white">
+                  <label className="text-sm font-semibold rounded-sm text-black">
                     Name:
                   </label>
-                  <span className="text-sm text-white">Arun</span>
+                  <span className="text-sm font-semibold rounded-sm text-black">
+                    Arun
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <label className="text-sm font-medium text-white">
+                  <label className="text-sm font-semibold rounded-sm text-black">
                     Role:
                   </label>
-                  <span className="text-sm ml-2 text-white">Admin</span>
+                  <span className="text-sm ml-2 font-semibold rounded-sm text-black">
+                    Admin
+                  </span>
                 </div>
               </div>
             </div>
@@ -148,7 +152,7 @@ const InvoicePosting = () => {
               <div className="flex items-center gap-2">
                 <label
                   htmlFor="company_code"
-                  className="w-[63px] h-7 px-2 py-0.5 text-sm text-white rounded-sm"
+                  className="w-[63px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
                 >
                   Code:<span className="text-amber-500"> *</span>
                 </label>
@@ -223,13 +227,13 @@ const InvoicePosting = () => {
 
           <div className="flex flex-wrap justify-between items-center p-2 rounded lg:p-4 lg:mt-5">
             {/* Scrollable Form Container */}
-            <div className="w-full h-[350px] overflow-y-scroll">
+            <div className="w-full h-[360px] overflow-y-scroll">
               {/* Top Input Rows */}
               <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-4 lg:px-4 mb-5">
                 <div className="flex items-center gap-2">
                   <label
                     htmlFor="company_code"
-                    className="w-[130px] h-7 px-2 py-0.5 text-sm text-white rounded-sm"
+                    className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
                   >
                     Company Code<span className="text-amber-500"> *</span>
                   </label>
@@ -246,7 +250,7 @@ const InvoicePosting = () => {
                 <div className="flex items-center gap-2">
                   <label
                     htmlFor="invoice_type"
-                    className="w-[130px] h-7 px-2 py-0.5 ml-7 text-sm text-white rounded-sm"
+                    className="w-[130px] h-7 px-2 py-0.5 ml-7 text-sm font-semibold rounded-sm text-black"
                   >
                     Invoice Type<span className="text-amber-500"> *</span>
                   </label>
@@ -263,7 +267,7 @@ const InvoicePosting = () => {
                 <div className="flex items-center gap-2">
                   <label
                     htmlFor="invoice_date"
-                    className="w-[130px] h-7 px-2 py-0.5 ml-8 text-sm text-white rounded-sm"
+                    className="w-[130px] h-7 px-2 py-0.5 ml-8 text-sm font-semibold rounded-sm text-black"
                   >
                     Invoice Date<span className="text-amber-500"> *</span>
                   </label>
@@ -279,7 +283,7 @@ const InvoicePosting = () => {
                 <div className="flex items-center gap-2">
                   <label
                     htmlFor="posting_date"
-                    className="w-[130px] h-7 px-2 py-0.5 text-sm text-white rounded-sm"
+                    className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
                   >
                     Posting Date<span className="text-amber-500"> *</span>
                   </label>
@@ -295,7 +299,7 @@ const InvoicePosting = () => {
                 <div className="flex items-center gap-2">
                   <label
                     htmlFor="month"
-                    className="w-[130px] h-7 px-2 py-0.5 ml-7 text-sm text-white rounded-sm"
+                    className="w-[130px] h-7 px-2 py-0.5 ml-7 text-sm font-semibold rounded-sm text-black"
                   >
                     Month<span className="text-amber-500"> *</span>
                   </label>
@@ -312,7 +316,7 @@ const InvoicePosting = () => {
                 <div className="flex items-center gap-2">
                   <label
                     htmlFor="year"
-                    className="w-[128px] h-7 px-2 py-0.5 ml-8 text-sm text-white rounded-sm"
+                    className="w-[128px] h-7 px-2 py-0.5 ml-8 text-sm font-semibold rounded-sm text-black"
                   >
                     Year<span className="text-amber-500"> *</span>
                   </label>
@@ -326,7 +330,7 @@ const InvoicePosting = () => {
                   />
                 </div>
 
-                <div className="flex items-start gap-2 col-span-2">
+                <div className="flex items-start gap-2">
                   <ExpandableTextarea
                     id="description"
                     name="description"
@@ -337,7 +341,7 @@ const InvoicePosting = () => {
                 <div className="flex items-center gap-2">
                   <label
                     htmlFor="invoice_number"
-                    className="w-[128px] h-7 px-2 py-0.5 ml-8 text-sm text-white rounded-sm"
+                    className="w-[128px] h-7 px-2 py-0.5 ml-7 text-sm font-semibold rounded-sm text-black"
                   >
                     Invoice Number<span className="text-amber-500"> *</span>
                   </label>
@@ -357,7 +361,7 @@ const InvoicePosting = () => {
                 <div className="flex items-center gap-2">
                   <label
                     htmlFor="debt"
-                    className="w-[130px] h-7 px-2 py-0.5 text-sm text-white rounded-sm"
+                    className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
                   >
                     Debt<span className="text-amber-500"> *</span>
                   </label>
@@ -374,7 +378,7 @@ const InvoicePosting = () => {
                 <div className="flex items-center gap-2">
                   <label
                     htmlFor="gl_account"
-                    className="w-[130px] h-7 px-2 py-0.5 text-sm text-white rounded-sm"
+                    className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
                   >
                     GL Account<span className="text-amber-500"> *</span>
                   </label>
@@ -391,7 +395,7 @@ const InvoicePosting = () => {
                 <div className="flex items-center gap-2">
                   <label
                     htmlFor="debt_amount"
-                    className="w-[130px] h-7 px-2 py-0.5 text-sm text-white rounded-sm"
+                    className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
                   >
                     Amount<span className="text-amber-500"> *</span>
                   </label>
@@ -416,7 +420,7 @@ const InvoicePosting = () => {
                 <div className="flex items-center gap-2">
                   <label
                     htmlFor="cred"
-                    className="w-[130px] h-7 px-2 py-0.5 text-sm text-white rounded-sm"
+                    className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
                   >
                     Cred<span className="text-amber-500"> *</span>
                   </label>
@@ -433,7 +437,7 @@ const InvoicePosting = () => {
                 <div className="flex items-center gap-2">
                   <label
                     htmlFor="cred_gl_account"
-                    className="w-[130px] h-7 px-2 py-0.5 text-sm text-white rounded-sm"
+                    className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
                   >
                     GL Account<span className="text-amber-500"> *</span>
                   </label>
@@ -450,7 +454,7 @@ const InvoicePosting = () => {
                 <div className="flex items-center gap-2">
                   <label
                     htmlFor="cred_amount"
-                    className="w-[130px] h-7 px-2 py-0.5 text-sm text-white rounded-sm"
+                    className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
                   >
                     Amount<span className="text-amber-500"> *</span>
                   </label>

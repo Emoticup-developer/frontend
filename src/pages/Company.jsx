@@ -15,10 +15,9 @@ import {
 } from "react-icons/fa";
 // import currencyCodes from "currency-codes";
 import { useNavigate } from "react-router-dom";
-
 // const currencyList = currencyCodes.data.map((item) => item.code);
 
-const Client = () => {
+const Company = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [clientInfo, setClientInfo] = useState(null);
@@ -152,9 +151,9 @@ const Client = () => {
     fetchCurrencies();
   }, []);
 
-  const [countryList, setCountryList] = useState([]);
-  const [country, setCountry] = useState("India");
-  const [showCountryDropdown, setShowCountryDropdown] = useState(false);
+  //   const [countryList, setCountryList] = useState([]);
+  //   const [country, setCountry] = useState("India");
+  //   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
 
   // useEffect(() => {
   //   fetch("https://restcountries.com/v3.1/all")
@@ -203,24 +202,20 @@ const Client = () => {
   // }, []);
 
   const [fiscalYearList, setFiscalYearList] = useState([]);
-  const [fiscalYear, setFiscalYear] = useState("JAN 1 - MAR 31");
+  const [fiscalYear, setFiscalYear] = useState("2025-2026");
   const [showFiscalYearDropdown, setShowFiscalYearDropdown] = useState(false);
 
-  const [timeZone, setTimeZone] = useState("");
-  const [showTimeZoneDropdown, setShowTimeZoneDropdown] = useState(false);
-  const timeZoneList = ["IST", "EST", "PST", "CST", "GMT"]; // Customize as needed
+  useEffect(() => {
+    const currentYear = new Date().getFullYear();
+    const years = [];
 
-  // useEffect(() => {
-  //   const currentYear = new Date().getFullYear();
-  //   const years = [];
+    for (let i = 0; i < 10; i++) {
+      const start = currentYear - i;
+      years.push(`${start}-${start + 1}`);
+    }
 
-  //   for (let i = 0; i < 10; i++) {
-  //     const start = currentYear - i;
-  //     years.push(`${start}-${start + 1}`);
-  //   }
-
-  //   setFiscalYearList(years);
-  // }, []);
+    setFiscalYearList(years);
+  }, []);
 
   const toggleFiscalYearDropdown = () =>
     setShowFiscalYearDropdown(!showFiscalYearDropdown);
@@ -234,9 +229,9 @@ const Client = () => {
   const [numberRange, setNumberRange] = useState("NR01");
   const [showNumberRangeDropdown, setShowNumberRangeDropdown] = useState(false);
 
-  const [taxCode, setTaxCode] = useState("");
-  const [showTaxCodeDropdown, setShowTaxCodeDropdown] = useState(false);
-  const taxCodeList = ["TX1", "TX2", "TX3"]; // Example list
+  const [country, setCountry] = useState("");
+  const [showCountryDropdown, setShowCountryDropdown] = useState(false);
+  const countryList = ["IN", "US", "UK", "DE", "FR", "AU", "CN"]; // Customize as needed
 
   // Uncomment and modify this if you're fetching from an API later
   // useEffect(() => {
@@ -362,7 +357,7 @@ const Client = () => {
           <div className="w-full bg-blue-100 border-t-2 border-b-2 border-[#031015]">
             <div className="flex justify-between items-center px-3">
               <div className="bg-amber-500 rounded-md bg-gradient-to-b from-amber-500 to-white">
-                <h1 className="font-bold uppercase">CLIENT</h1>
+                <h1 className="font-bold uppercase">COMPANY</h1>
               </div>
               <div>
                 {/* Action Buttons */}
@@ -418,26 +413,128 @@ const Client = () => {
           <div className="flex flex-wrap justify-between items-center p-2 rounded lg:p-4 lg:mt-5">
             {/* Scrollable Form Container */}
             <div className="w-full h-[360px] overflow-y-scroll">
-              <div className="flex flex-col lg:flex-row gap-6 lg:px-4 mb-5">
-                {/* Left Column */}
+              <div className="flex flex-col lg:flex-row lg:gap-8 lg:px-4 mb-5">
+                {/* Column 1 */}
                 <div className="flex flex-col gap-4 w-full lg:w-1/2">
                   <div className="flex items-center gap-2">
                     <label
-                      htmlFor="client_id"
+                      htmlFor="company_id"
                       className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
                     >
-                      Client ID<span className="text-amber-500"> *</span>
+                      Company ID<span className="text-amber-500"> *</span>
                     </label>
                     <input
                       type="text"
-                      id="client_id"
-                      name="client_id"
-                      placeholder="0007"
-                      value={clientInfo?.client_id || ""}
-                      readOnly
-                      required
+                      id="company_id"
+                      name="company_id"
+                      placeholder="KP001"
                       className="w-[50px] h-7 border border-gray-500 rounded-sm text-sm text-black bg-amber-500 hover:bg-amber-400 px-2 py-0.5"
                     />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <label
+                      htmlFor="tax_code"
+                      className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                    >
+                      Tax Code<span className="text-amber-500"> *</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="tax_code"
+                      name="tax_code"
+                      placeholder="Reliance Global Holdings Ltd."
+                      className="w-[200px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-amber-500 hover:bg-amber-400"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <label
+                      htmlFor="street"
+                      className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                    >
+                      Street<span className="text-amber-500"> *</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="street"
+                      name="street"
+                      placeholder="No. 12 MG Road"
+                      className="w-[120px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <label
+                      htmlFor="plant"
+                      className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                    >
+                      Plant<span className="text-amber-500"> *</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="plant"
+                      name="plant"
+                      placeholder="Plant details"
+                      className="w-[95px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <label
+                      htmlFor="po_box"
+                      className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                    >
+                      PO Box<span className="text-amber-500"> *</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="po_box"
+                      name="po_box"
+                      placeholder="P.O. Box 1401"
+                      className="w-[100px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                    />
+                  </div>
+                  <div className="relative">
+                    <div className="flex items-center gap-2">
+                      <label
+                        htmlFor="country"
+                        className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                      >
+                        Country Code<span className="text-amber-500"> *</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="country"
+                        name="country"
+                        value={country}
+                        readOnly
+                        placeholder="IN"
+                        className="w-[35px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                      />
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setShowCountryDropdown(!showCountryDropdown)
+                        }
+                        className="w-4 h-4 flex items-center justify-center bg-white border border-gray-500 rounded hover:bg-amber-400"
+                      >
+                        <FaList className="text-black text-[7px]" />
+                      </button>
+                    </div>
+
+                    {showCountryDropdown && (
+                      <ul className="absolute z-10 mt-1 ml-[172px] w-[100px] bg-white border border-gray-400 rounded shadow-md max-h-40 overflow-auto">
+                        {countryList.map((code) => (
+                          <li
+                            key={code}
+                            onClick={() => {
+                              setCountry(code);
+                              setShowCountryDropdown(false);
+                            }}
+                            className="px-3 py-1 text-sm hover:bg-amber-200 cursor-pointer"
+                          >
+                            {code}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
 
                   <div className="relative">
@@ -476,7 +573,10 @@ const Client = () => {
                       </ul>
                     )}
                   </div>
+                </div>
 
+                {/* Column 2 */}
+                <div className="flex flex-col gap-4 w-full lg:w-1/2">
                   <div className="relative">
                     {/* Currency input & button */}
                     <div className="flex items-center gap-2">
@@ -699,272 +799,80 @@ const Client = () => {
                       </div>
                     )}
                   </div>
-
-                  <div className="relative">
-                    <div className="flex items-center gap-2">
-                      <label
-                        htmlFor="time_zone"
-                        className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
-                      >
-                        Time Zone<span className="text-amber-500"> *</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="time_zone"
-                        name="time_zone"
-                        value={timeZone}
-                        readOnly
-                        placeholder="IST"
-                        className="w-[50px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
-                      />
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setShowTimeZoneDropdown(!showTimeZoneDropdown)
-                        }
-                        className="w-4 h-4 flex items-center justify-center bg-white border border-gray-500 rounded hover:bg-amber-400"
-                      >
-                        <FaList className="text-black text-[7px]" />
-                      </button>
-                    </div>
-
-                    {showTimeZoneDropdown && (
-                      <ul className="absolute z-10 mt-1 ml-[172px] w-[100px] bg-white border border-gray-400 rounded shadow-md max-h-40 overflow-auto">
-                        {timeZoneList.map((zone) => (
-                          <li
-                            key={zone}
-                            onClick={() => {
-                              setTimeZone(zone);
-                              setShowTimeZoneDropdown(false);
-                            }}
-                            className="px-3 py-1 text-sm hover:bg-amber-200 cursor-pointer"
-                          >
-                            {zone}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                  <div className="flex items-center gap-2">
+                    <label
+                      htmlFor="city"
+                      className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                    >
+                      City<span className="text-amber-500"> *</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="city"
+                      name="city"
+                      placeholder="Mumbai"
+                      className="w-[70px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                    />
                   </div>
-
-                  <div className="relative">
-                    <div className="flex items-center gap-2">
-                      <label
-                        htmlFor="country"
-                        className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
-                      >
-                        Country<span className="text-amber-500"> *</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="country"
-                        name="country"
-                        value={country}
-                        readOnly
-                        placeholder="India"
-                        className="w-[90px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
-                      />
-                      <button
-                        onClick={() => {
-                          setShowDropdown(false); // ✅ Hide dropdown
-                          setShowTablePopup(true); // ✅ Show popup
-                          fetchCurrencies();
-                        }}
-                        className="w-4 h-4 flex items-center justify-center bg-white border border-gray-500 rounded hover:bg-amber-400"
-                      >
-                        <FaList className="text-black text-[7px]" />
-                      </button>
-                    </div>
-
-                    {showTablePopup && (
-                      <ul className="absolute z-10 mt-1 ml-[172px] w-[220px] bg-white border border-gray-400 rounded shadow-md max-h-40 overflow-auto">
-                        {currencyList.map((cur) => (
-                          <li
-                            key={cur.currency_code}
-                            onClick={() =>
-                              handleCurrencySelect(cur.currency_code)
-                            }
-                            className="px-3 py-1 text-sm hover:bg-amber-200 cursor-pointer"
-                          >
-                            {cur.currency_code} - {cur.currency_name}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                  <div className="flex items-center gap-2">
+                    <label
+                      htmlFor="postal_code"
+                      className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                    >
+                      Postal Code<span className="text-amber-500"> *</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="postal_code"
+                      name="postal_code"
+                      placeholder="560001"
+                      className="w-[65px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                    />
                   </div>
-                </div>
-
-                {/* Right Column */}
-                <div className="flex flex-col gap-4 w-full lg:w-1/2">
-                  <div className="relative">
-                    <div className="flex items-center gap-2">
-                      <label
-                        htmlFor="country_code"
-                        className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
-                      >
-                        Country Code<span className="text-amber-500"> *</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="country_code"
-                        name="country_code"
-                        value={countryCode}
-                        readOnly
-                        placeholder="IN"
-                        className="w-[35px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
-                      />
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setShowCountryCodeDropdown(!showCountryCodeDropdown)
-                        }
-                        className="w-4 h-4 flex items-center justify-center bg-white border border-gray-500 rounded hover:bg-amber-400"
-                      >
-                        <FaList className="text-black text-[7px]" />
-                      </button>
-                    </div>
-
-                    {showCountryCodeDropdown && (
-                      <ul className="absolute z-10 mt-1 ml-[172px] w-[80px] bg-white border border-gray-400 rounded shadow-md max-h-40 overflow-auto">
-                        {countryCodeList.map((code) => (
-                          <li
-                            key={code}
-                            onClick={() => {
-                              setCountryCode(code);
-                              setShowCountryCodeDropdown(false);
-                            }}
-                            className="px-3 py-1 text-sm hover:bg-amber-200 cursor-pointer"
-                          >
-                            {code}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                  <div className="flex items-center gap-2">
+                    <label
+                      htmlFor="telephone_fax"
+                      className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                    >
+                      Telephone/Fax<span className="text-amber-500"> *</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="telephone_fax"
+                      name="telephone_fax"
+                      placeholder="91-22-12345678"
+                      className="w-[120px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                    />
                   </div>
-
-                  <div className="relative">
-                    <div className="flex items-center gap-2">
-                      <label
-                        htmlFor="fiscal_year"
-                        className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
-                      >
-                        Fiscal Year<span className="text-amber-500"> *</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="fiscal_year"
-                        name="fiscal_year"
-                        placeholder="JAN 1 - MAR 31"
-                        className="w-[115px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
-                      />
-                      <button
-                        type="button"
-                        onClick={toggleFiscalYearDropdown}
-                        className="w-4 h-4 flex items-center justify-center bg-white border border-gray-500 rounded hover:bg-amber-400"
-                      >
-                        <FaList className="text-black text-[7px]" />
-                      </button>
-                    </div>
-
-                    {showFiscalYearDropdown && (
-                      <ul className="absolute z-10 mt-1 ml-[172px] w-[100px] bg-white border border-gray-400 rounded shadow-md max-h-40 overflow-auto">
-                        {fiscalYearList.map((year) => (
-                          <li
-                            key={year}
-                            onClick={() => handleFiscalYearSelect(year)}
-                            className="px-3 py-1 text-sm hover:bg-amber-200 cursor-pointer"
-                          >
-                            {year}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                  <div className="flex items-center gap-2">
+                    <label
+                      htmlFor="email"
+                      className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                    >
+                      Email<span className="text-amber-500"> *</span>
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      placeholder="info@relianceglobal.com"
+                      className="w-[170px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                    />
                   </div>
-
-                  <div className="relative">
-                    <div className="flex items-center gap-2">
-                      <label
-                        htmlFor="number_range_object"
-                        className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
-                      >
-                        Number Range<span className="text-amber-500"> *</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="number_range_object"
-                        name="number_range_object"
-                        value={numberRange}
-                        readOnly
-                        placeholder="NR01"
-                        className="w-[50px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
-                      />
-                      <button
-                        type="button"
-                        onClick={toggleNumberRangeDropdown}
-                        className="w-4 h-4 flex items-center justify-center bg-white border border-gray-500 rounded hover:bg-amber-400"
-                      >
-                        <FaList className="text-black text-[7px]" />
-                      </button>
-                    </div>
-
-                    {showNumberRangeDropdown && (
-                      <ul className="absolute z-10 mt-1 ml-[172px] w-[80px] bg-white border border-gray-400 rounded shadow-md max-h-40 overflow-auto">
-                        {numberRangeList.map((range) => (
-                          <li
-                            key={range}
-                            onClick={() => handleNumberRangeSelect(range)}
-                            className="px-3 py-1 text-sm hover:bg-amber-200 cursor-pointer"
-                          >
-                            {range}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-
-                  <div className="relative">
-                    <div className="flex items-center gap-2">
-                      <label
-                        htmlFor="tax_code"
-                        className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
-                      >
-                        Tax Code<span className="text-amber-500"> *</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="tax_code"
-                        name="tax_code"
-                        value={taxCode}
-                        readOnly
-                        placeholder="TX1"
-                        className="w-[50px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
-                      />
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setShowTaxCodeDropdown(!showTaxCodeDropdown)
-                        }
-                        className="w-4 h-4 flex items-center justify-center bg-white border border-gray-500 rounded hover:bg-amber-400"
-                      >
-                        <FaList className="text-black text-[7px]" />
-                      </button>
-                    </div>
-
-                    {showTaxCodeDropdown && (
-                      <ul className="absolute z-10 mt-1 ml-[172px] w-[80px] bg-white border border-gray-400 rounded shadow-md max-h-40 overflow-auto">
-                        {taxCodeList.map((code) => (
-                          <li
-                            key={code}
-                            onClick={() => {
-                              setTaxCode(code);
-                              setShowTaxCodeDropdown(false);
-                            }}
-                            className="px-3 py-1 text-sm hover:bg-amber-200 cursor-pointer"
-                          >
-                            {code}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                  <div className="flex items-center gap-2">
+                    <label
+                      htmlFor="contact_person"
+                      className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                    >
+                      Contact Person<span className="text-amber-500"> *</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="contact_person"
+                      name="contact_person"
+                      placeholder="Prajwal"
+                      className="w-[80px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                    />
                   </div>
                 </div>
               </div>
@@ -976,4 +884,4 @@ const Client = () => {
   );
 };
 
-export default Client;
+export default Company;

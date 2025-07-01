@@ -1,18 +1,16 @@
 import { useState, useEffect } from "react";
-import { FaList } from "react-icons/fa";
+import { FaList, FaTimes, FaEdit, FaTrash } from "react-icons/fa";
+import { toast } from "react-toastify";
 import Lottie from "lottie-react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 import banner from "../assets/banner.json";
 import logo from "../assets/logoaerp.png";
 
 const Login = () => {
-  const [languageList, setLanguageList] = useState([]);
-  const [showDropdown, setShowDropdown] = useState(false);
+  // const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -27,29 +25,91 @@ const Login = () => {
     if (savedClient) navigate("/client");
   }, [navigate]);
 
-  // Fetch all languages
-  useEffect(() => {
-    axios
-      .get("http://192.168.0.235:8000/api/language")
-      .then((res) => {
-        const langSet = new Set();
-        res.data.forEach((country) => {
-          if (country.languages) {
-            Object.values(country.languages).forEach((lang) =>
-              langSet.add(lang)
-            );
-          }
-        });
-        setLanguageList(Array.from(langSet).sort());
-      })
-      .catch(() => toast.error("Failed to fetch languages"));
-  }, []);
+  const [languageList, setLanguageList] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
+  const [showAddPopup, setShowAddPopup] = useState(false);
+  const [showEditPopup, setShowEditPopup] = useState(false);
 
-  const toggleDropdown = () => setShowDropdown(!showDropdown);
-  const handleLanguageSelect = (lang) => {
-    setFormData({ ...formData, language: lang });
-    setShowDropdown(false);
+  const [newLanguage, setNewLanguage] = useState({
+    language_code: "",
+    language_name: "",
+  });
+
+  const [editLanguage, setEditLanguage] = useState({
+    language_code: "",
+    language_name: "",
+  });
+
+  // Fetch all languages
+  const fetchLanguages = async () => {
+    try {
+      const res = await axios.get("http://192.168.0.235:8000/api/language");
+      setLanguageList(res.data);
+    } catch (err) {
+      toast.error("Failed to fetch languages");
+    }
   };
+
+  // // Add language
+  // const handleAdd = async () => {
+  //   try {
+  //     await axios.post("http://192.168.0.235:8000/api/language", newLanguage);
+  //     toast.success("Language added");
+  //     setShowAddPopup(false);
+  //     setNewLanguage({ language_code: "", language_name: "" });
+  //     fetchLanguages();
+  //   } catch (err) {
+  //     toast.error("Add failed");
+  //   }
+  // };
+
+  // const handleUpdate = async () => {
+  //   const { language_code, language_name } = editLanguage;
+
+  //   try {
+  //     // Update language using PUT
+  //     await axios.put(
+  //       `http://192.168.0.235:8000/api/language/${language_code}`,
+  //       { language_code, language_name }
+  //     );
+
+  //     // Update local list instantly
+  //     setLanguageList((prevList) =>
+  //       prevList.map((lang) =>
+  //         lang.language_code === language_code
+  //           ? { language_code, language_name }
+  //           : lang
+  //       )
+  //     );
+
+  //     toast.success("Language updated successfully");
+  //     setShowEditPopup(false); // ✅ Close edit popup
+  //     setShowPopup(true); // ✅ Return to main popup
+  //   } catch (err) {
+  //     toast.error("Failed to update language");
+  //     console.error(err);
+  //   }
+  // };
+
+  // // Delete language
+  // const handleDelete = async (language_name) => {
+  //   try {
+  //     await axios.delete(
+  //       `http://192.168.0.235:8000/api/language/${language_name}`
+  //     );
+  //     toast.success("Language deleted");
+  //     fetchLanguages();
+  //   } catch (err) {
+  //     toast.error("Delete failed");
+  //   }
+  // };
+
+  // Select language for main input
+  const handleLanguageSelect = (code) => {
+    setFormData({ ...formData, language: code });
+    setShowPopup(false);
+  };
+
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -166,14 +226,16 @@ const Login = () => {
               </div>
 
               {/* Language */}
-
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 relative">
+                {/* Label */}
                 <label
                   htmlFor="language"
-                  className="w-[150px] text-sm font-semibold rounded-sm text-black"
+                  className="w-[150px] text-sm font-semibold text-black"
                 >
-                  Language<span className="text-amber-500"> *</span>
+                  Language
                 </label>
+
+                {/* Readonly Input */}
                 <input
                   type="text"
                   id="language"
@@ -181,31 +243,66 @@ const Login = () => {
                   value={formData.language}
                   readOnly
                   className={`w-[35px] h-5 px-2 border border-gray-500 rounded-sm text-sm text-black ${
-                    formData.client_id ? "bg-amber-500" : "bg-white"
+                    formData.language ? "bg-amber-500" : "bg-white"
                   }`}
                 />
+
+                {/* FaList Button */}
                 <button
                   type="button"
-                  onClick={toggleDropdown}
+                  onClick={() => {
+                    fetchLanguages();
+                    setShowPopup(true);
+                  }}
                   className="w-4 h-4 flex items-center justify-center bg-white border border-gray-500 rounded hover:bg-amber-400"
                 >
                   <FaList className="text-black text-[7px]" />
                 </button>
-              </div>
 
-              {showDropdown && (
-                <ul className="absolute z-10 mt-1 ml-[172px] w-[160px] bg-white border border-gray-400 rounded shadow-md max-h-40 overflow-auto">
-                  {languageList.map((lang) => (
-                    <li
-                      key={lang}
-                      onClick={() => handleLanguageSelect(lang)}
-                      className="px-3 py-1 text-sm hover:bg-amber-200 cursor-pointer"
-                    >
-                      {lang}
-                    </li>
-                  ))}
-                </ul>
-              )}
+                {/* Language Popup */}
+                {showPopup && (
+                  <div className="fixed top-0 left-0 z-50 w-full h-full flex items-center bg-opacity-10">
+                    <div className="bg-white w-[300px] h-[160px] pt-2 pb-0 pl-2 pr-2 rounded-md shadow-lg mb-40 ml-90">
+                      {/* Header */}
+                      <div className="flex justify-end items-center mb-2">
+                        <button onClick={() => setShowPopup(false)}>
+                          <FaTimes />
+                        </button>
+                      </div>
+
+                      {/* Table (only Language Code + Name) */}
+                      <div className="overflow-y-auto h-[112px]">
+                        <table className="w-full border text-sm">
+                          <thead>
+                            <tr className="bg-gray-200">
+                              <th className="p-2 border text-sm">Code</th>
+                              <th className="p-2 border text-sm">Name</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {languageList.map((lang, index) => (
+                              <tr
+                                key={index}
+                                className="hover:bg-amber-200 cursor-pointer h-[20px]"
+                                onClick={() =>
+                                  handleLanguageSelect(lang.language_code)
+                                }
+                              >
+                                <td className="p-2 border">
+                                  {lang.language_code}
+                                </td>
+                                <td className="p-2 border">
+                                  {lang.language_name}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
 
               {/* Login Button */}
               <div className="ml-[158px] mt-1">
@@ -217,7 +314,7 @@ const Login = () => {
                 </button>
               </div>
 
-              <hr className="border-[#031015] border w-[600px]" />
+              <hr className="border-[#031015] border w-[650px]" />
 
               <div className="w-[600px] h-16 font-semibold rounded-sm text-black mt-5">
                 Welcome to AERP — Intelligent Partner in Unifying Finance,

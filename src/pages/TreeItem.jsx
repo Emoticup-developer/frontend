@@ -66,24 +66,15 @@ const menuData = [
   },
   {
     label: "Company Code",
-    children: [
-      { label: "Create Code", link: "/hr/create" },
-      { label: "Edit Code", link: "/hr/edit" },
-    ],
+    link: "/company-code",
   },
   {
     label: "Business Area",
-    children: [
-      { label: "Area Overview", link: "/tools/area-overview" },
-      { label: "Manage Areas", link: "/tools/manage-areas" },
-    ],
+    link: "/business-area",
   },
   {
     label: "Plant",
-    children: [
-      { label: "Plant Master", link: "/tools/plant-master" },
-      { label: "Add New Plant", link: "/tools/add-plant" },
-    ],
+    link: "/plant",
   },
   {
     label: "Enterprise Structure",

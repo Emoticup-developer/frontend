@@ -15,6 +15,8 @@ import CompanyCode from "./pages/CompanyCode";
 import BusinessArea from "./pages/BusinessArea";
 import Plant from "./pages/Plant";
 import EnterpriseStructure from "./pages/EnterpriseStructure";
+import GeneralLedger from "./pages/GeneralLedger";
+import FieldStatus from "./pages/FieldStatus";
 
 export default function App() {
   return (
@@ -32,6 +34,9 @@ export default function App() {
             path="/enterprise-structure"
             element={<EnterpriseStructure />}
           />
+          <Route path="/general-ledger" element={<GeneralLedger />} />
+          <Route path="/field-status-group" element={<FieldStatus />} />
+
           <Route path="/customize" element={<ThemeCustomizer />} />
           <Route path="/invoice-posting" element={<InvoicePosting />} />
           <Route path="/hirarchy" element={<ResizableSAPSidebar />} />

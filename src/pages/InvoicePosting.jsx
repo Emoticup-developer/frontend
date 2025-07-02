@@ -5,48 +5,64 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const ExpandableTextarea = ({ id, name, placeholder }) => {
-  const textAreaRef = useRef(null);
+// const ExpandableTextarea = ({ id, name, placeholder }) => {
+//   const textAreaRef = useRef(null);
 
-  const handleInput = (e) => {
-    e.target.style.height = "auto";
-    e.target.style.height = e.target.scrollHeight + "px";
-  };
+//   const handleInput = (e) => {
+//     e.target.style.height = "auto";
+//     e.target.style.height = e.target.scrollHeight + "px";
+//   };
 
-  const handleFocus = () => {
-    const el = textAreaRef.current;
-    if (el) {
-      el.style.height = "auto";
-      el.style.height = el.scrollHeight + "px";
-    }
-  };
+//   const handleFocus = () => {
+//     const el = textAreaRef.current;
+//     if (el) {
+//       el.style.height = "auto";
+//       el.style.height = el.scrollHeight + "px";
+//     }
+//   };
 
-  const handleBlur = () => {
-    const el = textAreaRef.current;
-    if (el) {
-      el.style.height = "28px";
-    }
-  };
+//   const handleBlur = () => {
+//     const el = textAreaRef.current;
+//     if (el) {
+//       el.style.height = "28px";
+//     }
+//   };
 
-  return (
-    <textarea
-      id={id}
-      name={name}
-      ref={textAreaRef}
-      rows={1}
-      placeholder={placeholder}
-      onInput={handleInput}
-      onFocus={handleFocus}
-      onBlur={handleBlur}
-      className="min-h-[28px] max-h-[200px] w-full placeholder:text-center px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400 resize-none overflow-hidden transition-all duration-200"
-    />
-  );
-};
+//   return (
+//     <textarea
+//       id={id}
+//       name={name}
+//       ref={textAreaRef}
+//       rows={1}
+//       placeholder={placeholder}
+//       onInput={handleInput}
+//       onFocus={handleFocus}
+//       onBlur={handleBlur}
+//       className="min-h-[28px] max-h-[200px] w-full placeholder:text-center px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400 resize-none overflow-hidden transition-all duration-200"
+//     />
+//   );
+// };
 
 const InvoicePosting = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  const description1Ref = useRef(null);
+  const description2Ref = useRef(null);
+  const description3Ref = useRef(null);
+
+  const autoResize = (ref) => {
+    if (ref && ref.current) {
+      ref.current.style.height = "auto";
+      ref.current.style.height = ref.current.scrollHeight + "px";
+    }
+  };
+
+  const collapseResize = (ref) => {
+    if (ref && ref.current) {
+      ref.current.style.height = "28px"; // Default collapsed height
+    }
+  };
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener("resize", handleResize);
@@ -331,10 +347,15 @@ const InvoicePosting = () => {
                 </div>
 
                 <div className="flex items-start gap-2">
-                  <ExpandableTextarea
-                    id="description"
-                    name="description"
+                  <textarea
+                    id="description1"
+                    name="description1"
+                    ref={description1Ref}
                     placeholder="Description"
+                    onFocus={() => autoResize(description1Ref)}
+                    onInput={() => autoResize(description1Ref)}
+                    onBlur={() => collapseResize(description1Ref)}
+                    className="w-[260px] h-7 px-2 py-0.5 border border-gray-500 placeholder:text-center rounded-sm text-sm text-black bg-white hover:bg-amber-400 resize-none overflow-hidden transition-all duration-200"
                   />
                 </div>
 
@@ -410,10 +431,15 @@ const InvoicePosting = () => {
                 </div>
 
                 <div className="flex items-start gap-2">
-                  <ExpandableTextarea
+                  <textarea
                     id="description2"
                     name="description2"
+                    ref={description2Ref}
                     placeholder="Description"
+                    onFocus={() => autoResize(description2Ref)}
+                    onInput={() => autoResize(description2Ref)}
+                    onBlur={() => collapseResize(description2Ref)}
+                    className="w-full h-7 px-2 py-0.5 border border-gray-500 placeholder:text-center rounded-sm text-sm text-black bg-white hover:bg-amber-400 resize-none overflow-hidden transition-all duration-200"
                   />
                 </div>
 
@@ -469,10 +495,15 @@ const InvoicePosting = () => {
                 </div>
 
                 <div className="flex items-start gap-2">
-                  <ExpandableTextarea
-                    id="description2"
-                    name="description2"
+                  <textarea
+                    id="description3"
+                    name="description3"
+                    ref={description3Ref}
                     placeholder="Description"
+                    onFocus={() => autoResize(description3Ref)}
+                    onInput={() => autoResize(description3Ref)}
+                    onBlur={() => collapseResize(description3Ref)}
+                    className="w-full h-7 px-2 py-0.5 border border-gray-500 placeholder:text-center rounded-sm text-sm text-black bg-white hover:bg-amber-400 resize-none overflow-hidden transition-all duration-200"
                   />
                 </div>
               </div>

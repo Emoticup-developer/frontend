@@ -45,6 +45,7 @@ const Company = () => {
     name: "",
     email: "",
     domain: "",
+    plant: "",
   });
 
   // const handleChange = (e) =>
@@ -56,206 +57,65 @@ const Company = () => {
   };
 
   const [currencyList, setCurrencyList] = useState([]);
-  const [currency, setCurrency] = useState("INR");
-  const [showTablePopup, setShowTablePopup] = useState(false);
-  const [editIndex, setEditIndex] = useState(null);
-  const [showAddPopup, setShowAddPopup] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [addCurrencyData, setAddCurrencyData] = useState({
-    currency_code: "",
-    currency_name: "",
-  });
+  const [showCurrencyPopup, setShowCurrencyPopup] = useState(false);
 
+  // Fetch all currencies
   const fetchCurrencies = async () => {
     try {
       const res = await axios.get("http://192.168.0.235:8000/api/currency");
-      const data = res.data;
-      if (Array.isArray(data)) {
-        const seen = new Set();
-        const unique = data.filter((item) => {
-          if (seen.has(item.currency_code)) return false;
-          seen.add(item.currency_code);
-          return true;
-        });
-        setCurrencyList(unique);
-      } else {
-        console.error("Invalid response:", data);
-      }
+      setCurrencyList(res.data);
     } catch (err) {
-      console.error("Fetch error", err);
+      toast.error("Failed to fetch currencies");
     }
   };
 
+  // Select currency for main input
   const handleCurrencySelect = (code) => {
-    setCurrency(code);
-    setShowTablePopup(false);
+    setFormData({ ...formData, currency: code });
+    setShowCurrencyPopup(false);
   };
-
-  const handleUpdateCurrency = async (currency_name) => {
-    try {
-      await axios.put(
-        `http://192.168.0.235:8000/api/currency/${currency_name}`
-      );
-      fetchCurrencies();
-      toast.success("Currency updated successfully!");
-    } catch (err) {
-      toast.error("Update failed!");
-      console.error(err);
-    }
-  };
-
-  const handleDeleteCurrency = async (currency_name) => {
-    try {
-      await axios.delete(
-        `http://192.168.0.235:8000/api/currency/${currency_name}`
-      );
-      fetchCurrencies();
-      toast.success("Currency deleted!");
-    } catch (err) {
-      toast.error("Delete failed!");
-      console.error(err);
-    }
-  };
-
-  const handleChange = (index, field, value) => {
-    const list = [...currencyList];
-    list[index][field] = value;
-    setCurrencyList(list);
-  };
-
-  const handleAddCurrency = async () => {
-    if (!addCurrencyData.currency_code || !addCurrencyData.currency_name) {
-      toast.error("Both fields are required!");
-      return;
-    }
-
-    try {
-      setLoading(true);
-      await axios.post(
-        "http://192.168.0.235:8000/api/currency",
-        addCurrencyData
-      );
-      fetchCurrencies();
-      setAddCurrencyData({ currency_code: "", currency_name: "" });
-      setShowAddPopup(false);
-      toast.success("Currency added!");
-    } catch (err) {
-      toast.error("Add failed!");
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchCurrencies();
-  }, []);
-
-  //   const [countryList, setCountryList] = useState([]);
-  //   const [country, setCountry] = useState("India");
-  //   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
-
-  // useEffect(() => {
-  //   fetch("https://restcountries.com/v3.1/all")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       const countries = data.map((item) => item.name.common);
-  //       setCountryList(countries.sort());
-  //     })
-  //     .catch((err) => console.error("Failed to load countries", err));
-  // }, []);
 
   const [countryCodeList, setCountryCodeList] = useState([]);
-  const [countryCode, setCountryCode] = useState("IN");
-  const [showCountryCodeDropdown, setShowCountryCodeDropdown] = useState(false);
+  const [showCountryCodePopup, setShowCountryCodePopup] = useState(false);
 
-  // useEffect(() => {
-  //   fetch("https://restcountries.com/v3.1/all")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       const codes = data
-  //         .map((item) => item.cca2)
-  //         .filter(Boolean)
-  //         .sort();
-  //       setCountryCodeList(codes);
-  //     })
-  //     .catch((err) => console.error("Failed to load country codes", err));
-  // }, []);
+  // Fetch countries from API
+  const fetchCountriesCode = async () => {
+    try {
+      const res = await axios.get("http://192.168.0.235:8000/api/country");
+      setCountryCodeList(res.data);
+    } catch (err) {
+      toast.error("Failed to fetch countries");
+    }
+  };
+
+  // Select a country code and update formData
+  const handleCountryCodeSelect = (code) => {
+    setFormData({ ...formData, country_code: code });
+    setShowCountryCodePopup(false);
+  };
+
+  const [plantList, setPlantList] = useState([]);
+  const [showPlantPopup, setShowPlantPopup] = useState(false);
+
+  // Fetch plants from API
+  const fetchPlants = async () => {
+    try {
+      const res = await axios.get("http://192.168.0.235:8000/api/plant");
+      setPlantList(res.data);
+    } catch (err) {
+      toast.error("Failed to fetch plants");
+    }
+  };
+
+  // Select a plant and update formData
+  const handlePlantSelect = (name) => {
+    setFormData({ ...formData, plant: name });
+    setShowPlantPopup(false);
+  };
 
   const [languageList, setLanguageList] = useState([]);
   const [language, setLanguage] = useState("EN");
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
-
-  // useEffect(() => {
-  //   fetch("https://restcountries.com/v3.1/all")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       const langs = new Set();
-  //       data.forEach((country) => {
-  //         if (country.languages) {
-  //           Object.values(country.languages).forEach((lang) => langs.add(lang));
-  //         }
-  //       });
-  //       setLanguageList(Array.from(langs).sort());
-  //     })
-  //     .catch((err) => console.error("Failed to load languages", err));
-  // }, []);
-
-  const [fiscalYearList, setFiscalYearList] = useState([]);
-  const [fiscalYear, setFiscalYear] = useState("2025-2026");
-  const [showFiscalYearDropdown, setShowFiscalYearDropdown] = useState(false);
-
-  useEffect(() => {
-    const currentYear = new Date().getFullYear();
-    const years = [];
-
-    for (let i = 0; i < 10; i++) {
-      const start = currentYear - i;
-      years.push(`${start}-${start + 1}`);
-    }
-
-    setFiscalYearList(years);
-  }, []);
-
-  const toggleFiscalYearDropdown = () =>
-    setShowFiscalYearDropdown(!showFiscalYearDropdown);
-
-  const handleFiscalYearSelect = (value) => {
-    setFiscalYear(value);
-    setShowFiscalYearDropdown(false);
-  };
-
-  const [numberRangeList, setNumberRangeList] = useState([]);
-  const [numberRange, setNumberRange] = useState("NR01");
-  const [showNumberRangeDropdown, setShowNumberRangeDropdown] = useState(false);
-
-  const [country, setCountry] = useState("");
-  const [showCountryDropdown, setShowCountryDropdown] = useState(false);
-  const countryList = ["IN", "US", "UK", "DE", "FR", "AU", "CN"]; // Customize as needed
-
-  // Uncomment and modify this if you're fetching from an API later
-  // useEffect(() => {
-  //   fetch("https://your-api.com/number-range")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       const ranges = data.map(item => item.code); // Adjust based on your response structure
-  //       setNumberRangeList(ranges);
-  //     })
-  //     .catch((err) => console.error("Failed to load number ranges", err));
-  // }, []);
-
-  useEffect(() => {
-    // Static example list
-    setNumberRangeList(["NR01", "NR02", "NR03", "NR04"]);
-  }, []);
-
-  const toggleNumberRangeDropdown = () =>
-    setShowNumberRangeDropdown(!showNumberRangeDropdown);
-
-  const handleNumberRangeSelect = (value) => {
-    setNumberRange(value);
-    setShowNumberRangeDropdown(false);
-  };
 
   const navigate = useNavigate();
 
@@ -416,36 +276,103 @@ const Company = () => {
               <div className="flex flex-col lg:flex-row lg:gap-8 lg:px-4 mb-5">
                 {/* Column 1 */}
                 <div className="flex flex-col gap-4 w-full lg:w-1/2">
-                  <div className="flex items-center gap-2">
-                    <label
-                      htmlFor="company_id"
-                      className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
-                    >
-                      Company ID<span className="text-amber-500"> *</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="company_id"
-                      name="company_id"
-                      placeholder="KP001"
-                      className="w-[50px] h-7 border border-gray-500 rounded-sm text-sm text-black bg-amber-500 hover:bg-amber-400 px-2 py-0.5"
-                    />
+                  <div className="relative">
+                    <div className="flex items-center gap-2">
+                      <label
+                        htmlFor="company_id"
+                        className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                      >
+                        Company ID<span className="text-amber-500"> *</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="company_id"
+                        name="company_id"
+                        placeholder="KP001"
+                        value={formData.country_code}
+                        readOnly
+                        className={`w-[60px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400 ${
+                          formData.country_code ? "bg-amber-500" : "bg-white"
+                        }`}
+                      />
+                      {/* FaList Button */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          fetchCountriesCode();
+                          setShowCountryCodePopup(true);
+                        }}
+                        className="w-4 h-4 flex items-center justify-center bg-white border border-gray-500 rounded hover:bg-amber-400"
+                      >
+                        <FaList className="text-black text-[7px]" />
+                      </button>
+
+                      {/* Country Code Popup */}
+                      {showCountryCodePopup && (
+                        <div className="fixed top-0 left-0 z-50 w-full h-full flex items-center bg-opacity-10">
+                          <div className="bg-white w-[300px] h-[160px] pt-2 pb-0 pl-2 pr-2 rounded-md shadow-lg mb-40 ml-90">
+                            {/* Close Button */}
+                            <div className="flex justify-end items-center mb-2">
+                              <button
+                                onClick={() => setShowCountryCodePopup(false)}
+                              >
+                                <FaTimes />
+                              </button>
+                            </div>
+
+                            {/* Table */}
+                            <div className="overflow-y-auto h-[112px]">
+                              <table className="w-full border text-sm">
+                                <thead>
+                                  <tr className="bg-gray-200">
+                                    <th className="p-2 border text-sm">Code</th>
+                                    <th className="p-2 border text-sm">Name</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {countryCodeList.map((country, index) => (
+                                    <tr
+                                      key={index}
+                                      className="hover:bg-amber-200 cursor-pointer h-[20px]"
+                                      onClick={() =>
+                                        handleCountryCodeSelect(
+                                          country.country_code
+                                        )
+                                      }
+                                    >
+                                      <td className="p-2 border">
+                                        {country.country_code}
+                                      </td>
+                                      <td className="p-2 border">
+                                        {country.country_name}
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
+
                   <div className="flex items-center gap-2">
                     <label
-                      htmlFor="tax_code"
+                      htmlFor="company_name"
                       className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
                     >
-                      Tax Code<span className="text-amber-500"> *</span>
+                      Company Name<span className="text-amber-500"> *</span>
                     </label>
                     <input
                       type="text"
-                      id="tax_code"
-                      name="tax_code"
+                      id="company_name"
+                      name="company_name"
                       placeholder="Reliance Global Holdings Ltd."
-                      className="w-[200px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-amber-500 hover:bg-amber-400"
+                      className="w-[200px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                     />
                   </div>
+
                   <div className="flex items-center gap-2">
                     <label
                       htmlFor="street"
@@ -461,20 +388,83 @@ const Company = () => {
                       className="w-[120px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                     />
                   </div>
-                  <div className="flex items-center gap-2">
-                    <label
-                      htmlFor="plant"
-                      className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
-                    >
-                      Plant<span className="text-amber-500"> *</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="plant"
-                      name="plant"
-                      placeholder="Plant details"
-                      className="w-[95px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
-                    />
+
+                  <div className="relative">
+                    <div className="flex items-center gap-2">
+                      <label
+                        htmlFor="plant"
+                        className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                      >
+                        Plant<span className="text-amber-500"> *</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="plant"
+                        name="plant"
+                        placeholder="P001"
+                        value={formData.plant}
+                        readOnly
+                        className={`w-[100px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400 ${
+                          formData.plant ? "bg-amber-500" : "bg-white"
+                        }`}
+                      />
+
+                      {/* FaList Button */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          fetchPlants();
+                          setShowPlantPopup(true);
+                        }}
+                        className="w-4 h-4 flex items-center justify-center bg-white border border-gray-500 rounded hover:bg-amber-400"
+                      >
+                        <FaList className="text-black text-[7px]" />
+                      </button>
+
+                      {/* Plant Popup */}
+                      {showPlantPopup && (
+                        <div className="fixed top-0 left-0 z-50 w-full h-full flex items-center bg-opacity-10">
+                          <div className="bg-white w-[300px] h-[160px] pt-2 pb-0 pl-2 pr-2 rounded-md shadow-lg mb-40 ml-90">
+                            {/* Close Button */}
+                            <div className="flex justify-end items-center mb-2">
+                              <button onClick={() => setShowPlantPopup(false)}>
+                                <FaTimes />
+                              </button>
+                            </div>
+
+                            {/* Plant Table */}
+                            <div className="overflow-y-auto h-[112px]">
+                              <table className="w-full border text-sm">
+                                <thead>
+                                  <tr className="bg-gray-200">
+                                    <th className="p-2 border text-sm">Code</th>
+                                    <th className="p-2 border text-sm">Name</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {plantList.map((plant, index) => (
+                                    <tr
+                                      key={index}
+                                      className="hover:bg-amber-200 cursor-pointer h-[20px]"
+                                      onClick={() =>
+                                        handlePlantSelect(plant.name)
+                                      }
+                                    >
+                                      <td className="p-2 border">
+                                        {plant.code}
+                                      </td>
+                                      <td className="p-2 border">
+                                        {plant.name}
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <label
@@ -494,47 +484,82 @@ const Company = () => {
                   <div className="relative">
                     <div className="flex items-center gap-2">
                       <label
-                        htmlFor="country"
+                        htmlFor="country_code"
                         className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
                       >
                         Country Code<span className="text-amber-500"> *</span>
                       </label>
                       <input
                         type="text"
-                        id="country"
-                        name="country"
-                        value={country}
-                        readOnly
+                        id="country_code"
+                        name="country_code"
                         placeholder="IN"
-                        className="w-[35px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                        value={formData.country_code}
+                        readOnly
+                        className={`w-[35px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400 ${
+                          formData.country_code ? "bg-amber-500" : "bg-white"
+                        }`}
                       />
+                      {/* FaList Button */}
                       <button
                         type="button"
-                        onClick={() =>
-                          setShowCountryDropdown(!showCountryDropdown)
-                        }
+                        onClick={() => {
+                          fetchCountriesCode();
+                          setShowCountryCodePopup(true);
+                        }}
                         className="w-4 h-4 flex items-center justify-center bg-white border border-gray-500 rounded hover:bg-amber-400"
                       >
                         <FaList className="text-black text-[7px]" />
                       </button>
-                    </div>
 
-                    {showCountryDropdown && (
-                      <ul className="absolute z-10 mt-1 ml-[172px] w-[100px] bg-white border border-gray-400 rounded shadow-md max-h-40 overflow-auto">
-                        {countryList.map((code) => (
-                          <li
-                            key={code}
-                            onClick={() => {
-                              setCountry(code);
-                              setShowCountryDropdown(false);
-                            }}
-                            className="px-3 py-1 text-sm hover:bg-amber-200 cursor-pointer"
-                          >
-                            {code}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                      {/* Country Code Popup */}
+                      {showCountryCodePopup && (
+                        <div className="fixed top-0 left-0 z-50 w-full h-full flex items-center bg-opacity-10">
+                          <div className="bg-white w-[300px] h-[160px] pt-2 pb-0 pl-2 pr-2 rounded-md shadow-lg mb-40 ml-90">
+                            {/* Close Button */}
+                            <div className="flex justify-end items-center mb-2">
+                              <button
+                                onClick={() => setShowCountryCodePopup(false)}
+                              >
+                                <FaTimes />
+                              </button>
+                            </div>
+
+                            {/* Table */}
+                            <div className="overflow-y-auto h-[112px]">
+                              <table className="w-full border text-sm">
+                                <thead>
+                                  <tr className="bg-gray-200">
+                                    <th className="p-2 border text-sm">Code</th>
+                                    <th className="p-2 border text-sm">Name</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {countryCodeList.map((country, index) => (
+                                    <tr
+                                      key={index}
+                                      className="hover:bg-amber-200 cursor-pointer h-[20px]"
+                                      onClick={() =>
+                                        handleCountryCodeSelect(
+                                          country.country_code
+                                        )
+                                      }
+                                    >
+                                      <td className="p-2 border">
+                                        {country.country_code}
+                                      </td>
+                                      <td className="p-2 border">
+                                        {country.country_name}
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   <div className="relative">
@@ -578,241 +603,172 @@ const Company = () => {
                 {/* Column 2 */}
                 <div className="flex flex-col gap-4 w-full lg:w-1/2">
                   <div className="relative">
-                    {/* Currency input & button */}
                     <div className="flex items-center gap-2">
+                      {/* Label */}
                       <label
                         htmlFor="currency"
-                        className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold text-black"
+                        className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
                       >
                         Currency<span className="text-amber-500"> *</span>
                       </label>
+
+                      {/* Readonly Input */}
                       <input
                         type="text"
                         id="currency"
                         name="currency"
-                        value={currency}
+                        placeholder="INR"
+                        value={formData.currency}
                         readOnly
-                        className="w-[40px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                        className={`w-[50px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400 ${
+                          formData.currency ? "bg-amber-500" : "bg-white"
+                        }`}
                       />
+
+                      {/* FaList Button */}
                       <button
+                        type="button"
                         onClick={() => {
-                          setShowTablePopup(true);
                           fetchCurrencies();
+                          setShowCurrencyPopup(true);
                         }}
                         className="w-4 h-4 flex items-center justify-center bg-white border border-gray-500 rounded hover:bg-amber-400"
                       >
                         <FaList className="text-black text-[7px]" />
                       </button>
-                    </div>
 
-                    {/* Table Popup */}
-                    {showTablePopup && (
-                      <div className="fixed top-1/2 left-1/2 w-[600px] max-w-full h-[350px] overflow-y-auto transform -translate-x-1/2 -translate-y-1/2 bg-white border border-gray-300 shadow-2xl p-4 rounded-lg z-50">
-                        <div className="flex justify-between items-center mb-2">
-                          <h3 className="text-xl font-semibold text-gray-800">
-                            Select Currency
-                          </h3>
-                          <button
-                            onClick={() => setShowTablePopup(false)}
-                            className="text-red-600 hover:text-red-800"
-                          >
-                            <FaTimes size={18} />
-                          </button>
-                        </div>
+                      {/* Currency Popup */}
+                      {showCurrencyPopup && (
+                        <div className="fixed top-0 left-0 z-50 w-full h-full flex items-center bg-opacity-10">
+                          <div className="bg-white w-[300px] h-[160px] pt-2 pb-0 pl-2 pr-2 rounded-md shadow-lg mb-40 ml-90">
+                            {/* Header */}
+                            <div className="flex justify-end items-center mb-2">
+                              <button
+                                onClick={() => setShowCurrencyPopup(false)}
+                              >
+                                <FaTimes />
+                              </button>
+                            </div>
 
-                        {/* Action Icons */}
-                        <div className="flex gap-4 mb-2 text-sm text-gray-700">
-                          <div className="flex items-center gap-1">
-                            <FaEdit className="text-blue-600" />
-                            <span>Edit</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <FaSave className="text-green-600" />
-                            <span>Save</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <FaTrash className="text-red-600" />
-                            <span>Delete</span>
-                          </div>
-                          <div
-                            onClick={() => setShowAddPopup(true)}
-                            className="flex items-center gap-1 cursor-pointer"
-                          >
-                            <FaPlus className="text-green-600" />
-                            <span>Add</span>
-                          </div>
-                        </div>
-
-                        {/* Table */}
-                        <table className="w-full text-sm border border-gray-200">
-                          <thead>
-                            <tr className="bg-gray-200">
-                              <th className="p-2 border text-left w-[12%]">
-                                Country Code
-                              </th>
-                              <th className="p-2 border text-left w-[70%]">
-                                Country Name
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {currencyList.map((cur, idx) => (
-                              <tr key={cur.currency_code}>
-                                <td className="p-2 border whitespace-nowrap">
-                                  {editIndex === idx ? (
-                                    <input
-                                      value={cur.currency_code}
-                                      onChange={(e) =>
-                                        handleChange(
-                                          idx,
-                                          "currency_code",
-                                          e.target.value
+                            {/* Table (only Currency Code + Name) */}
+                            <div className="overflow-y-auto h-[112px]">
+                              <table className="w-full border text-sm">
+                                <thead>
+                                  <tr className="bg-gray-200">
+                                    <th className="p-2 border text-sm">Code</th>
+                                    <th className="p-2 border text-sm">Name</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {currencyList.map((currency, index) => (
+                                    <tr
+                                      key={index}
+                                      className="hover:bg-amber-200 cursor-pointer h-[20px]"
+                                      onClick={() =>
+                                        handleCurrencySelect(
+                                          currency.currency_code
                                         )
                                       }
-                                      className="border px-1 w-full"
-                                    />
-                                  ) : (
-                                    cur.currency_code
-                                  )}
-                                </td>
-                                <td className="p-2 border flex justify-between items-center gap-2">
-                                  {editIndex === idx ? (
-                                    <>
-                                      <input
-                                        value={cur.currency_name}
-                                        onChange={(e) =>
-                                          handleChange(
-                                            idx,
-                                            "currency_name",
-                                            e.target.value
-                                          )
-                                        }
-                                        className="border px-1 w-full"
-                                      />
-                                      <button
-                                        onClick={handleUpdateCurrency}
-                                        className="text-green-600 hover:text-green-800"
-                                      >
-                                        <FaSave />
-                                      </button>
-                                    </>
-                                  ) : (
-                                    <>
-                                      <span className="flex-1">
-                                        {cur.currency_name}
-                                      </span>
-                                      <div className="flex gap-2">
-                                        <button
-                                          onClick={() =>
-                                            handleUpdateCurrency(
-                                              cur.currency_name
-                                            )
-                                          }
-                                        >
-                                          <FaEdit />
-                                        </button>
-
-                                        <button
-                                          onClick={() =>
-                                            handleDeleteCurrency(
-                                              cur.currency_name
-                                            )
-                                          }
-                                        >
-                                          <FaTrash />
-                                        </button>
-                                      </div>
-                                    </>
-                                  )}
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    )}
-
-                    {/* Add Currency Popup */}
-                    {showAddPopup && (
-                      <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-60 flex items-center justify-center">
-                        <div className="bg-white w-[400px] rounded-lg p-6 shadow-2xl relative z-70">
-                          <h2 className="text-lg font-semibold mb-4 text-gray-800">
-                            Add Currency
-                          </h2>
-
-                          <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              Currency Code
-                            </label>
-                            <input
-                              type="text"
-                              value={addCurrencyData.currency_code}
-                              onChange={(e) =>
-                                setAddCurrencyData({
-                                  ...addCurrencyData,
-                                  currency_code: e.target.value,
-                                })
-                              }
-                              className="w-full border border-gray-300 rounded px-3 py-1 text-sm"
-                              placeholder="Enter currency code"
-                            />
-                          </div>
-
-                          <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              Currency Name
-                            </label>
-                            <input
-                              type="text"
-                              value={addCurrencyData.currency_name}
-                              onChange={(e) =>
-                                setAddCurrencyData({
-                                  ...addCurrencyData,
-                                  currency_name: e.target.value,
-                                })
-                              }
-                              className="w-full border border-gray-300 rounded px-3 py-1 text-sm"
-                              placeholder="Enter currency name"
-                            />
-                          </div>
-
-                          <div className="flex justify-end gap-3 mt-4">
-                            <button
-                              onClick={() => setShowAddPopup(false)}
-                              className="px-4 py-1 text-sm rounded bg-gray-300 hover:bg-gray-400 text-black"
-                            >
-                              Cancel
-                            </button>
-                            <button
-                              onClick={handleAddCurrency}
-                              disabled={loading}
-                              className={`px-4 py-1 text-sm rounded text-white ${
-                                loading
-                                  ? "bg-green-400 cursor-not-allowed"
-                                  : "bg-green-600 hover:bg-green-700"
-                              }`}
-                            >
-                              {loading ? "Submitting..." : "Submit"}
-                            </button>
+                                    >
+                                      <td className="p-2 border">
+                                        {currency.currency_code}
+                                      </td>
+                                      <td className="p-2 border">
+                                        {currency.currency_name}
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <label
-                      htmlFor="city"
-                      className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
-                    >
-                      City<span className="text-amber-500"> *</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="city"
-                      name="city"
-                      placeholder="Mumbai"
-                      className="w-[70px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
-                    />
+
+                  <div className="relative">
+                    <div className="flex items-center gap-2">
+                      <label
+                        htmlFor="city"
+                        className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                      >
+                        City<span className="text-amber-500"> *</span>
+                      </label>
+
+                      {/* Readonly Input */}
+                      <input
+                        type="text"
+                        id="city"
+                        name="city"
+                        placeholder="Mumbai"
+                        value={formData.currency}
+                        readOnly
+                        className={`w-[75px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400 ${
+                          formData.currency ? "bg-amber-500" : "bg-white"
+                        }`}
+                      />
+
+                      {/* FaList Button */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          fetchCurrencies();
+                          setShowCurrencyPopup(true);
+                        }}
+                        className="w-4 h-4 flex items-center justify-center bg-white border border-gray-500 rounded hover:bg-amber-400"
+                      >
+                        <FaList className="text-black text-[7px]" />
+                      </button>
+
+                      {/* Currency Popup */}
+                      {showCurrencyPopup && (
+                        <div className="fixed top-0 left-0 z-50 w-full h-full flex items-center bg-opacity-10">
+                          <div className="bg-white w-[300px] h-[160px] pt-2 pb-0 pl-2 pr-2 rounded-md shadow-lg mb-40 ml-90">
+                            {/* Header */}
+                            <div className="flex justify-end items-center mb-2">
+                              <button
+                                onClick={() => setShowCurrencyPopup(false)}
+                              >
+                                <FaTimes />
+                              </button>
+                            </div>
+
+                            {/* Table (only Currency Code + Name) */}
+                            <div className="overflow-y-auto h-[112px]">
+                              <table className="w-full border text-sm">
+                                <thead>
+                                  <tr className="bg-gray-200">
+                                    <th className="p-2 border text-sm">Code</th>
+                                    <th className="p-2 border text-sm">Name</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {currencyList.map((currency, index) => (
+                                    <tr
+                                      key={index}
+                                      className="hover:bg-amber-200 cursor-pointer h-[20px]"
+                                      onClick={() =>
+                                        handleCurrencySelect(
+                                          currency.currency_code
+                                        )
+                                      }
+                                    >
+                                      <td className="p-2 border">
+                                        {currency.currency_code}
+                                      </td>
+                                      <td className="p-2 border">
+                                        {currency.currency_name}
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <label

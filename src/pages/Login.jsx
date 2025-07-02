@@ -123,9 +123,9 @@ const Login = () => {
       );
 
       if (res.status === 200) {
-        Cookies.set("client_id", formData.client_id, { expires: 1 });
-        Cookies.set("username", formData.username, { expires: 1 });
-        Cookies.set("language", formData.language, { expires: 1 }); // Save selected language
+        Cookies.set("client_id", formData.client_id, { expires: 7 });
+        Cookies.set("username", formData.username, { expires: 7 });
+        Cookies.set("language", formData.language, { expires: 7 }); // Save selected language
 
         toast.success("Login successful!");
 

@@ -82,10 +82,7 @@ const menuData = [
   },
   {
     label: "General Ledger Account (FI-GL)",
-    children: [
-      { label: "Create GL", link: "/tools/create-gl" },
-      { label: "Edit GL", link: "/tools/edit-gl" },
-    ],
+    link: "/general-ledger",
   },
   {
     label: "Chart of Accounts (CoA)",
@@ -96,10 +93,7 @@ const menuData = [
   },
   {
     label: "Field Status Group (FSG)",
-    children: [
-      { label: "FSG Master", link: "/tools/fsg-master" },
-      { label: "Add FSG", link: "/tools/add-fsg" },
-    ],
+    link: "/field-status-group",
   },
   {
     label: "Invoice Posting",

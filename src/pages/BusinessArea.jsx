@@ -17,57 +17,25 @@ import {
 import { useNavigate } from "react-router-dom";
 // const currencyList = currencyCodes.data.map((item) => item.code);
 
-const ExpandableTextarea = ({ id, name, placeholder }) => {
-  const textAreaRef = useRef(null);
-
-  const handleInput = (e) => {
-    e.target.style.height = "auto";
-    e.target.style.height = e.target.scrollHeight + "px";
-  };
-
-  const handleFocus = () => {
-    const el = textAreaRef.current;
-    if (el) {
-      el.style.height = "auto";
-      el.style.height = el.scrollHeight + "px";
-    }
-  };
-
-  const handleBlur = () => {
-    const el = textAreaRef.current;
-    if (el) {
-      el.style.height = "28px";
-    }
-  };
-
-  return (
-    <textarea
-      id={id}
-      name={name}
-      ref={textAreaRef}
-      rows={1}
-      placeholder={placeholder}
-      onInput={handleInput}
-      onFocus={handleFocus}
-      onBlur={handleBlur}
-      className="h-[100px] w-[317px] px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400 resize-none overflow-hidden transition-all duration-200"
-    />
-  );
-};
-
 const BusinessArea = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [clientInfo, setClientInfo] = useState(null);
 
-  useEffect(() => {
-    const savedClientId = Cookies.get("client_id");
-    const savedLanguage = Cookies.get("language");
+  const description1Ref = useRef(null);
 
-    if (savedClientId)
-      setClientInfo((prev) => ({ ...prev, client_id: savedClientId }));
-    if (savedLanguage) setLanguage(savedLanguage);
-  }, []);
+  const autoResize = (ref) => {
+    if (ref && ref.current) {
+      ref.current.style.height = "auto";
+      ref.current.style.height = ref.current.scrollHeight + "px";
+    }
+  };
+
+  const collapseResize = (ref) => {
+    if (ref && ref.current) {
+      ref.current.style.height = "28px"; // Default collapsed height
+    }
+  };
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -91,204 +59,6 @@ const BusinessArea = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // alert(JSON.stringify(formData, null, 2));
-  };
-
-  const [currencyList, setCurrencyList] = useState([]);
-  const [currency, setCurrency] = useState("INR");
-  const [showTablePopup, setShowTablePopup] = useState(false);
-  const [editIndex, setEditIndex] = useState(null);
-  const [showAddPopup, setShowAddPopup] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [addCurrencyData, setAddCurrencyData] = useState({
-    currency_code: "",
-    currency_name: "",
-  });
-
-  const fetchCurrencies = async () => {
-    try {
-      const res = await axios.get("http://192.168.0.235:8000/api/currency");
-      const data = res.data;
-      if (Array.isArray(data)) {
-        const seen = new Set();
-        const unique = data.filter((item) => {
-          if (seen.has(item.currency_code)) return false;
-          seen.add(item.currency_code);
-          return true;
-        });
-        setCurrencyList(unique);
-      } else {
-        console.error("Invalid response:", data);
-      }
-    } catch (err) {
-      console.error("Fetch error", err);
-    }
-  };
-
-  const handleCurrencySelect = (code) => {
-    setCurrency(code);
-    setShowTablePopup(false);
-  };
-
-  const handleUpdateCurrency = async (currency_name) => {
-    try {
-      await axios.put(
-        `http://192.168.0.235:8000/api/currency/${currency_name}`
-      );
-      fetchCurrencies();
-      toast.success("Currency updated successfully!");
-    } catch (err) {
-      toast.error("Update failed!");
-      console.error(err);
-    }
-  };
-
-  const handleDeleteCurrency = async (currency_name) => {
-    try {
-      await axios.delete(
-        `http://192.168.0.235:8000/api/currency/${currency_name}`
-      );
-      fetchCurrencies();
-      toast.success("Currency deleted!");
-    } catch (err) {
-      toast.error("Delete failed!");
-      console.error(err);
-    }
-  };
-
-  const handleChange = (index, field, value) => {
-    const list = [...currencyList];
-    list[index][field] = value;
-    setCurrencyList(list);
-  };
-
-  const handleAddCurrency = async () => {
-    if (!addCurrencyData.currency_code || !addCurrencyData.currency_name) {
-      toast.error("Both fields are required!");
-      return;
-    }
-
-    try {
-      setLoading(true);
-      await axios.post(
-        "http://192.168.0.235:8000/api/currency",
-        addCurrencyData
-      );
-      fetchCurrencies();
-      setAddCurrencyData({ currency_code: "", currency_name: "" });
-      setShowAddPopup(false);
-      toast.success("Currency added!");
-    } catch (err) {
-      toast.error("Add failed!");
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchCurrencies();
-  }, []);
-
-  const [countryList, setCountryList] = useState([]);
-  const [country, setCountry] = useState("India");
-  const [showCountryDropdown, setShowCountryDropdown] = useState(false);
-
-  // useEffect(() => {
-  //   fetch("https://restcountries.com/v3.1/all")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       const countries = data.map((item) => item.name.common);
-  //       setCountryList(countries.sort());
-  //     })
-  //     .catch((err) => console.error("Failed to load countries", err));
-  // }, []);
-
-  const [countryCodeList, setCountryCodeList] = useState([]);
-  const [countryCode, setCountryCode] = useState("IN");
-  const [showCountryCodeDropdown, setShowCountryCodeDropdown] = useState(false);
-
-  // useEffect(() => {
-  //   fetch("https://restcountries.com/v3.1/all")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       const codes = data
-  //         .map((item) => item.cca2)
-  //         .filter(Boolean)
-  //         .sort();
-  //       setCountryCodeList(codes);
-  //     })
-  //     .catch((err) => console.error("Failed to load country codes", err));
-  // }, []);
-
-  const [languageList, setLanguageList] = useState([]);
-  const [language, setLanguage] = useState("EN");
-  const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
-
-  // useEffect(() => {
-  //   fetch("https://restcountries.com/v3.1/all")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       const langs = new Set();
-  //       data.forEach((country) => {
-  //         if (country.languages) {
-  //           Object.values(country.languages).forEach((lang) => langs.add(lang));
-  //         }
-  //       });
-  //       setLanguageList(Array.from(langs).sort());
-  //     })
-  //     .catch((err) => console.error("Failed to load languages", err));
-  // }, []);
-
-  const [fiscalYearList, setFiscalYearList] = useState([]);
-  const [fiscalYear, setFiscalYear] = useState("2025-2026");
-  const [showFiscalYearDropdown, setShowFiscalYearDropdown] = useState(false);
-
-  useEffect(() => {
-    const currentYear = new Date().getFullYear();
-    const years = [];
-
-    for (let i = 0; i < 10; i++) {
-      const start = currentYear - i;
-      years.push(`${start}-${start + 1}`);
-    }
-
-    setFiscalYearList(years);
-  }, []);
-
-  const toggleFiscalYearDropdown = () =>
-    setShowFiscalYearDropdown(!showFiscalYearDropdown);
-
-  const handleFiscalYearSelect = (value) => {
-    setFiscalYear(value);
-    setShowFiscalYearDropdown(false);
-  };
-
-  const [numberRangeList, setNumberRangeList] = useState([]);
-  const [numberRange, setNumberRange] = useState("NR01");
-  const [showNumberRangeDropdown, setShowNumberRangeDropdown] = useState(false);
-
-  // Uncomment and modify this if you're fetching from an API later
-  // useEffect(() => {
-  //   fetch("https://your-api.com/number-range")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       const ranges = data.map(item => item.code); // Adjust based on your response structure
-  //       setNumberRangeList(ranges);
-  //     })
-  //     .catch((err) => console.error("Failed to load number ranges", err));
-  // }, []);
-
-  useEffect(() => {
-    // Static example list
-    setNumberRangeList(["NR01", "NR02", "NR03", "NR04"]);
-  }, []);
-
-  const toggleNumberRangeDropdown = () =>
-    setShowNumberRangeDropdown(!showNumberRangeDropdown);
-
-  const handleNumberRangeSelect = (value) => {
-    setNumberRange(value);
-    setShowNumberRangeDropdown(false);
   };
 
   const navigate = useNavigate();
@@ -481,10 +251,15 @@ const BusinessArea = () => {
                 </div>
 
                 <div className="flex items-start gap-2">
-                  <ExpandableTextarea
-                    id="description"
-                    name="description"
+                  <textarea
+                    id="description1"
+                    name="description1"
+                    ref={description1Ref}
                     placeholder="Description"
+                    onFocus={() => autoResize(description1Ref)}
+                    onInput={() => autoResize(description1Ref)}
+                    onBlur={() => collapseResize(description1Ref)}
+                    className="w-[317px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400 resize-none overflow-hidden transition-all duration-200"
                   />
                 </div>
               </div>

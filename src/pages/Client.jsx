@@ -60,28 +60,46 @@ const Client = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const [formData, setFormData] = useState({
-    currency: "INR",
-    time_zone: "",
-    // country: "IN",
-    country_code: "IN",
-    fiscal_year: "",
-    number_range: "",
-    tax_code: "",
-    description: "",
+  const [formData, setFormData] = useState(() => {
+    const saved = localStorage.getItem("formData");
+    return saved
+      ? JSON.parse(saved)
+      : {
+          currency: "INR",
+          time_zone: "",
+          country_code: "IN",
+          fiscal_year: "",
+          number_range: "",
+          tax_code: "",
+          description: "",
+          client_id: Cookies.get("client_id") || "",
+          language: Cookies.get("language") || "",
+        };
   });
 
-  // const handleChange = (e) =>
-  //   setFormData({ ...formData, [e.target.name]: e.target.value });
+  // ✅ Keep localStorage updated whenever formData changes
+  useEffect(() => {
+    localStorage.setItem("formData", JSON.stringify(formData));
+  }, [formData]);
 
+  // ✅ Input field change handler
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // ✅ Submit logic
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const client_id = Cookies.get("client_id");
-    const language = Cookies.get("language");
+    const client_id = formData.client_id;
+    const language = formData.language;
 
     if (!client_id || !language) {
-      toast.error("Missing client_id or language in cookies!");
+      toast.error("Missing client_id or language!");
       return;
     }
 
@@ -89,11 +107,10 @@ const Client = () => {
       const response = await axios.put(
         `http://192.168.0.235:8000/api/client/${client_id}`,
         {
-          client_id: client_id,
-          language: language,
+          client_id,
+          language,
           currency: formData.currency,
           time_zone: formData.time_zone,
-          // country: formData.country,
           country_code: formData.country_code,
           fiscal_year: formData.fiscal_year,
           number_range_object: formData.number_range_object,
@@ -108,7 +125,13 @@ const Client = () => {
         }
       );
 
-      console.log("Client updated:", response.data);
+      // ✅ Save the updated form values both in state and localStorage
+      setFormData((prev) => {
+        const updated = { ...prev, ...response.data };
+        localStorage.setItem("formData", JSON.stringify(updated));
+        return updated;
+      });
+
       toast.success("Client data updated successfully!");
     } catch (error) {
       console.error("Error updating client:", error);
@@ -118,6 +141,7 @@ const Client = () => {
 
   const [currencyList, setCurrencyList] = useState([]);
   const [showCurrencyPopup, setShowCurrencyPopup] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Fetch all currencies
   const fetchCurrencies = async () => {
@@ -134,6 +158,13 @@ const Client = () => {
     setFormData({ ...formData, currency: code });
     setShowCurrencyPopup(false);
   };
+
+  // Filter currency list
+  const filteredCurrencyList = currencyList.filter(
+    (currency) =>
+      currency.currency_code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      currency.currency_name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   // const [countryList, setCountryList] = useState([]);
   // const [showCountryPopup, setShowCountryPopup] = useState(false);
@@ -477,6 +508,7 @@ const Client = () => {
                                     id="currency"
                                     name="currency"
                                     value={formData.currency}
+                                    readOnly
                                     onChange={(e) =>
                                       setFormData({
                                         ...formData,
@@ -504,118 +536,24 @@ const Client = () => {
                                     id="time_zone"
                                     name="time_zone"
                                     value={formData.time_zone}
+                                    readOnly
                                     onChange={(e) =>
                                       setFormData({
                                         ...formData,
                                         time_zone: e.target.value,
                                       })
                                     }
-                                    readOnly
                                     placeholder="IST"
                                     className="w-[45px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                                   />
                                 </div>
 
-                                <div className="relative">
-                                  <div className="flex items-center gap-2">
-                                    <label
-                                      htmlFor="country_code"
-                                      className="w-[130px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
-                                    >
-                                      Country Code
-                                      <span className="text-amber-500"> *</span>
-                                    </label>
-                                    <input
-                                      type="text"
-                                      id="country_code"
-                                      name="country_code"
-                                      value={formData.country_code}
-                                      onChange={(e) =>
-                                        setFormData({
-                                          ...formData,
-                                          country_code: e.target.value,
-                                        })
-                                      }
-                                      readOnly
-                                      className={`w-[40px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400 ${
-                                        formData.country_code
-                                          ? "bg-amber-500"
-                                          : "bg-white"
-                                      }`}
-                                    />
-                                    {/* FaList Button */}
-                                    <button
-                                      type="button"
-                                      onClick={() => {
-                                        fetchCountriesCode();
-                                        setShowCountryCodePopup(true);
-                                      }}
-                                      className="w-4 h-4 flex items-center justify-center bg-white border border-gray-500 rounded hover:bg-amber-400"
-                                    >
-                                      <FaList className="text-black text-[7px]" />
-                                    </button>
-
-                                    {/* Country Code Popup */}
-                                    {showCountryCodePopup && (
-                                      <div className="fixed top-0 left-0 z-50 w-full h-full flex items-center bg-opacity-10">
-                                        <div className="bg-white w-[300px] h-[160px] pt-2 pb-0 pl-2 pr-2 rounded-md shadow-lg mb-40 ml-90">
-                                          {/* Close Button */}
-                                          <div className="flex justify-end items-center mb-2">
-                                            <button
-                                              onClick={() =>
-                                                setShowCountryCodePopup(false)
-                                              }
-                                            >
-                                              <FaTimes />
-                                            </button>
-                                          </div>
-
-                                          {/* Table */}
-                                          <div className="overflow-y-auto h-[112px]">
-                                            <table className="w-full border text-sm">
-                                              <thead>
-                                                <tr className="bg-gray-200">
-                                                  <th className="p-2 border text-sm">
-                                                    Code
-                                                  </th>
-                                                  <th className="p-2 border text-sm">
-                                                    Name
-                                                  </th>
-                                                </tr>
-                                              </thead>
-                                              <tbody>
-                                                {countryCodeList.map(
-                                                  (country, index) => (
-                                                    <tr
-                                                      key={index}
-                                                      className="hover:bg-amber-200 cursor-pointer h-[20px]"
-                                                      onClick={() =>
-                                                        handleCountryCodeSelect(
-                                                          country.country_code
-                                                        )
-                                                      }
-                                                    >
-                                                      <td className="p-2 border">
-                                                        {country.country_code}
-                                                      </td>
-                                                      <td className="p-2 border">
-                                                        {country.country_name}
-                                                      </td>
-                                                    </tr>
-                                                  )
-                                                )}
-                                              </tbody>
-                                            </table>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    )}
-                                  </div>
-                                </div>
                                 <div className="flex items-start gap-2">
                                   <textarea
-                                    id="description1"
+                                    id="description"
                                     name="description"
+                                    ref={description1Ref}
+                                    placeholder="Description"
                                     value={formData.description}
                                     onChange={(e) =>
                                       setFormData({
@@ -623,7 +561,7 @@ const Client = () => {
                                         description: e.target.value,
                                       })
                                     }
-                                    placeholder="Description"
+                                    readOnly
                                     onFocus={() => autoResize(description1Ref)}
                                     onInput={() => autoResize(description1Ref)}
                                     onBlur={() =>
@@ -677,6 +615,7 @@ const Client = () => {
                                     id="fiscal_year"
                                     name="fiscal_year"
                                     value={formData.fiscal_year}
+                                    readOnly
                                     onChange={(e) =>
                                       setFormData({
                                         ...formData,
@@ -726,6 +665,7 @@ const Client = () => {
                                     id="tax_code"
                                     name="tax_code"
                                     value={formData.tax_code}
+                                    readOnly
                                     onChange={(e) =>
                                       setFormData({
                                         ...formData,
@@ -865,12 +805,14 @@ const Client = () => {
                         <FaList className="text-black text-[7px]" />
                       </button>
 
-                      {/* Currency Popup */}
                       {showCurrencyPopup && (
                         <div className="fixed top-0 left-0 z-50 w-full h-full flex items-center bg-opacity-10">
-                          <div className="bg-white w-[300px] h-[160px] pt-2 pb-0 pl-2 pr-2 rounded-md shadow-lg mb-40 ml-90">
+                          <div className="bg-white w-[300px] h-[210px] pt-2 pb-0 pl-2 pr-2 rounded-md shadow-lg mb-40 ml-90">
                             {/* Header */}
-                            <div className="flex justify-end items-center mb-2">
+                            <div className="flex justify-between items-center mb-2">
+                              <span className="font-semibold">
+                                Select Currency
+                              </span>
                               <button
                                 onClick={() => setShowCurrencyPopup(false)}
                               >
@@ -878,8 +820,17 @@ const Client = () => {
                               </button>
                             </div>
 
-                            {/* Table (only Currency Code + Name) */}
-                            <div className="overflow-y-auto h-[112px]">
+                            {/* Search Input */}
+                            <input
+                              type="text"
+                              placeholder="Search by code or name"
+                              value={searchTerm}
+                              onChange={(e) => setSearchTerm(e.target.value)}
+                              className="w-full mb-2 px-2 py-1 border border-gray-400 rounded text-sm"
+                            />
+
+                            {/* Table */}
+                            <div className="overflow-y-auto h-[130px]">
                               <table className="w-full border text-sm">
                                 <thead>
                                   <tr className="bg-gray-200">
@@ -888,24 +839,26 @@ const Client = () => {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {currencyList.map((currency, index) => (
-                                    <tr
-                                      key={index}
-                                      className="hover:bg-amber-200 cursor-pointer h-[20px]"
-                                      onClick={() =>
-                                        handleCurrencySelect(
-                                          currency.currency_code
-                                        )
-                                      }
-                                    >
-                                      <td className="p-2 border">
-                                        {currency.currency_code}
-                                      </td>
-                                      <td className="p-2 border">
-                                        {currency.currency_name}
-                                      </td>
-                                    </tr>
-                                  ))}
+                                  {filteredCurrencyList.map(
+                                    (currency, index) => (
+                                      <tr
+                                        key={index}
+                                        className="hover:bg-amber-200 cursor-pointer h-[20px]"
+                                        onClick={() =>
+                                          handleCurrencySelect(
+                                            currency.currency_code
+                                          )
+                                        }
+                                      >
+                                        <td className="p-2 border">
+                                          {currency.currency_code}
+                                        </td>
+                                        <td className="p-2 border">
+                                          {currency.currency_name}
+                                        </td>
+                                      </tr>
+                                    )
+                                  )}
                                 </tbody>
                               </table>
                             </div>
@@ -966,6 +919,29 @@ const Client = () => {
                     )}
                   </div>
 
+                  <div className="flex items-start gap-2">
+                    <textarea
+                      id="description"
+                      name="description"
+                      ref={description1Ref}
+                      placeholder="Description"
+                      value={formData.description}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          description: e.target.value,
+                        })
+                      }
+                      onFocus={() => autoResize(description1Ref)}
+                      onInput={() => autoResize(description1Ref)}
+                      onBlur={() => collapseResize(description1Ref)}
+                      className="w-[317px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400 resize-none overflow-hidden transition-all duration-200"
+                    />
+                  </div>
+                </div>
+
+                {/* Right Column */}
+                <div className="flex flex-col gap-4 w-full lg:w-1/2">
                   <div className="relative">
                     <div className="flex items-center gap-2">
                       <label
@@ -1051,23 +1027,6 @@ const Client = () => {
                       )}
                     </div>
                   </div>
-
-                  <div className="flex items-start gap-2">
-                    <textarea
-                      id="description"
-                      name="description"
-                      ref={description1Ref}
-                      placeholder="Description"
-                      onFocus={() => autoResize(description1Ref)}
-                      onInput={() => autoResize(description1Ref)}
-                      onBlur={() => collapseResize(description1Ref)}
-                      className="w-[317px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400 resize-none overflow-hidden transition-all duration-200"
-                    />
-                  </div>
-                </div>
-
-                {/* Right Column */}
-                <div className="flex flex-col gap-4 w-full lg:w-1/2">
                   <div className="relative">
                     <div className="flex items-center gap-2">
                       <label

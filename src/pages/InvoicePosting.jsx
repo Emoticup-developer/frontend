@@ -5,44 +5,6 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-// const ExpandableTextarea = ({ id, name, placeholder }) => {
-//   const textAreaRef = useRef(null);
-
-//   const handleInput = (e) => {
-//     e.target.style.height = "auto";
-//     e.target.style.height = e.target.scrollHeight + "px";
-//   };
-
-//   const handleFocus = () => {
-//     const el = textAreaRef.current;
-//     if (el) {
-//       el.style.height = "auto";
-//       el.style.height = el.scrollHeight + "px";
-//     }
-//   };
-
-//   const handleBlur = () => {
-//     const el = textAreaRef.current;
-//     if (el) {
-//       el.style.height = "28px";
-//     }
-//   };
-
-//   return (
-//     <textarea
-//       id={id}
-//       name={name}
-//       ref={textAreaRef}
-//       rows={1}
-//       placeholder={placeholder}
-//       onInput={handleInput}
-//       onFocus={handleFocus}
-//       onBlur={handleBlur}
-//       className="min-h-[28px] max-h-[200px] w-full placeholder:text-center px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400 resize-none overflow-hidden transition-all duration-200"
-//     />
-//   );
-// };
-
 const InvoicePosting = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [mobileOpen, setMobileOpen] = useState(false);

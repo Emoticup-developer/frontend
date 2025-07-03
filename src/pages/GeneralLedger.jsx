@@ -20,7 +20,9 @@ import { useNavigate } from "react-router-dom";
 const GeneralLedger = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [clientInfo, setClientInfo] = useState(null);
+  const inputRefs = useRef([]);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
+  const [showReviewPopup, setShowReviewPopup] = useState(false);
 
   const description1Ref = useRef(null);
 
@@ -37,14 +39,16 @@ const GeneralLedger = () => {
     }
   };
 
-  useEffect(() => {
-    const savedClientId = Cookies.get("client_id");
-    const savedLanguage = Cookies.get("language");
-
-    if (savedClientId)
-      setClientInfo((prev) => ({ ...prev, client_id: savedClientId }));
-    if (savedLanguage) setLanguage(savedLanguage);
-  }, []);
+  const handleKeyNavigation = (e, index) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const next = inputRefs.current[index + 1];
+      if (next) next.focus();
+    } else if (e.key === "Backspace" && e.target.value === "") {
+      const prev = inputRefs.current[index - 1];
+      if (prev) prev.focus();
+    }
+  };
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -56,216 +60,228 @@ const GeneralLedger = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    domain: "",
-  });
+  const [plAccountTypes, setPlAccountTypes] = useState([]);
 
-  // const handleChange = (e) =>
-  //   setFormData({ ...formData, [e.target.name]: e.target.value });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // alert(JSON.stringify(formData, null, 2));
-  };
-
-  const [currencyList, setCurrencyList] = useState([]);
-  const [currency, setCurrency] = useState("INR");
-  const [showTablePopup, setShowTablePopup] = useState(false);
-  const [editIndex, setEditIndex] = useState(null);
-  const [showAddPopup, setShowAddPopup] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [addCurrencyData, setAddCurrencyData] = useState({
-    currency_code: "",
-    currency_name: "",
-  });
-
-  const fetchCurrencies = async () => {
-    try {
-      const res = await axios.get("http://192.168.0.235:8000/api/currency");
-      const data = res.data;
-      if (Array.isArray(data)) {
-        const seen = new Set();
-        const unique = data.filter((item) => {
-          if (seen.has(item.currency_code)) return false;
-          seen.add(item.currency_code);
-          return true;
-        });
-        setCurrencyList(unique);
-      } else {
-        console.error("Invalid response:", data);
+  useEffect(() => {
+    const fetchPlAccountTypes = async () => {
+      try {
+        const res = await axios.get(
+          "http://192.168.0.235:8000/conf/pl_account_type"
+        );
+        setPlAccountTypes(res.data);
+      } catch (err) {
+        console.error("Failed to fetch P&L account types", err);
       }
-    } catch (err) {
-      console.error("Fetch error", err);
-    }
+    };
+
+    fetchPlAccountTypes();
+  }, []);
+
+  const [AccountTypes, setAccountTypes] = useState([]);
+
+  useEffect(() => {
+    const fetchAccountTypes = async () => {
+      try {
+        const res = await axios.get(
+          "http://192.168.0.235:8000/conf/account_type_indicator"
+        );
+        setAccountTypes(res.data);
+      } catch (err) {
+        console.error("Failed to fetch account types", err);
+      }
+    };
+
+    fetchAccountTypes();
+  }, []);
+
+  const [AuthorizationGroups, setAuthorizationGroups] = useState([]);
+
+  useEffect(() => {
+    const fetchAuthorizationGroups = async () => {
+      try {
+        const res = await axios.get(
+          "http://192.168.0.235:8000/conf/authorization_group"
+        );
+        setAuthorizationGroups(res.data);
+      } catch (err) {
+        console.error("Failed to fetch authorization groups", err);
+      }
+    };
+
+    fetchAuthorizationGroups();
+  }, []);
+
+  const [formData, setFormData] = useState({
+    gl_account_number: "",
+    short_text: "",
+    long_text: "",
+    account_group: "",
+    pl_account_type: "",
+    account_type_indicator: "",
+    group_account_number: "",
+    blocked: false,
+    reconciliation_account: false,
+    field_status_group: "",
+    sort_key: "",
+    tax_category: "",
+    open_item_management: "",
+    line_item_display: "",
+    authorization_group: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleCurrencySelect = (code) => {
-    setCurrency(code);
-    setShowTablePopup(false);
-  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const handleUpdateCurrency = async (currency_name) => {
     try {
-      await axios.put(
-        `http://192.168.0.235:8000/api/currency/${currency_name}`
+      const response = await axios.post(
+        "http://192.168.0.235:8000/conf/gl_account",
+        formData,
+        {
+          withCredentials: true, // to send cookies/session if needed
+        }
       );
-      fetchCurrencies();
-      toast.success("Currency updated successfully!");
-    } catch (err) {
-      toast.error("Update failed!");
-      console.error(err);
+      toast.success("GL Account saved successfully!");
+      console.log("Response:", response.data);
+      // Reset formData to initial empty state
+      setFormData({
+        gl_account_number: "",
+        short_text: "",
+        long_text: "",
+        account_group: "",
+        pl_account_type: "",
+        account_type_indicator: "",
+        group_account_number: "",
+        blocked: false,
+        reconciliation_account: false,
+        field_status_group: "",
+        sort_key: "",
+        tax_category: "",
+        open_item_management: "",
+        line_item_display: "",
+        authorization_group: "",
+      });
+    } catch (error) {
+      toast.success("GL Account Not Saved!");
+      console.error("Submit failed:", error);
     }
   };
 
-  const handleDeleteCurrency = async (currency_name) => {
+  const handlePark = async () => {
+    const glNumber = formData.gl_account_number;
+
+    if (!glNumber) {
+      toast.error("Please enter GL Account Number!");
+      return;
+    }
+
+    // STEP 1: If data not loaded, first GET the existing data
+    if (!isDataLoaded) {
+      try {
+        const response = await axios.get(
+          `http://192.168.0.235:8000/conf/gl_account/${glNumber}`
+        );
+        if (response.status === 200) {
+          setFormData(response.data); // Fill the form
+          setIsDataLoaded(true); // Now allow update
+          toast.success(
+            "GL Account data loaded. Edit fields and click Park again to update."
+          );
+        }
+      } catch (err) {
+        if (err.response?.status === 404) {
+          toast.error("GL Account Number does not exist.");
+        } else {
+          toast.error("Failed to load GL Account data.");
+          console.error("GET Error:", err);
+        }
+      }
+      return; // return so that PUT doesn't run yet
+    }
+
+    // STEP 2: If already loaded, then PUT the updated form
     try {
-      await axios.delete(
-        `http://192.168.0.235:8000/api/currency/${currency_name}`
+      const response = await axios.put(
+        `http://192.168.0.235:8000/conf/gl_account/${glNumber}`,
+        formData
       );
-      fetchCurrencies();
-      toast.success("Currency deleted!");
+      toast.success("GL Account updated successfully!");
+      console.log("PUT Response:", response.data);
+      // Reset formData to initial empty state
+      setFormData({
+        gl_account_number: "",
+        short_text: "",
+        long_text: "",
+        account_group: "",
+        pl_account_type: "",
+        account_type_indicator: "",
+        group_account_number: "",
+        blocked: false,
+        reconciliation_account: false,
+        field_status_group: "",
+        sort_key: "",
+        tax_category: "",
+        open_item_management: "",
+        line_item_display: "",
+        authorization_group: "",
+      });
+      setIsDataLoaded(false); // Optional: reset for next time
     } catch (err) {
-      toast.error("Delete failed!");
-      console.error(err);
+      toast.error("Failed to update GL Account.");
+      console.error("PUT Error:", err);
     }
   };
 
-  const handleChange = (index, field, value) => {
-    const list = [...currencyList];
-    list[index][field] = value;
-    setCurrencyList(list);
-  };
+  const handleReview = async () => {
+    const glNumber = formData.gl_account_number;
 
-  const handleAddCurrency = async () => {
-    if (!addCurrencyData.currency_code || !addCurrencyData.currency_name) {
-      toast.error("Both fields are required!");
+    if (!glNumber) {
+      toast.error("Please enter GL Account Number!");
       return;
     }
 
     try {
-      setLoading(true);
-      await axios.post(
-        "http://192.168.0.235:8000/api/currency",
-        addCurrencyData
+      const response = await axios.get(
+        `http://192.168.0.235:8000/conf/gl_account/${glNumber}`
       );
-      fetchCurrencies();
-      setAddCurrencyData({ currency_code: "", currency_name: "" });
-      setShowAddPopup(false);
-      toast.success("Currency added!");
+
+      if (response.status === 200) {
+        setFormData(response.data);
+        setIsReadOnly(true); // <-- Enable readonly mode
+        toast.success("GL Account loaded for review.");
+      }
     } catch (err) {
-      toast.error("Add failed!");
-      console.error(err);
-    } finally {
-      setLoading(false);
+      if (err.response?.status === 404) {
+        toast.error("GL Account Number does not exist.");
+      } else {
+        toast.error("Failed to load GL Account data.");
+        console.error("GET error:", err);
+      }
     }
   };
 
-  useEffect(() => {
-    fetchCurrencies();
-  }, []);
-
-  const [countryList, setCountryList] = useState([]);
-  const [country, setCountry] = useState("India");
-  const [showCountryDropdown, setShowCountryDropdown] = useState(false);
-
-  // useEffect(() => {
-  //   fetch("https://restcountries.com/v3.1/all")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       const countries = data.map((item) => item.name.common);
-  //       setCountryList(countries.sort());
-  //     })
-  //     .catch((err) => console.error("Failed to load countries", err));
-  // }, []);
-
-  const [countryCodeList, setCountryCodeList] = useState([]);
-  const [countryCode, setCountryCode] = useState("IN");
-  const [showCountryCodeDropdown, setShowCountryCodeDropdown] = useState(false);
-
-  // useEffect(() => {
-  //   fetch("https://restcountries.com/v3.1/all")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       const codes = data
-  //         .map((item) => item.cca2)
-  //         .filter(Boolean)
-  //         .sort();
-  //       setCountryCodeList(codes);
-  //     })
-  //     .catch((err) => console.error("Failed to load country codes", err));
-  // }, []);
-
-  const [languageList, setLanguageList] = useState([]);
-  const [language, setLanguage] = useState("EN");
-  const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
-
-  // useEffect(() => {
-  //   fetch("https://restcountries.com/v3.1/all")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       const langs = new Set();
-  //       data.forEach((country) => {
-  //         if (country.languages) {
-  //           Object.values(country.languages).forEach((lang) => langs.add(lang));
-  //         }
-  //       });
-  //       setLanguageList(Array.from(langs).sort());
-  //     })
-  //     .catch((err) => console.error("Failed to load languages", err));
-  // }, []);
-
-  const [fiscalYearList, setFiscalYearList] = useState([]);
-  const [fiscalYear, setFiscalYear] = useState("2025-2026");
-  const [showFiscalYearDropdown, setShowFiscalYearDropdown] = useState(false);
-
-  useEffect(() => {
-    const currentYear = new Date().getFullYear();
-    const years = [];
-
-    for (let i = 0; i < 10; i++) {
-      const start = currentYear - i;
-      years.push(`${start}-${start + 1}`);
-    }
-
-    setFiscalYearList(years);
-  }, []);
-
-  const toggleFiscalYearDropdown = () =>
-    setShowFiscalYearDropdown(!showFiscalYearDropdown);
-
-  const handleFiscalYearSelect = (value) => {
-    setFiscalYear(value);
-    setShowFiscalYearDropdown(false);
-  };
-
-  const [numberRangeList, setNumberRangeList] = useState([]);
-  const [numberRange, setNumberRange] = useState("NR01");
-  const [showNumberRangeDropdown, setShowNumberRangeDropdown] = useState(false);
-
-  // Uncomment and modify this if you're fetching from an API later
-  // useEffect(() => {
-  //   fetch("https://your-api.com/number-range")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       const ranges = data.map(item => item.code); // Adjust based on your response structure
-  //       setNumberRangeList(ranges);
-  //     })
-  //     .catch((err) => console.error("Failed to load number ranges", err));
-  // }, []);
-
-  useEffect(() => {
-    // Static example list
-    setNumberRangeList(["NR01", "NR02", "NR03", "NR04"]);
-  }, []);
-
-  const toggleNumberRangeDropdown = () =>
-    setShowNumberRangeDropdown(!showNumberRangeDropdown);
-
-  const handleNumberRangeSelect = (value) => {
-    setNumberRange(value);
-    setShowNumberRangeDropdown(false);
+  const handleCancel = () => {
+    setFormData({
+      gl_account_number: "",
+      short_text: "",
+      long_text: "",
+      account_group: "",
+      pl_account_type: "",
+      account_type_indicator: "",
+      group_account_number: "",
+      blocked: false,
+      reconciliation_account: false,
+      field_status_group: "",
+      sort_key: "",
+      tax_category: "",
+      open_item_management: "",
+      line_item_display: "",
+      authorization_group: "",
+    });
   };
 
   const navigate = useNavigate();
@@ -374,6 +390,10 @@ const GeneralLedger = () => {
                 {/* Action Buttons */}
                 <div className="flex flex-wrap gap-1 justify-end lg:px-0">
                   <button
+                    onClick={() => {
+                      setShowReviewPopup(true);
+                      handleReview();
+                    }}
                     className="relative px-4 bg-white border border-black hover:bg-amber-500 text-black text-sm cursor-pointer font-semibold text-center"
                     style={{
                       clipPath: "polygon(12% 0%, 100% 0%, 100% 100%, 0% 100%)",
@@ -382,7 +402,442 @@ const GeneralLedger = () => {
                     Review
                   </button>
 
+                  {showReviewPopup && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-opacity-30">
+                      <div className="bg-white rounded-md shadow-lg p-6 w-fit h-fit max-w-screen-md ml-40 mt-30">
+                        <div className="flex justify-end mb-4 w-full">
+                          <button
+                            onClick={() => setShowReviewPopup(false)}
+                            className="bg-amber-400 hover:bg-amber-400 text-black text-sm p-1 rounded-full transition-colors duration-200"
+                          >
+                            <FaTimes className="w-4 h-4" />
+                          </button>
+                        </div>
+
+                        {/* Your full form content pasted below */}
+                        <div className="flex flex-wrap justify-between items-center p-2 rounded lg:p-4 lg:mt-5">
+                          {/* Paste your existing form content from <div className="w-full h-[360px] overflow-y-scroll"> onwards here */}
+                          <div className="w-full h-[250px] overflow-y-scroll">
+                            <div className="flex flex-col lg:flex-row gap-6 lg:px-4 mb-5">
+                              {/* Left Column */}
+                              <div className="flex flex-col gap-4 w-full lg:w-1/2">
+                                <div className="flex items-center gap-2">
+                                  <label
+                                    htmlFor="gl_account_number"
+                                    className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                                  >
+                                    G/L Account Number
+                                    <span className="text-amber-500"> *</span>
+                                  </label>
+                                  <input
+                                    type="text"
+                                    id="gl_account_number"
+                                    name="gl_account_number"
+                                    placeholder="100000"
+                                    value={formData.gl_account_number}
+                                    onChange={handleChange}
+                                    ref={(el) => (inputRefs.current[0] = el)}
+                                    onKeyDown={(e) => handleKeyNavigation(e, 0)}
+                                    className="w-[65px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                                  />
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <label
+                                    htmlFor="short_text"
+                                    className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                                  >
+                                    Short Text
+                                    <span className="text-amber-500"> *</span>
+                                  </label>
+                                  <input
+                                    type="text"
+                                    id="short_text"
+                                    name="short_text"
+                                    maxLength={16}
+                                    placeholder="Sales Revenue"
+                                    value={formData.short_text}
+                                    onChange={handleChange}
+                                    ref={(el) => (inputRefs.current[1] = el)}
+                                    onKeyDown={(e) => handleKeyNavigation(e, 1)}
+                                    className="w-[130px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                                  />
+                                </div>
+                                <div className="flex items-start gap-2">
+                                  <label
+                                    htmlFor="long_text"
+                                    className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                                  >
+                                    Long Text
+                                    <span className="text-amber-500"> *</span>
+                                  </label>
+                                  <textarea
+                                    id="long_text"
+                                    name="long_text"
+                                    ref={(el) => {
+                                      inputRefs.current[2] = el;
+                                      description1Ref.current = el;
+                                    }}
+                                    placeholder="Domestic Sales Revenue"
+                                    value={formData.long_text}
+                                    onChange={handleChange}
+                                    onFocus={() => autoResize(description1Ref)}
+                                    onInput={() => autoResize(description1Ref)}
+                                    onBlur={() =>
+                                      collapseResize(description1Ref)
+                                    }
+                                    onKeyDown={(e) => handleKeyNavigation(e, 2)}
+                                    className="w-[200px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400 resize-none overflow-hidden transition-all duration-200"
+                                  />
+                                </div>
+
+                                <div className="flex items-center gap-2">
+                                  <label
+                                    htmlFor="account_group"
+                                    className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                                  >
+                                    Account Group
+                                    <span className="text-amber-500"> *</span>
+                                  </label>
+                                  <input
+                                    type="text"
+                                    id="account_group"
+                                    name="account_group"
+                                    placeholder="REVN"
+                                    value={formData.account_group}
+                                    onChange={handleChange}
+                                    ref={(el) => (inputRefs.current[3] = el)}
+                                    onKeyDown={(e) => handleKeyNavigation(e, 3)}
+                                    className="w-[55px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                                  />
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <label
+                                    htmlFor="pl_account_type"
+                                    className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                                  >
+                                    Account Type
+                                    <span className="text-amber-500"> *</span>
+                                  </label>
+                                  <select
+                                    id="pl_account_type"
+                                    name="pl_account_type"
+                                    value={formData.pl_account_type}
+                                    onChange={handleChange}
+                                    ref={(el) => (inputRefs.current[4] = el)}
+                                    onKeyDown={(e) => handleKeyNavigation(e, 4)}
+                                    className="w-[150px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                                  >
+                                    <option value="">Select</option>
+                                    {plAccountTypes.map((item, index) => (
+                                      <option
+                                        key={index}
+                                        value={item.pl_account_type}
+                                      >
+                                        {item.pl_account_type} -{" "}
+                                        {item.description}
+                                      </option>
+                                    ))}
+                                  </select>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <label
+                                    htmlFor="account_type_indicator"
+                                    className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                                  >
+                                    Account Type Indicator
+                                    <span className="text-amber-500"> *</span>
+                                  </label>
+                                  <select
+                                    id="account_type_indicator"
+                                    name="account_type_indicator"
+                                    value={formData.account_type_indicator}
+                                    onChange={handleChange}
+                                    ref={(el) => (inputRefs.current[5] = el)}
+                                    onKeyDown={(e) => handleKeyNavigation(e, 5)}
+                                    className="w-[150px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                                  >
+                                    <option value="">Select</option>
+                                    {AccountTypes.map((item, index) => (
+                                      <option
+                                        key={index}
+                                        value={item.account_type_indicator}
+                                      >
+                                        {item.account_type_indicator} -{" "}
+                                        {item.description}
+                                      </option>
+                                    ))}
+                                  </select>
+                                </div>
+
+                                <div className="flex items-center gap-2">
+                                  <label
+                                    htmlFor="group_account_number"
+                                    className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                                  >
+                                    Group Account Number
+                                    <span className="text-amber-500"> *</span>
+                                  </label>
+                                  <input
+                                    type="text"
+                                    id="group_account_number"
+                                    name="group_account_number"
+                                    placeholder="400100"
+                                    value={formData.group_account_number}
+                                    onChange={handleChange}
+                                    ref={(el) => (inputRefs.current[6] = el)}
+                                    onKeyDown={(e) => handleKeyNavigation(e, 6)}
+                                    className="w-[65px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                                  />
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <label
+                                    htmlFor="blocked"
+                                    className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold text-black"
+                                  >
+                                    Blocked/Deleted{" "}
+                                    <span className="text-amber-500"> *</span>
+                                  </label>
+
+                                  <div className="flex items-center gap-4">
+                                    {/* Yes */}
+                                    <label className="flex items-center gap-1 text-sm text-black">
+                                      <input
+                                        type="radio"
+                                        id="blocked-yes"
+                                        name="blocked"
+                                        value="true"
+                                        checked={formData.blocked === "true"}
+                                        onChange={handleChange}
+                                        ref={(el) =>
+                                          (inputRefs.current[7] = el)
+                                        }
+                                        onKeyDown={(e) =>
+                                          handleKeyNavigation(e, 7)
+                                        }
+                                      />
+                                      Yes
+                                    </label>
+
+                                    {/* No */}
+                                    <label className="flex items-center gap-1 text-sm text-black">
+                                      <input
+                                        type="radio"
+                                        id="blocked-no"
+                                        name="blocked"
+                                        value="false"
+                                        checked={formData.blocked === "false"}
+                                        onChange={handleChange}
+                                        onKeyDown={(e) =>
+                                          handleKeyNavigation(e, 7)
+                                        }
+                                      />
+                                      No
+                                    </label>
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Right Column */}
+                              <div className="flex flex-col gap-4 w-full lg:w-1/2">
+                                <div className="flex items-center gap-2">
+                                  <label
+                                    htmlFor="reconciliation_account"
+                                    className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold text-black"
+                                  >
+                                    Reconciliation Account
+                                    <span className="text-amber-500"> *</span>
+                                  </label>
+
+                                  <div className="flex items-center gap-4">
+                                    {/* Yes */}
+                                    <label className="flex items-center gap-1 text-sm text-black">
+                                      <input
+                                        type="radio"
+                                        id="reconciliation_account-yes"
+                                        name="reconciliation_account"
+                                        value="true"
+                                        checked={
+                                          formData.reconciliation_account ===
+                                          "true"
+                                        }
+                                        onChange={handleChange}
+                                        ref={(el) =>
+                                          (inputRefs.current[8] = el)
+                                        }
+                                        onKeyDown={(e) =>
+                                          handleKeyNavigation(e, 8)
+                                        }
+                                      />
+                                      Yes
+                                    </label>
+
+                                    {/* No */}
+                                    <label className="flex items-center gap-1 text-sm text-black">
+                                      <input
+                                        type="radio"
+                                        id="reconciliation_account-no"
+                                        name="reconciliation_account"
+                                        value="false"
+                                        checked={
+                                          formData.reconciliation_account ===
+                                          "false"
+                                        }
+                                        onChange={handleChange}
+                                        onKeyDown={(e) =>
+                                          handleKeyNavigation(e, 8)
+                                        }
+                                      />
+                                      No
+                                    </label>
+                                  </div>
+                                </div>
+
+                                <div className="flex items-center gap-2">
+                                  <label
+                                    htmlFor="field_status_group"
+                                    className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                                  >
+                                    Field Status Group
+                                    <span className="text-amber-500"> *</span>
+                                  </label>
+                                  <input
+                                    type="text"
+                                    id="field_status_group"
+                                    name="field_status_group"
+                                    placeholder="G001"
+                                    value={formData.field_status_group}
+                                    onChange={handleChange}
+                                    ref={(el) => (inputRefs.current[9] = el)}
+                                    onKeyDown={(e) => handleKeyNavigation(e, 9)}
+                                    className="w-[50px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                                  />
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <label
+                                    htmlFor="sort_key"
+                                    className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                                  >
+                                    Sort Key
+                                    <span className="text-amber-500"> *</span>
+                                  </label>
+                                  <input
+                                    type="text"
+                                    id="sort_key"
+                                    name="sort_key"
+                                    placeholder="001 (Posting date)"
+                                    value={formData.sort_key}
+                                    onChange={handleChange}
+                                    ref={(el) => (inputRefs.current[10] = el)}
+                                    onKeyDown={(e) =>
+                                      handleKeyNavigation(e, 10)
+                                    }
+                                    className="w-[130px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                                  />
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <label
+                                    htmlFor="tax_category"
+                                    className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                                  >
+                                    Tax Category
+                                    <span className="text-amber-500"> *</span>
+                                  </label>
+                                  <input
+                                    type="text"
+                                    id="tax_category"
+                                    name="tax_category"
+                                    placeholder="V1"
+                                    value={formData.tax_category}
+                                    onChange={handleChange}
+                                    ref={(el) => (inputRefs.current[11] = el)}
+                                    onKeyDown={(e) =>
+                                      handleKeyNavigation(e, 11)
+                                    }
+                                    className="w-[35px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                                  />
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <label
+                                    htmlFor="open_item_management"
+                                    className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                                  >
+                                    Open Item Management
+                                    <span className="text-amber-500"> *</span>
+                                  </label>
+                                  <input
+                                    type="text"
+                                    id="open_item_management"
+                                    name="open_item_management"
+                                    placeholder="Yes (for bank, vendor)"
+                                    value={formData.open_item_management}
+                                    onChange={handleChange}
+                                    ref={(el) => (inputRefs.current[12] = el)}
+                                    onKeyDown={(e) =>
+                                      handleKeyNavigation(e, 12)
+                                    }
+                                    className="w-[150px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                                  />
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <label
+                                    htmlFor="line_item_display"
+                                    className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                                  >
+                                    Line Item Display
+                                    <span className="text-amber-500"> *</span>
+                                  </label>
+                                  <input
+                                    type="text"
+                                    id="line_item_display"
+                                    name="line_item_display"
+                                    placeholder="Yes"
+                                    value={formData.line_item_display}
+                                    onChange={handleChange}
+                                    ref={(el) => (inputRefs.current[13] = el)}
+                                    onKeyDown={(e) =>
+                                      handleKeyNavigation(e, 13)
+                                    }
+                                    className="w-[40px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                                  />
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <label
+                                    htmlFor="authorization_group"
+                                    className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                                  >
+                                    Authorization Group
+                                    <span className="text-amber-500"> *</span>
+                                  </label>
+
+                                  <select
+                                    id="authorization_group"
+                                    name="authorization_group"
+                                    value={formData.authorization_group}
+                                    onChange={handleChange}
+                                    ref={(el) => (inputRefs.current[14] = el)}
+                                    onKeyDown={(e) =>
+                                      handleKeyNavigation(e, 14)
+                                    }
+                                    className="w-[150px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                                  >
+                                    <option value="">Select</option>
+                                    {AuthorizationGroups.map((item, index) => (
+                                      <option key={index} value={item.code}>
+                                        {item.code} - {item.description}
+                                      </option>
+                                    ))}
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   <button
+                    onClick={handlePark}
                     className="relative px-4 bg-white border border-black hover:bg-amber-500 text-black cursor-pointer text-sm font-semibold text-center"
                     style={{
                       clipPath: "polygon(12% 0%, 100% 0%, 100% 100%, 0% 100%)",
@@ -392,6 +847,7 @@ const GeneralLedger = () => {
                   </button>
 
                   <button
+                    onClick={handleSubmit}
                     className="relative px-4 bg-white border border-black hover:bg-amber-500 text-black cursor-pointer text-sm font-semibold text-center"
                     style={{
                       clipPath: "polygon(12% 0%, 100% 0%, 100% 100%, 0% 100%)",
@@ -400,6 +856,7 @@ const GeneralLedger = () => {
                     Post
                   </button>
                   <button
+                    onClick={handleCancel}
                     className="relative px-4 bg-white border border-black hover:bg-amber-500 text-black cursor-pointer text-sm font-semibold text-center"
                     style={{
                       clipPath: "polygon(12% 0%, 100% 0%, 100% 100%, 0% 100%)",
@@ -440,6 +897,10 @@ const GeneralLedger = () => {
                       id="gl_account_number"
                       name="gl_account_number"
                       placeholder="100000"
+                      value={formData.gl_account_number}
+                      onChange={handleChange}
+                      ref={(el) => (inputRefs.current[0] = el)}
+                      onKeyDown={(e) => handleKeyNavigation(e, 0)}
                       className="w-[65px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                     />
                   </div>
@@ -457,6 +918,10 @@ const GeneralLedger = () => {
                       name="short_text"
                       maxLength={16}
                       placeholder="Sales Revenue"
+                      value={formData.short_text}
+                      onChange={handleChange}
+                      ref={(el) => (inputRefs.current[1] = el)}
+                      onKeyDown={(e) => handleKeyNavigation(e, 1)}
                       className="w-[130px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                     />
                   </div>
@@ -471,11 +936,17 @@ const GeneralLedger = () => {
                     <textarea
                       id="long_text"
                       name="long_text"
-                      ref={description1Ref}
+                      ref={(el) => {
+                        inputRefs.current[2] = el;
+                        description1Ref.current = el;
+                      }}
                       placeholder="Domestic Sales Revenue"
+                      value={formData.long_text}
+                      onChange={handleChange}
                       onFocus={() => autoResize(description1Ref)}
                       onInput={() => autoResize(description1Ref)}
                       onBlur={() => collapseResize(description1Ref)}
+                      onKeyDown={(e) => handleKeyNavigation(e, 2)}
                       className="w-[200px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400 resize-none overflow-hidden transition-all duration-200"
                     />
                   </div>
@@ -492,6 +963,10 @@ const GeneralLedger = () => {
                       id="account_group"
                       name="account_group"
                       placeholder="REVN"
+                      value={formData.account_group}
+                      onChange={handleChange}
+                      ref={(el) => (inputRefs.current[3] = el)}
+                      onKeyDown={(e) => handleKeyNavigation(e, 3)}
                       className="w-[55px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                     />
                   </div>
@@ -500,15 +975,24 @@ const GeneralLedger = () => {
                       htmlFor="pl_account_type"
                       className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
                     >
-                      P&L Account Type<span className="text-amber-500"> *</span>
+                      Account Type<span className="text-amber-500"> *</span>
                     </label>
-                    <input
-                      type="text"
+                    <select
                       id="pl_account_type"
                       name="pl_account_type"
-                      placeholder="P&L"
-                      className="w-[45px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
-                    />
+                      value={formData.pl_account_type}
+                      onChange={handleChange}
+                      ref={(el) => (inputRefs.current[4] = el)}
+                      onKeyDown={(e) => handleKeyNavigation(e, 4)}
+                      className="w-[150px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                    >
+                      <option value="">Select</option>
+                      {plAccountTypes.map((item, index) => (
+                        <option key={index} value={item.pl_account_type}>
+                          {item.pl_account_type} - {item.description}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <div className="flex items-center gap-2">
                     <label
@@ -518,13 +1002,22 @@ const GeneralLedger = () => {
                       Account Type Indicator
                       <span className="text-amber-500"> *</span>
                     </label>
-                    <input
-                      type="text"
+                    <select
                       id="account_type_indicator"
                       name="account_type_indicator"
-                      placeholder="X or PL"
-                      className="w-[60px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
-                    />
+                      value={formData.account_type_indicator}
+                      onChange={handleChange}
+                      ref={(el) => (inputRefs.current[5] = el)}
+                      onKeyDown={(e) => handleKeyNavigation(e, 5)}
+                      className="w-[150px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                    >
+                      <option value="">Select</option>
+                      {AccountTypes.map((item, index) => (
+                        <option key={index} value={item.account_type_indicator}>
+                          {item.account_type_indicator} - {item.description}
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
                   <div className="flex items-center gap-2">
@@ -540,24 +1033,51 @@ const GeneralLedger = () => {
                       id="group_account_number"
                       name="group_account_number"
                       placeholder="400100"
+                      value={formData.group_account_number}
+                      onChange={handleChange}
+                      ref={(el) => (inputRefs.current[6] = el)}
+                      onKeyDown={(e) => handleKeyNavigation(e, 6)}
                       className="w-[65px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                     />
                   </div>
                   <div className="flex items-center gap-2">
                     <label
-                      htmlFor="blocked_deleted"
-                      className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                      htmlFor="blocked"
+                      className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold text-black"
                     >
-                      Blocked/Deleted
-                      <span className="text-amber-500"> *</span>
+                      Blocked/Deleted <span className="text-amber-500"> *</span>
                     </label>
-                    <input
-                      type="text"
-                      id="blocked_deleted"
-                      name="blocked_deleted"
-                      placeholder="Yes / No"
-                      className="w-[70px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
-                    />
+
+                    <div className="flex items-center gap-4">
+                      {/* Yes */}
+                      <label className="flex items-center gap-1 text-sm text-black">
+                        <input
+                          type="radio"
+                          id="blocked-yes"
+                          name="blocked"
+                          value="true"
+                          checked={formData.blocked === "true"}
+                          onChange={handleChange}
+                          ref={(el) => (inputRefs.current[7] = el)}
+                          onKeyDown={(e) => handleKeyNavigation(e, 7)}
+                        />
+                        Yes
+                      </label>
+
+                      {/* No */}
+                      <label className="flex items-center gap-1 text-sm text-black">
+                        <input
+                          type="radio"
+                          id="blocked-no"
+                          name="blocked"
+                          value="false"
+                          checked={formData.blocked === "false"}
+                          onChange={handleChange}
+                          onKeyDown={(e) => handleKeyNavigation(e, 7)}
+                        />
+                        No
+                      </label>
+                    </div>
                   </div>
                 </div>
 
@@ -566,19 +1086,44 @@ const GeneralLedger = () => {
                   <div className="flex items-center gap-2">
                     <label
                       htmlFor="reconciliation_account"
-                      className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
+                      className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold text-black"
                     >
                       Reconciliation Account
                       <span className="text-amber-500"> *</span>
                     </label>
-                    <input
-                      type="text"
-                      id="reconciliation_account"
-                      name="reconciliation_account"
-                      placeholder="Yes / No"
-                      className="w-[70px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
-                    />
+
+                    <div className="flex items-center gap-4">
+                      {/* Yes */}
+                      <label className="flex items-center gap-1 text-sm text-black">
+                        <input
+                          type="radio"
+                          id="reconciliation_account-yes"
+                          name="reconciliation_account"
+                          value="true"
+                          checked={formData.reconciliation_account === "true"}
+                          onChange={handleChange}
+                          ref={(el) => (inputRefs.current[8] = el)}
+                          onKeyDown={(e) => handleKeyNavigation(e, 8)}
+                        />
+                        Yes
+                      </label>
+
+                      {/* No */}
+                      <label className="flex items-center gap-1 text-sm text-black">
+                        <input
+                          type="radio"
+                          id="reconciliation_account-no"
+                          name="reconciliation_account"
+                          value="false"
+                          checked={formData.reconciliation_account === "false"}
+                          onChange={handleChange}
+                          onKeyDown={(e) => handleKeyNavigation(e, 8)}
+                        />
+                        No
+                      </label>
+                    </div>
                   </div>
+
                   <div className="flex items-center gap-2">
                     <label
                       htmlFor="field_status_group"
@@ -592,6 +1137,10 @@ const GeneralLedger = () => {
                       id="field_status_group"
                       name="field_status_group"
                       placeholder="G001"
+                      value={formData.field_status_group}
+                      onChange={handleChange}
+                      ref={(el) => (inputRefs.current[9] = el)}
+                      onKeyDown={(e) => handleKeyNavigation(e, 9)}
                       className="w-[50px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                     />
                   </div>
@@ -608,6 +1157,10 @@ const GeneralLedger = () => {
                       id="sort_key"
                       name="sort_key"
                       placeholder="001 (Posting date)"
+                      value={formData.sort_key}
+                      onChange={handleChange}
+                      ref={(el) => (inputRefs.current[10] = el)}
+                      onKeyDown={(e) => handleKeyNavigation(e, 10)}
                       className="w-[130px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                     />
                   </div>
@@ -624,6 +1177,10 @@ const GeneralLedger = () => {
                       id="tax_category"
                       name="tax_category"
                       placeholder="V1"
+                      value={formData.tax_category}
+                      onChange={handleChange}
+                      ref={(el) => (inputRefs.current[11] = el)}
+                      onKeyDown={(e) => handleKeyNavigation(e, 11)}
                       className="w-[35px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                     />
                   </div>
@@ -640,6 +1197,10 @@ const GeneralLedger = () => {
                       id="open_item_management"
                       name="open_item_management"
                       placeholder="Yes (for bank, vendor)"
+                      value={formData.open_item_management}
+                      onChange={handleChange}
+                      ref={(el) => (inputRefs.current[12] = el)}
+                      onKeyDown={(e) => handleKeyNavigation(e, 12)}
                       className="w-[150px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                     />
                   </div>
@@ -656,6 +1217,10 @@ const GeneralLedger = () => {
                       id="line_item_display"
                       name="line_item_display"
                       placeholder="Yes"
+                      value={formData.line_item_display}
+                      onChange={handleChange}
+                      ref={(el) => (inputRefs.current[13] = el)}
+                      onKeyDown={(e) => handleKeyNavigation(e, 13)}
                       className="w-[40px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                     />
                   </div>
@@ -667,13 +1232,23 @@ const GeneralLedger = () => {
                       Authorization Group
                       <span className="text-amber-500"> *</span>
                     </label>
-                    <input
-                      type="text"
+
+                    <select
                       id="authorization_group"
                       name="authorization_group"
-                      placeholder="FIN1"
-                      className="w-[50px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
-                    />
+                      value={formData.authorization_group}
+                      onChange={handleChange}
+                      ref={(el) => (inputRefs.current[14] = el)}
+                      onKeyDown={(e) => handleKeyNavigation(e, 14)}
+                      className="w-[150px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
+                    >
+                      <option value="">Select</option>
+                      {AuthorizationGroups.map((item, index) => (
+                        <option key={index} value={item.code}>
+                          {item.code} - {item.description}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
               </div>

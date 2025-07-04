@@ -17,14 +17,14 @@ import {
 import { useNavigate } from "react-router-dom";
 // const currencyList = currencyCodes.data.map((item) => item.code);
 
-const GeneralLedger = () => {
+const GeneralLedgerDetails = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [mobileOpen, setMobileOpen] = useState(false);
   const inputRefs = useRef([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [showReviewPopup, setShowReviewPopup] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const [glAccounts, setGlAccounts] = useState([]);
-
   const description1Ref = useRef(null);
 
   const autoResize = (ref) => {
@@ -112,6 +112,15 @@ const GeneralLedger = () => {
     fetchAuthorizationGroups();
   }, []);
 
+  const filteredGLAccounts = glAccounts.filter((item) => {
+    const formattedDate = new Date(item.created_at).toLocaleDateString("en-GB"); // DD/MM/YYYY
+    return (
+      item.gl_account_number.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.short_text?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      formattedDate.includes(searchTerm)
+    );
+  });
+
   const [formData, setFormData] = useState({
     gl_account_number: "",
     short_text: "",
@@ -130,6 +139,34 @@ const GeneralLedger = () => {
     authorization_group: "",
     description: "",
   });
+
+  useEffect(() => {
+    fetchGLAccounts();
+  }, []);
+
+  const fetchGLAccounts = async () => {
+    try {
+      const response = await axios.get(
+        "http://192.168.0.235:8000/conf/gl_account"
+      );
+      setGlAccounts(response.data); // Set response to state
+    } catch (error) {
+      console.error("Error fetching GL accounts:", error);
+    }
+  };
+
+  const handleReviewById = async (glNumber) => {
+    try {
+      const response = await axios.get(
+        `http://192.168.0.235:8000/conf/gl_account/${glNumber}`
+      );
+      setFormData(response.data); // Load form data
+      toast.success("GL Account fetched!");
+    } catch (error) {
+      toast.error("Error fetching account");
+      console.error("GET error:", error);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -166,7 +203,7 @@ const GeneralLedger = () => {
       //   open_item_management: false,
       //   line_item_display: false,
       //   authorization_group: "",
-      //   description: "",
+      //description: "";
       // });
     } catch (error) {
       toast.success("GL Account Not Saved!");
@@ -175,7 +212,69 @@ const GeneralLedger = () => {
   };
 
   const handlePark = async () => {
-    navigate("/glaccount-details");
+    const glNumber = formData.gl_account_number;
+
+    if (!glNumber) {
+      toast.error("Please enter GL Account Number!");
+      return;
+    }
+
+    // STEP 1: If data not loaded, first GET the existing data
+    if (!isDataLoaded) {
+      try {
+        const response = await axios.get(
+          `http://192.168.0.235:8000/conf/gl_account/${glNumber}`
+        );
+        if (response.status === 200) {
+          setFormData(response.data); // Fill the form
+          setIsDataLoaded(true); // Now allow update
+          toast.success(
+            "GL Account data loaded. Edit fields and click Park again to update."
+          );
+        }
+      } catch (err) {
+        if (err.response?.status === 404) {
+          toast.error("GL Account Number does not exist.");
+        } else {
+          toast.error("Failed to load GL Account data.");
+          console.error("GET Error:", err);
+        }
+      }
+      return; // return so that PUT doesn't run yet
+    }
+
+    // STEP 2: If already loaded, then PUT the updated form
+    try {
+      const response = await axios.put(
+        `http://192.168.0.235:8000/conf/gl_account/${glNumber}`,
+        formData
+      );
+      toast.success("GL Account updated successfully!");
+      console.log("PUT Response:", response.data);
+      // Reset formData to initial empty state
+      setFormData({
+        gl_account_number: "",
+        short_text: "",
+        long_text: "",
+        account_group: "",
+        pl_account_type: "",
+        account_type_indicator: "",
+        group_account_number: "",
+        blocked: false,
+        reconciliation_account: false,
+        field_status_group: "",
+        sort_key: "",
+        tax_category: "",
+        open_item_management: "",
+        line_item_display: "",
+        authorization_group: "",
+        description: "",
+      });
+      setIsDataLoaded(false); // Optional: reset for next time
+    } catch (err) {
+      toast.error("Failed to update GL Account.");
+      console.error("PUT Error:", err);
+    }
   };
 
   const handleCancel = () => {
@@ -299,12 +398,14 @@ const GeneralLedger = () => {
           <div className="w-full bg-blue-100 border-t-2 border-b-2 border-[#031015]">
             <div className="flex justify-between items-center px-3">
               <div className="bg-amber-500 rounded-md bg-gradient-to-b from-amber-500 to-white">
-                <h1 className="font-bold uppercase">GENERAL LEDGER ACCOUNT</h1>
+                <h1 className="font-bold uppercase">
+                  G/L (POST / EDIT / DELETE)
+                </h1>
               </div>
               <div>
                 {/* Action Buttons */}
                 <div className="flex flex-wrap gap-1 justify-end lg:px-0">
-                  <button
+                  {/* <button
                     onClick={() => {
                       setShowReviewPopup(true);
                       handleReview();
@@ -315,7 +416,7 @@ const GeneralLedger = () => {
                     }}
                   >
                     Review
-                  </button>
+                  </button> */}
 
                   {showReviewPopup && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-opacity-30">
@@ -856,7 +957,7 @@ const GeneralLedger = () => {
                       </div>
                     </div>
                   )}
-
+                  {/* 
                   <button
                     onClick={handlePark}
                     className="relative px-4 bg-white border border-black hover:bg-amber-500 text-black cursor-pointer text-sm font-semibold text-center"
@@ -867,7 +968,7 @@ const GeneralLedger = () => {
                     Park
                   </button>
 
-                  {/* <button
+                  <button
                     onClick={handleSubmit}
                     className="relative px-4 bg-white border border-black hover:bg-amber-500 text-black cursor-pointer text-sm font-semibold text-center"
                     style={{
@@ -875,7 +976,7 @@ const GeneralLedger = () => {
                     }}
                   >
                     Post
-                  </button> */}
+                  </button> 
                   <button
                     onClick={handleCancel}
                     className="relative px-4 bg-white border border-black hover:bg-amber-500 text-black cursor-pointer text-sm font-semibold text-center"
@@ -884,7 +985,19 @@ const GeneralLedger = () => {
                     }}
                   >
                     Cancel
-                  </button>
+                  </button> */}
+                  <div className="relative">
+                    <span className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500">
+                      🔍
+                    </span>
+                    <input
+                      type="text"
+                      placeholder="Search GL No / Short Text / Date"
+                      className="pl-7 pr-2 py-0.5 text-sm border-l border-r border-gray-400 rounded w-[260px]"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                  </div>
                   <a
                     href="#"
                     className="bg-amber-500 ml-5 bg-gradient-to-b from-amber-500 to-white relative px-4 mr-1 border border-black text-black cursor-pointer text-sm font-semibold text-center"
@@ -900,440 +1013,108 @@ const GeneralLedger = () => {
           </div>
 
           <div className="flex flex-wrap justify-between items-center p-2 rounded lg:p-4 lg:mt-5">
-            {/* Scrollable Form Container */}
             <div className="w-full h-[360px] overflow-y-scroll">
-              <div className="flex flex-col lg:flex-row gap-6 lg:px-4 mb-5">
-                {/* Left Column */}
-                <div className="flex flex-col gap-4 w-full lg:w-1/2">
-                  <div className="flex items-center gap-2">
-                    <label
-                      htmlFor="gl_account_number"
-                      className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
-                    >
-                      G/L Account Number
-                      <span className="text-amber-500"> *</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="gl_account_number"
-                      name="gl_account_number"
-                      placeholder="100000"
-                      value={formData.gl_account_number}
-                      onChange={handleChange}
-                      ref={(el) => (inputRefs.current[0] = el)}
-                      onKeyDown={(e) => handleKeyNavigation(e, 0)}
-                      className="w-[65px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
-                    />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <label
-                      htmlFor="short_text"
-                      className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
-                    >
-                      Short Text
-                      <span className="text-amber-500"> *</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="short_text"
-                      name="short_text"
-                      maxLength={16}
-                      placeholder="Sales Revenue"
-                      value={formData.short_text}
-                      onChange={handleChange}
-                      ref={(el) => (inputRefs.current[1] = el)}
-                      onKeyDown={(e) => handleKeyNavigation(e, 1)}
-                      className="w-[130px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
-                    />
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <label
-                      htmlFor="long_text"
-                      className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
-                    >
-                      Long Text
-                      <span className="text-amber-500"> *</span>
-                    </label>
-                    <textarea
-                      id="long_text"
-                      name="long_text"
-                      ref={(el) => {
-                        inputRefs.current[2] = el;
-                        description1Ref.current = el;
-                      }}
-                      placeholder="Domestic Sales Revenue"
-                      value={formData.long_text}
-                      onChange={handleChange}
-                      onFocus={() => autoResize(description1Ref)}
-                      onInput={() => autoResize(description1Ref)}
-                      onBlur={() => collapseResize(description1Ref)}
-                      onKeyDown={(e) => handleKeyNavigation(e, 2)}
-                      className="w-[200px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400 resize-none overflow-hidden transition-all duration-200"
-                    />
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <label
-                      htmlFor="account_group"
-                      className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
-                    >
-                      Account Group<span className="text-amber-500"> *</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="account_group"
-                      name="account_group"
-                      placeholder="REVN"
-                      value={formData.account_group}
-                      onChange={handleChange}
-                      ref={(el) => (inputRefs.current[3] = el)}
-                      onKeyDown={(e) => handleKeyNavigation(e, 3)}
-                      className="w-[55px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
-                    />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <label
-                      htmlFor="pl_account_type"
-                      className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
-                    >
-                      Account Type<span className="text-amber-500"> *</span>
-                    </label>
-                    <select
-                      id="pl_account_type"
-                      name="pl_account_type"
-                      value={formData.pl_account_type}
-                      onChange={handleChange}
-                      ref={(el) => (inputRefs.current[4] = el)}
-                      onKeyDown={(e) => handleKeyNavigation(e, 4)}
-                      className="w-[150px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
-                    >
-                      <option value="">Select</option>
-                      {plAccountTypes.map((item, index) => (
-                        <option key={index} value={item.pl_account_type}>
-                          {item.pl_account_type} - {item.description}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <label
-                      htmlFor="account_type_indicator"
-                      className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
-                    >
-                      Account Type Indicator
-                      <span className="text-amber-500"> *</span>
-                    </label>
-                    <select
-                      id="account_type_indicator"
-                      name="account_type_indicator"
-                      value={formData.account_type_indicator}
-                      onChange={handleChange}
-                      ref={(el) => (inputRefs.current[5] = el)}
-                      onKeyDown={(e) => handleKeyNavigation(e, 5)}
-                      className="w-[150px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
-                    >
-                      <option value="">Select</option>
-                      {AccountTypes.map((item, index) => (
-                        <option key={index} value={item.account_type_indicator}>
-                          {item.account_type_indicator} - {item.description}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <label
-                      htmlFor="group_account_number"
-                      className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
-                    >
-                      Group Account Number
-                      <span className="text-amber-500"> *</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="group_account_number"
-                      name="group_account_number"
-                      placeholder="400100"
-                      value={formData.group_account_number}
-                      onChange={handleChange}
-                      ref={(el) => (inputRefs.current[6] = el)}
-                      onKeyDown={(e) => handleKeyNavigation(e, 6)}
-                      className="w-[65px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
-                    />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <label
-                      htmlFor="blocked"
-                      className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold text-black"
-                    >
-                      Blocked/Deleted <span className="text-amber-500"> *</span>
-                    </label>
-
-                    <div className="flex items-center gap-4">
-                      {/* Yes */}
-                      <label className="flex items-center gap-1 text-sm text-black">
-                        <input
-                          type="radio"
-                          id="blocked-yes"
-                          name="blocked"
-                          value="true"
-                          checked={formData.blocked === "true"}
-                          onChange={handleChange}
-                          ref={(el) => (inputRefs.current[7] = el)}
-                          onKeyDown={(e) => handleKeyNavigation(e, 7)}
-                        />
-                        Yes
-                      </label>
-
-                      {/* No */}
-                      <label className="flex items-center gap-1 text-sm text-black">
-                        <input
-                          type="radio"
-                          id="blocked-no"
-                          name="blocked"
-                          value="false"
-                          checked={formData.blocked === "false"}
-                          onChange={handleChange}
-                          onKeyDown={(e) => handleKeyNavigation(e, 7)}
-                        />
-                        No
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right Column */}
-                <div className="flex flex-col gap-4 w-full lg:w-1/2">
-                  <div className="flex items-center gap-2">
-                    <label
-                      htmlFor="reconciliation_account"
-                      className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold text-black"
-                    >
-                      Reconciliation Account
-                      <span className="text-amber-500"> *</span>
-                    </label>
-
-                    <div className="flex items-center gap-4">
-                      {/* Yes */}
-                      <label className="flex items-center gap-1 text-sm text-black">
-                        <input
-                          type="radio"
-                          id="reconciliation_account-yes"
-                          name="reconciliation_account"
-                          value="true"
-                          checked={formData.reconciliation_account === "true"}
-                          onChange={handleChange}
-                          ref={(el) => (inputRefs.current[8] = el)}
-                          onKeyDown={(e) => handleKeyNavigation(e, 8)}
-                        />
-                        Yes
-                      </label>
-
-                      {/* No */}
-                      <label className="flex items-center gap-1 text-sm text-black">
-                        <input
-                          type="radio"
-                          id="reconciliation_account-no"
-                          name="reconciliation_account"
-                          value="false"
-                          checked={formData.reconciliation_account === "false"}
-                          onChange={handleChange}
-                          onKeyDown={(e) => handleKeyNavigation(e, 8)}
-                        />
-                        No
-                      </label>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <label
-                      htmlFor="field_status_group"
-                      className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
-                    >
-                      Field Status Group
-                      <span className="text-amber-500"> *</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="field_status_group"
-                      name="field_status_group"
-                      placeholder="G001"
-                      value={formData.field_status_group}
-                      onChange={handleChange}
-                      ref={(el) => (inputRefs.current[9] = el)}
-                      onKeyDown={(e) => handleKeyNavigation(e, 9)}
-                      className="w-[50px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
-                    />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <label
-                      htmlFor="sort_key"
-                      className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
-                    >
-                      Sort Key
-                      <span className="text-amber-500"> *</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="sort_key"
-                      name="sort_key"
-                      placeholder="001 (Posting date)"
-                      value={formData.sort_key}
-                      onChange={handleChange}
-                      ref={(el) => (inputRefs.current[10] = el)}
-                      onKeyDown={(e) => handleKeyNavigation(e, 10)}
-                      className="w-[130px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
-                    />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <label
-                      htmlFor="tax_category"
-                      className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
-                    >
-                      Tax Category
-                      <span className="text-amber-500"> *</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="tax_category"
-                      name="tax_category"
-                      placeholder="V1"
-                      value={formData.tax_category}
-                      onChange={handleChange}
-                      ref={(el) => (inputRefs.current[11] = el)}
-                      onKeyDown={(e) => handleKeyNavigation(e, 11)}
-                      className="w-[35px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
-                    />
-                  </div>
-                  {/* Open Item Management */}
-                  <div className="flex items-center gap-2">
-                    <label
-                      htmlFor="open_item_management"
-                      className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold text-black"
-                    >
-                      Open Item Management
-                      <span className="text-amber-500"> *</span>
-                    </label>
-
-                    <div className="flex items-center gap-4">
-                      {/* Yes */}
-                      <label className="flex items-center gap-1 text-sm text-black">
-                        <input
-                          type="radio"
-                          id="open_item_management-yes"
-                          name="open_item_management"
-                          value="true"
-                          checked={formData.open_item_management === "true"}
-                          onChange={handleChange}
-                          ref={(el) => (inputRefs.current[12] = el)}
-                          onKeyDown={(e) => handleKeyNavigation(e, 12)}
-                        />
-                        Yes
-                      </label>
-
-                      {/* No */}
-                      <label className="flex items-center gap-1 text-sm text-black">
-                        <input
-                          type="radio"
-                          id="open_item_management-no"
-                          name="open_item_management"
-                          value="false"
-                          checked={formData.open_item_management === "false"}
-                          onChange={handleChange}
-                          onKeyDown={(e) => handleKeyNavigation(e, 12)}
-                        />
-                        No
-                      </label>
-                    </div>
-                  </div>
-
-                  {/* Line Item Display */}
-                  <div className="flex items-center gap-2">
-                    <label
-                      htmlFor="line_item_display"
-                      className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold text-black"
-                    >
-                      Line Item Display
-                      <span className="text-amber-500"> *</span>
-                    </label>
-
-                    <div className="flex items-center gap-4">
-                      {/* Yes */}
-                      <label className="flex items-center gap-1 text-sm text-black">
-                        <input
-                          type="radio"
-                          id="line_item_display-yes"
-                          name="line_item_display"
-                          value="true"
-                          checked={formData.line_item_display === "true"}
-                          onChange={handleChange}
-                          ref={(el) => (inputRefs.current[13] = el)}
-                          onKeyDown={(e) => handleKeyNavigation(e, 13)}
-                        />
-                        Yes
-                      </label>
-
-                      {/* No */}
-                      <label className="flex items-center gap-1 text-sm text-black">
-                        <input
-                          type="radio"
-                          id="line_item_display-no"
-                          name="line_item_display"
-                          value="false"
-                          checked={formData.line_item_display === "false"}
-                          onChange={handleChange}
-                          onKeyDown={(e) => handleKeyNavigation(e, 13)}
-                        />
-                        No
-                      </label>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <label
-                      htmlFor="authorization_group"
-                      className="w-[210px] h-7 px-2 py-0.5 text-sm font-semibold rounded-sm text-black"
-                    >
-                      Authorization Group
-                      <span className="text-amber-500"> *</span>
-                    </label>
-
-                    <select
-                      id="authorization_group"
-                      name="authorization_group"
-                      value={formData.authorization_group}
-                      onChange={handleChange}
-                      ref={(el) => (inputRefs.current[14] = el)}
-                      onKeyDown={(e) => handleKeyNavigation(e, 14)}
-                      className="w-[150px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
-                    >
-                      <option value="">Select</option>
-                      {AuthorizationGroups.map((item, index) => (
-                        <option key={index} value={item.code}>
-                          {item.code} - {item.description}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="flex items-start gap-2">
-                    <textarea
-                      id="description"
-                      name="description"
-                      placeholder="Description"
-                      value={formData.description}
-                      onChange={handleChange}
-                      ref={(el) => {
-                        description1Ref.current = el;
-                        inputRefs.current[15] = el;
-                      }}
-                      onKeyDown={(e) => handleKeyNavigation(e, 15)}
-                      onFocus={() => autoResize(description1Ref)}
-                      onInput={() => autoResize(description1Ref)}
-                      onBlur={() => collapseResize(description1Ref)}
-                      className="w-[368px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400 resize-none overflow-hidden transition-all duration-200"
-                    />
-                  </div>
+              {/* Table */}
+              <div className="p-4">
+                <div className="overflow-x-auto">
+                  <table className="min-w-full border text-sm text-left">
+                    <thead className="bg-gray-200">
+                      <tr>
+                        <th className="px-3 py-0.5 border text-center whitespace-nowrap">
+                          GL. No
+                        </th>
+                        <th className="px-3 py-0.5 border text-center whitespace-nowrap">
+                          Short Text
+                        </th>
+                        <th className="px-3 py-0.5 border text-center whitespace-nowrap">
+                          Date
+                        </th>
+                        <th className="px-3 py-0.5 border text-center whitespace-nowrap">
+                          Ac. Type
+                        </th>
+                        <th className="px-3 py-0.5 border text-center whitespace-nowrap">
+                          Ac. Id
+                        </th>
+                        <th className="px-3 py-0.5 border text-center whitespace-nowrap">
+                          Desc.
+                        </th>
+                        <th className="px-3 py-0.5 border text-center whitespace-nowrap">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredGLAccounts.length > 0 ? (
+                        filteredGLAccounts.map((item, index) => (
+                          <tr key={index} className="bg-white hover:bg-gray-50">
+                            <td className="px-3 py-1 w-[80px] border text-blue-600 cursor-pointer whitespace-nowrap">
+                              <a
+                                onClick={() => {
+                                  handleReviewById(item.gl_account_number);
+                                  setShowReviewPopup(true);
+                                }}
+                              >
+                                {item.gl_account_number}
+                              </a>
+                            </td>
+                            <td className="px-2 w-[180px] py-0.5 border whitespace-nowrap">
+                              {item.short_text}
+                            </td>
+                            <td className="px-2 py-0.5 w-[100px] border whitespace-nowrap">
+                              {item.created_at}
+                            </td>
+                            <td className="px-2 py-0.5 w-[35px] text-center border whitespace-nowrap">
+                              {item.pl_account_type}
+                            </td>
+                            <td className="px-2 py-0.5 w-[35px] text-center border whitespace-nowrap">
+                              {item.account_type_indicator}
+                            </td>
+                            <td className="px-2 py-0.5 border whitespace-nowrap">
+                              {item.description}
+                            </td>
+                            <td className="px-2 py-0.5 w-[140px] border whitespace-nowrap">
+                              <button
+                                className="relative px-4 bg-white border border-black text-sm cursor-pointer font-semibold text-center text-white bg-gradient-to-tr from-gray-800 to-gray-400 mr-2"
+                                style={{
+                                  clipPath:
+                                    "polygon(12% 0%, 100% 0%, 100% 100%, 0% 100%)",
+                                }}
+                              >
+                                Post
+                              </button>
+                              <button
+                                className="relative px-4 bg-white border border-black text-sm cursor-pointer font-semibold text-center text-white bg-gradient-to-tr from-gray-800 to-gray-400 mr-2"
+                                style={{
+                                  clipPath:
+                                    "polygon(12% 0%, 100% 0%, 100% 100%, 0% 100%)",
+                                }}
+                              >
+                                Edit
+                              </button>
+                              <button
+                                className="relative px-4 bg-white border border-black text-sm cursor-pointer font-semibold text-center text-white bg-gradient-to-tr from-gray-800 to-gray-400 mr-2"
+                                style={{
+                                  clipPath:
+                                    "polygon(12% 0%, 100% 0%, 100% 100%, 0% 100%)",
+                                }}
+                              >
+                                Delete
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td
+                            colSpan="7"
+                            className="text-center py-4 text-gray-500"
+                          >
+                            No GL Accounts Found
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -1344,4 +1125,4 @@ const GeneralLedger = () => {
   );
 };
 
-export default GeneralLedger;
+export default GeneralLedgerDetails;

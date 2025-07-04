@@ -5,9 +5,10 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const InvoicePosting = () => {
+const JournalEntry = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [glAccounts, setGlAccounts] = useState([]);
 
   const description1Ref = useRef(null);
   const description2Ref = useRef(null);
@@ -48,6 +49,14 @@ const InvoicePosting = () => {
     e.preventDefault();
     // alert(JSON.stringify(formData, null, 2));
   };
+  const filteredGLAccounts = glAccounts.filter((item) => {
+    const formattedDate = new Date(item.created_at).toLocaleDateString("en-GB"); // DD/MM/YYYY
+    return (
+      item.gl_account_number.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.short_text?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      formattedDate.includes(searchTerm)
+    );
+  });
 
   const navigate = useNavigate();
 
@@ -150,7 +159,7 @@ const InvoicePosting = () => {
           <div className="w-full bg-blue-100 border-2 border-white">
             <div className="flex justify-between items-center px-3">
               <div className="bg-amber-500 rounded-md bg-gradient-to-b from-amber-500 to-white">
-                <h1 className="font-bold">INVOICE POSTING</h1>
+                <h1 className="font-bold">JOURNAL ENTRY</h1>
               </div>
               <div>
                 {/* Action Buttons */}
@@ -468,6 +477,114 @@ const InvoicePosting = () => {
                     className="w-full h-7 px-2 py-0.5 border border-gray-500 placeholder:text-center rounded-sm text-sm text-black bg-white hover:bg-amber-400 resize-none overflow-hidden transition-all duration-200"
                   />
                 </div>
+                <div className="w-max h-[360px]">
+                  {/* Table */}
+                  <div className="p-4">
+                    <div className="overflow-x-auto">
+                      <table className="w-full border text-sm text-left">
+                        <thead className="bg-gray-200">
+                          <tr>
+                            <th className="px-3 py-0.5 border text-center whitespace-nowrap">
+                              GL. No
+                            </th>
+                            <th className="px-3 py-0.5 border text-center whitespace-nowrap">
+                              Short Text
+                            </th>
+                            <th className="px-3 py-0.5 border text-center whitespace-nowrap">
+                              Date
+                            </th>
+                            <th className="px-3 py-0.5 border text-center whitespace-nowrap">
+                              Ac. Type
+                            </th>
+                            <th className="px-3 py-0.5 border text-center whitespace-nowrap">
+                              Ac. Id
+                            </th>
+                            <th className="px-3 py-0.5 border text-center whitespace-nowrap">
+                              Desc.
+                            </th>
+                            <th className="px-3 py-0.5 border text-center whitespace-nowrap">
+                              Actions
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {filteredGLAccounts.length > 0 ? (
+                            filteredGLAccounts.map((item, index) => (
+                              <tr
+                                key={index}
+                                className="bg-white hover:bg-gray-50"
+                              >
+                                <td className="px-3 py-1 w-[80px] border text-blue-600 cursor-pointer whitespace-nowrap">
+                                  <a
+                                    onClick={() => {
+                                      handleReviewById(item.gl_account_number);
+                                      setShowReviewPopup(true);
+                                    }}
+                                  >
+                                    {item.gl_account_number}
+                                  </a>
+                                </td>
+                                <td className="px-2 w-[180px] py-0.5 border whitespace-nowrap">
+                                  {item.short_text}
+                                </td>
+                                <td className="px-2 py-0.5 w-[100px] border whitespace-nowrap">
+                                  {item.created_at}
+                                </td>
+                                <td className="px-2 py-0.5 w-[35px] text-center border whitespace-nowrap">
+                                  {item.pl_account_type}
+                                </td>
+                                <td className="px-2 py-0.5 w-[35px] text-center border whitespace-nowrap">
+                                  {item.account_type_indicator}
+                                </td>
+                                <td className="px-2 py-0.5 border whitespace-nowrap">
+                                  {item.description}
+                                </td>
+                                <td className="px-2 py-0.5 w-[140px] border whitespace-nowrap">
+                                  <button
+                                    className="relative px-4 bg-white border border-black text-sm cursor-pointer font-semibold text-center text-white bg-gradient-to-tr from-gray-800 to-gray-400 mr-2"
+                                    style={{
+                                      clipPath:
+                                        "polygon(12% 0%, 100% 0%, 100% 100%, 0% 100%)",
+                                    }}
+                                  >
+                                    Post
+                                  </button>
+                                  <button
+                                    className="relative px-4 bg-white border border-black text-sm cursor-pointer font-semibold text-center text-white bg-gradient-to-tr from-gray-800 to-gray-400 mr-2"
+                                    style={{
+                                      clipPath:
+                                        "polygon(12% 0%, 100% 0%, 100% 100%, 0% 100%)",
+                                    }}
+                                  >
+                                    Edit
+                                  </button>
+                                  <button
+                                    className="relative px-4 bg-white border border-black text-sm cursor-pointer font-semibold text-center text-white bg-gradient-to-tr from-gray-800 to-gray-400 mr-2"
+                                    style={{
+                                      clipPath:
+                                        "polygon(12% 0%, 100% 0%, 100% 100%, 0% 100%)",
+                                    }}
+                                  >
+                                    Delete
+                                  </button>
+                                </td>
+                              </tr>
+                            ))
+                          ) : (
+                            <tr>
+                              <td
+                                colSpan="7"
+                                className="text-center py-4 text-gray-500"
+                              >
+                                No GL Accounts Found
+                              </td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -477,4 +594,4 @@ const InvoicePosting = () => {
   );
 };
 
-export default InvoicePosting;
+export default JournalEntry;

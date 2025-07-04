@@ -40,6 +40,16 @@ const Client = () => {
   };
 
   useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  useEffect(() => {
     const savedClientId = Cookies.get("client_id");
     const savedLanguage = Cookies.get("language");
 
@@ -50,18 +60,8 @@ const Client = () => {
     }));
   }, []);
 
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
   const [formData, setFormData] = useState(() => {
-    const saved = localStorage.getItem("formData");
+    const saved = Cookies.get("formData");
     return saved
       ? JSON.parse(saved)
       : {
@@ -77,9 +77,9 @@ const Client = () => {
         };
   });
 
-  // ✅ Keep localStorage updated whenever formData changes
+  // ✅ Keep cookies updated whenever formData changes
   useEffect(() => {
-    localStorage.setItem("formData", JSON.stringify(formData));
+    Cookies.set("formData", JSON.stringify(formData)); // store for 7 days
   }, [formData]);
 
   // ✅ Input field change handler
@@ -95,8 +95,7 @@ const Client = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const client_id = formData.client_id;
-    const language = formData.language;
+    const { client_id, language } = formData;
 
     if (!client_id || !language) {
       toast.error("Missing client_id or language!");
@@ -125,10 +124,10 @@ const Client = () => {
         }
       );
 
-      // ✅ Save the updated form values both in state and localStorage
+      // ✅ Update state and cookie after successful update
       setFormData((prev) => {
         const updated = { ...prev, ...response.data };
-        localStorage.setItem("formData", JSON.stringify(updated));
+        Cookies.set("formData", JSON.stringify(updated), { expires: 7 });
         return updated;
       });
 
@@ -444,6 +443,7 @@ const Client = () => {
                                     name="client_id"
                                     placeholder="0007"
                                     value={formData.client_id}
+                                    onChange={handleChange}
                                     readOnly
                                     required
                                     className="w-[50px] h-7 border border-gray-500 rounded-sm text-sm text-black bg-amber-500 hover:bg-amber-400 px-2 py-0.5"
@@ -464,6 +464,7 @@ const Client = () => {
                                       id="language"
                                       name="language"
                                       value={formData.language}
+                                      onChange={handleChange}
                                       readOnly
                                       placeholder="EN"
                                       className="w-[35px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-amber-500 hover:bg-amber-400"
@@ -509,12 +510,7 @@ const Client = () => {
                                     name="currency"
                                     value={formData.currency}
                                     readOnly
-                                    onChange={(e) =>
-                                      setFormData({
-                                        ...formData,
-                                        currency: e.target.value,
-                                      })
-                                    }
+                                    onChange={handleChange}
                                     className={`w-[50px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400 ${
                                       formData.currency
                                         ? "bg-amber-500"
@@ -537,12 +533,7 @@ const Client = () => {
                                     name="time_zone"
                                     value={formData.time_zone}
                                     readOnly
-                                    onChange={(e) =>
-                                      setFormData({
-                                        ...formData,
-                                        time_zone: e.target.value,
-                                      })
-                                    }
+                                    onChange={handleChange}
                                     placeholder="IST"
                                     className="w-[45px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                                   />
@@ -555,12 +546,7 @@ const Client = () => {
                                     ref={description1Ref}
                                     placeholder="Description"
                                     value={formData.description}
-                                    onChange={(e) =>
-                                      setFormData({
-                                        ...formData,
-                                        description: e.target.value,
-                                      })
-                                    }
+                                    onChange={handleChange}
                                     readOnly
                                     onFocus={() => autoResize(description1Ref)}
                                     onInput={() => autoResize(description1Ref)}
@@ -587,12 +573,7 @@ const Client = () => {
                                     id="country_code"
                                     name="country_code"
                                     value={formData.country_code}
-                                    onChange={(e) =>
-                                      setFormData({
-                                        ...formData,
-                                        country_code: e.target.value,
-                                      })
-                                    }
+                                    onChange={handleChange}
                                     readOnly
                                     className={`w-[40px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400 ${
                                       formData.country_code
@@ -616,12 +597,7 @@ const Client = () => {
                                     name="fiscal_year"
                                     value={formData.fiscal_year}
                                     readOnly
-                                    onChange={(e) =>
-                                      setFormData({
-                                        ...formData,
-                                        fiscal_year: e.target.value,
-                                      })
-                                    }
+                                    onChange={handleChange}
                                     placeholder="JAN 1 - MAR 31"
                                     className="w-[115px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                                   />
@@ -640,12 +616,7 @@ const Client = () => {
                                     id="number_range_object"
                                     name="number_range_object"
                                     value={formData.number_range}
-                                    onChange={(e) =>
-                                      setFormData({
-                                        ...formData,
-                                        number_range: e.target.value,
-                                      })
-                                    }
+                                    onChange={handleChange}
                                     readOnly
                                     placeholder="NR01"
                                     className="w-[50px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
@@ -666,12 +637,7 @@ const Client = () => {
                                     name="tax_code"
                                     value={formData.tax_code}
                                     readOnly
-                                    onChange={(e) =>
-                                      setFormData({
-                                        ...formData,
-                                        tax_code: e.target.value,
-                                      })
-                                    }
+                                    onChange={handleChange}
                                     placeholder="TX1"
                                     className="w-[50px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                                   />
@@ -717,6 +683,7 @@ const Client = () => {
                       name="client_id"
                       placeholder="0007"
                       value={formData.client_id}
+                      onChange={handleChange}
                       readOnly
                       required
                       className="w-[50px] h-7 border border-gray-500 rounded-sm text-sm text-black bg-amber-500 hover:bg-amber-400 px-2 py-0.5"
@@ -737,6 +704,7 @@ const Client = () => {
                         id="language"
                         name="language"
                         value={formData.language}
+                        onChange={handleChange}
                         readOnly
                         placeholder="EN"
                         className="w-[35px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-amber-500 hover:bg-amber-400"
@@ -782,12 +750,7 @@ const Client = () => {
                         id="currency"
                         name="currency"
                         value={formData.currency}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            currency: e.target.value,
-                          })
-                        }
+                        onChange={handleChange}
                         className={`w-[50px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400 ${
                           formData.currency ? "bg-amber-500" : "bg-white"
                         }`}
@@ -882,12 +845,7 @@ const Client = () => {
                         name="time_zone"
                         placeholder="IST"
                         value={formData.time_zone}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            time_zone: e.target.value,
-                          })
-                        }
+                        onChange={handleChange}
                         className="w-[45px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                       />
                       <button
@@ -926,12 +884,7 @@ const Client = () => {
                       ref={description1Ref}
                       placeholder="Description"
                       value={formData.description}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          description: e.target.value,
-                        })
-                      }
+                      onChange={handleChange}
                       onFocus={() => autoResize(description1Ref)}
                       onInput={() => autoResize(description1Ref)}
                       onBlur={() => collapseResize(description1Ref)}
@@ -955,12 +908,7 @@ const Client = () => {
                         id="country_code"
                         name="country_code"
                         value={formData.country_code}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            country_code: e.target.value,
-                          })
-                        }
+                        onChange={handleChange}
                         readOnly
                         className={`w-[40px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400 ${
                           formData.country_code ? "bg-amber-500" : "bg-white"
@@ -1040,12 +988,7 @@ const Client = () => {
                         id="fiscal_year"
                         name="fiscal_year"
                         value={formData.fiscal_year}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            fiscal_year: e.target.value,
-                          })
-                        }
+                        onChange={handleChange}
                         placeholder="JAN 1 - MAR 31"
                         className="w-[115px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                       />
@@ -1087,12 +1030,7 @@ const Client = () => {
                         id="number_range"
                         name="number_range"
                         value={formData.number_range}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            number_range: e.target.value,
-                          })
-                        }
+                        onChange={handleChange}
                         placeholder="NR01"
                         className="w-[50px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                       />
@@ -1134,12 +1072,7 @@ const Client = () => {
                         name="tax_code"
                         placeholder="TX1"
                         value={formData.tax_code}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            tax_code: e.target.value,
-                          })
-                        }
+                        onChange={handleChange}
                         className="w-[50px] h-7 px-2 py-0.5 border border-gray-500 rounded-sm text-sm text-black bg-white hover:bg-amber-400"
                       />
                       <button

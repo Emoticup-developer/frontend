@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Children, useState } from "react";
 import { FaFolder, FaFolderOpen } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
@@ -82,22 +82,26 @@ const menuData = [
   },
   {
     label: "General Ledger Account (FI-GL)",
-    link: "/general-ledger",
-  },
-  {
-    label: "Chart of Accounts (CoA)",
     children: [
-      { label: "CoA List", link: "/tools/coa-list" },
-      { label: "Create CoA", link: "/tools/create-coa" },
+      { label: "Create GL Account", link: "/general-ledger" },
+      { label: "POST / EDIT / DELETE GL Account", link: "/glaccount-details" },
+      { label: "GL Account Status", link: "/gl-status" },
     ],
   },
+  // {
+  //   label: "Chart of Accounts (CoA)",
+  //   children: [
+  //     { label: "CoA List", link: "/tools/coa-list" },
+  //     { label: "Create CoA", link: "/tools/create-coa" },
+  //   ],
+  // },
+  // {
+  //   label: "Field Status Group (FSG)",
+  //   link: "/field-status-group",
+  // },
   {
-    label: "Field Status Group (FSG)",
-    link: "/field-status-group",
-  },
-  {
-    label: "Invoice Posting",
-    link: "/invoice-posting",
+    label: "Journal Entry",
+    link: "/journal-entry",
   },
 ];
 

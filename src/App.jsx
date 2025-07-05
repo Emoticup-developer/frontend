@@ -19,6 +19,7 @@ import FieldStatus from "./pages/FieldStatus";
 import GeneralLedgerDetails from "./pages/GeneralLedgerDetails";
 import JournalEntry from "./pages/JournalEntry";
 import Sample from "./pages/Sample";
+import Crud from "./pages/Crud";
 
 export default function App() {
   return (
@@ -41,6 +42,7 @@ export default function App() {
           <Route path="/glaccount-details" element={<GeneralLedgerDetails />} />
           <Route path="/field-status-group" element={<FieldStatus />} />
 
+          <Route path="/crud" element={<Crud />} />
           <Route path="/customize" element={<ThemeCustomizer />} />
           <Route path="/journal-entry" element={<JournalEntry />} />
           <Route path="/hirarchy" element={<ResizableSAPSidebar />} />

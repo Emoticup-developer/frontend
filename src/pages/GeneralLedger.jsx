@@ -168,15 +168,16 @@ const GeneralLedger = () => {
       //   authorization_group: "",
       //   description: "",
       // });
+      navigate("/glaccount-details");
     } catch (error) {
-      toast.success("GL Account Not Saved!");
+      toast.error("GL Account already exists!");
       console.error("Submit failed:", error);
     }
   };
 
-  const handlePark = async () => {
-    navigate("/glaccount-details");
-  };
+  // const handlePark = async () => {
+  //   navigate("/glaccount-details");
+  // };
 
   const handleCancel = () => {
     setFormData({
@@ -858,13 +859,13 @@ const GeneralLedger = () => {
                   )}
 
                   <button
-                    onClick={handlePark}
+                    onClick={handleSubmit}
                     className="relative px-4 bg-white border border-black hover:bg-amber-500 text-black cursor-pointer text-sm font-semibold text-center"
                     style={{
                       clipPath: "polygon(12% 0%, 100% 0%, 100% 100%, 0% 100%)",
                     }}
                   >
-                    Park
+                    Post
                   </button>
 
                   {/* <button

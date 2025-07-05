@@ -472,7 +472,7 @@ const GeneralLedgerDetails = () => {
         <div className="flex justify-between items-center my-4 px-4">
           {/* Left: No. of Items text */}
           <div className="text-sm font-semibold text-gray-700">
-            No. of Items: {filteredGLAccounts.length}
+            Line of Items: {filteredGLAccounts.length}
           </div>
 
           {/* Right: Search option with icon, now fixed width */}

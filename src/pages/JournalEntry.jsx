@@ -333,7 +333,7 @@ const JournalEntry = () => {
                 <div className="flex items-center gap-2">
                   <label
                     htmlFor="invoice_number"
-                    className="w-[128px] h-7 px-2 py-0.5 ml-7 text-sm font-semibold rounded-sm text-black"
+                    className="w-[132px] h-7 px-2 py-0.5 ml-6 text-sm font-semibold rounded-sm text-black"
                   >
                     Invoice Number<span className="text-amber-500"> *</span>
                   </label>
@@ -477,113 +477,107 @@ const JournalEntry = () => {
                     className="w-full h-7 px-2 py-0.5 border border-gray-500 placeholder:text-center rounded-sm text-sm text-black bg-white hover:bg-amber-400 resize-none overflow-hidden transition-all duration-200"
                   />
                 </div>
-                <div className="w-max h-[360px]">
-                  {/* Table */}
-                  <div className="p-4">
-                    <div className="overflow-x-auto">
-                      <table className="w-full border text-sm text-left">
-                        <thead className="bg-gray-200">
-                          <tr>
-                            <th className="px-3 py-0.5 border text-center whitespace-nowrap">
-                              GL. No
-                            </th>
-                            <th className="px-3 py-0.5 border text-center whitespace-nowrap">
-                              Short Text
-                            </th>
-                            <th className="px-3 py-0.5 border text-center whitespace-nowrap">
-                              Date
-                            </th>
-                            <th className="px-3 py-0.5 border text-center whitespace-nowrap">
-                              Ac. Type
-                            </th>
-                            <th className="px-3 py-0.5 border text-center whitespace-nowrap">
-                              Ac. Id
-                            </th>
-                            <th className="px-3 py-0.5 border text-center whitespace-nowrap">
-                              Desc.
-                            </th>
-                            <th className="px-3 py-0.5 border text-center whitespace-nowrap">
-                              Actions
-                            </th>
+              </div>
+              <div class="bg-white shadow-md rounded-md mx-3 mt-8 p-4 w-full max-w-4xl">
+                <div class="overflow-x-auto">
+                  <table class="w-full divide-y divide-gray-300 text-sm">
+                    <thead className="bg-gray-200">
+                      <tr>
+                        <th className="px-3 py-0.5 border text-center whitespace-nowrap">
+                          GL. No
+                        </th>
+                        <th className="px-3 py-0.5 border text-center whitespace-nowrap">
+                          Short Text
+                        </th>
+                        <th className="px-3 py-0.5 border text-center whitespace-nowrap">
+                          Date
+                        </th>
+                        <th className="px-3 py-0.5 border text-center whitespace-nowrap">
+                          Ac. Type
+                        </th>
+                        <th className="px-3 py-0.5 border text-center whitespace-nowrap">
+                          Ac. Id
+                        </th>
+                        <th className="px-3 py-0.5 border text-center whitespace-nowrap">
+                          Desc.
+                        </th>
+                        <th className="px-3 py-0.5 border text-center whitespace-nowrap">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredGLAccounts.length > 0 ? (
+                        filteredGLAccounts.map((item, index) => (
+                          <tr key={index} className="bg-white hover:bg-gray-50">
+                            <td className="px-3 py-1 w-[80px] border text-blue-600 cursor-pointer whitespace-nowrap">
+                              <a
+                                onClick={() => {
+                                  handleReviewById(item.gl_account_number);
+                                  setShowReviewPopup(true);
+                                }}
+                              >
+                                {item.gl_account_number}
+                              </a>
+                            </td>
+                            <td className="px-2 w-[180px] py-0.5 border whitespace-nowrap">
+                              {item.short_text}
+                            </td>
+                            <td className="px-2 py-0.5 w-[100px] border whitespace-nowrap">
+                              {item.created_at}
+                            </td>
+                            <td className="px-2 py-0.5 w-[35px] text-center border whitespace-nowrap">
+                              {item.pl_account_type}
+                            </td>
+                            <td className="px-2 py-0.5 w-[35px] text-center border whitespace-nowrap">
+                              {item.account_type_indicator}
+                            </td>
+                            <td className="px-2 py-0.5 border whitespace-nowrap">
+                              {item.description}
+                            </td>
+                            <td className="px-2 py-0.5 w-[140px] border whitespace-nowrap">
+                              <button
+                                className="relative px-4 bg-white border border-black text-sm cursor-pointer font-semibold text-center text-white bg-gradient-to-tr from-gray-800 to-gray-400 mr-2"
+                                style={{
+                                  clipPath:
+                                    "polygon(12% 0%, 100% 0%, 100% 100%, 0% 100%)",
+                                }}
+                              >
+                                Post
+                              </button>
+                              <button
+                                className="relative px-4 bg-white border border-black text-sm cursor-pointer font-semibold text-center text-white bg-gradient-to-tr from-gray-800 to-gray-400 mr-2"
+                                style={{
+                                  clipPath:
+                                    "polygon(12% 0%, 100% 0%, 100% 100%, 0% 100%)",
+                                }}
+                              >
+                                Edit
+                              </button>
+                              <button
+                                className="relative px-4 bg-white border border-black text-sm cursor-pointer font-semibold text-center text-white bg-gradient-to-tr from-gray-800 to-gray-400 mr-2"
+                                style={{
+                                  clipPath:
+                                    "polygon(12% 0%, 100% 0%, 100% 100%, 0% 100%)",
+                                }}
+                              >
+                                Delete
+                              </button>
+                            </td>
                           </tr>
-                        </thead>
-                        <tbody>
-                          {filteredGLAccounts.length > 0 ? (
-                            filteredGLAccounts.map((item, index) => (
-                              <tr
-                                key={index}
-                                className="bg-white hover:bg-gray-50"
-                              >
-                                <td className="px-3 py-1 w-[80px] border text-blue-600 cursor-pointer whitespace-nowrap">
-                                  <a
-                                    onClick={() => {
-                                      handleReviewById(item.gl_account_number);
-                                      setShowReviewPopup(true);
-                                    }}
-                                  >
-                                    {item.gl_account_number}
-                                  </a>
-                                </td>
-                                <td className="px-2 w-[180px] py-0.5 border whitespace-nowrap">
-                                  {item.short_text}
-                                </td>
-                                <td className="px-2 py-0.5 w-[100px] border whitespace-nowrap">
-                                  {item.created_at}
-                                </td>
-                                <td className="px-2 py-0.5 w-[35px] text-center border whitespace-nowrap">
-                                  {item.pl_account_type}
-                                </td>
-                                <td className="px-2 py-0.5 w-[35px] text-center border whitespace-nowrap">
-                                  {item.account_type_indicator}
-                                </td>
-                                <td className="px-2 py-0.5 border whitespace-nowrap">
-                                  {item.description}
-                                </td>
-                                <td className="px-2 py-0.5 w-[140px] border whitespace-nowrap">
-                                  <button
-                                    className="relative px-4 bg-white border border-black text-sm cursor-pointer font-semibold text-center text-white bg-gradient-to-tr from-gray-800 to-gray-400 mr-2"
-                                    style={{
-                                      clipPath:
-                                        "polygon(12% 0%, 100% 0%, 100% 100%, 0% 100%)",
-                                    }}
-                                  >
-                                    Post
-                                  </button>
-                                  <button
-                                    className="relative px-4 bg-white border border-black text-sm cursor-pointer font-semibold text-center text-white bg-gradient-to-tr from-gray-800 to-gray-400 mr-2"
-                                    style={{
-                                      clipPath:
-                                        "polygon(12% 0%, 100% 0%, 100% 100%, 0% 100%)",
-                                    }}
-                                  >
-                                    Edit
-                                  </button>
-                                  <button
-                                    className="relative px-4 bg-white border border-black text-sm cursor-pointer font-semibold text-center text-white bg-gradient-to-tr from-gray-800 to-gray-400 mr-2"
-                                    style={{
-                                      clipPath:
-                                        "polygon(12% 0%, 100% 0%, 100% 100%, 0% 100%)",
-                                    }}
-                                  >
-                                    Delete
-                                  </button>
-                                </td>
-                              </tr>
-                            ))
-                          ) : (
-                            <tr>
-                              <td
-                                colSpan="7"
-                                className="text-center py-4 text-gray-500"
-                              >
-                                No GL Accounts Found
-                              </td>
-                            </tr>
-                          )}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
+                        ))
+                      ) : (
+                        <tr>
+                          <td
+                            colSpan="7"
+                            className="text-center py-4 text-gray-500"
+                          >
+                            No GL Accounts Found
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>

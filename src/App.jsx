@@ -1,7 +1,5 @@
 // src/App.jsx
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ThemeProvider } from "./context/ThemeContext";
-import ThemeCustomizer from "./pages/ThemeCustomizer";
 import Login from "./pages/Login";
 import DashboardPage from "./pages/DashboardPage";
 import ResizableSAPSidebar from "./pages/TreeItem";
@@ -20,32 +18,194 @@ import GeneralLedgerDetails from "./pages/GeneralLedgerDetails";
 import JournalEntry from "./pages/JournalEntry";
 import Sample from "./pages/Sample";
 import Crud from "./pages/Crud";
+import ThemeSettings from "./components/ThemeSettings";
+
+// Import ThemeProvider and useTheme from our new context file
+import { ThemeProvider, useTheme } from "./context/ThemeContext";
+import MainPage from "./pages/MainPage";
+import GUI from "./pages/GUI";
+import Centrally from "./pages/Centrally";
+
+// A wrapper component to apply the global theme colors to each page
+const ThemedPage = ({ children }) => {
+  const { colors } = useTheme(); // Get the current effective colors from context
+
+  return (
+    // Apply background and text color to the page's root div
+    // minHeight: '100vh' ensures the background covers the entire viewport
+    <div
+      style={{
+        backgroundColor: colors.background,
+        color: colors.text,
+        minHeight: "100vh",
+        transition: "background-color 0.3s ease, color 0.3s ease",
+      }}
+    >
+      {children}
+    </div>
+  );
+};
 
 export default function App() {
   return (
+    // Wrap the entire application with ThemeProvider to make theme context available everywhere
     <ThemeProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/client" element={<Client />} />
-          <Route path="/company" element={<Company />} />
-          <Route path="/company-code" element={<CompanyCode />} />
-          <Route path="/business-area" element={<BusinessArea />} />
-          <Route path="/plant" element={<Plant />} />
+          {/* Wrap each route element with ThemedPage to apply the theme's background and text color */}
+          <Route
+            path="/"
+            element={
+              <ThemedPage>
+                <Login />
+              </ThemedPage>
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <ThemedPage>
+                <DashboardPage />
+              </ThemedPage>
+            }
+          />
+          <Route
+            path="/gui"
+            element={
+              <ThemedPage>
+                <GUI />
+              </ThemedPage>
+            }
+          />
+          <Route
+            path="/centrally"
+            element={
+              <ThemedPage>
+                <Centrally />
+              </ThemedPage>
+            }
+          />
+          <Route
+            path="/client"
+            element={
+              <ThemedPage>
+                <Client />
+              </ThemedPage>
+            }
+          />
+          <Route
+            path="/main"
+            element={
+              <ThemedPage>
+                <MainPage />
+              </ThemedPage>
+            }
+          />
+          <Route
+            path="/company"
+            element={
+              <ThemedPage>
+                <Company />
+              </ThemedPage>
+            }
+          />
+          <Route
+            path="/company-code"
+            element={
+              <ThemedPage>
+                <CompanyCode />
+              </ThemedPage>
+            }
+          />
+          <Route
+            path="/business-area"
+            element={
+              <ThemedPage>
+                <BusinessArea />
+              </ThemedPage>
+            }
+          />
+          <Route
+            path="/plant"
+            element={
+              <ThemedPage>
+                <Plant />
+              </ThemedPage>
+            }
+          />
           <Route
             path="/enterprise-structure"
-            element={<EnterpriseStructure />}
+            element={
+              <ThemedPage>
+                <EnterpriseStructure />
+              </ThemedPage>
+            }
           />
-          <Route path="/sample" element={<Sample />} />
-          <Route path="/general-ledger" element={<GeneralLedger />} />
-          <Route path="/glaccount-details" element={<GeneralLedgerDetails />} />
-          <Route path="/field-status-group" element={<FieldStatus />} />
-
-          <Route path="/crud" element={<Crud />} />
-          <Route path="/customize" element={<ThemeCustomizer />} />
-          <Route path="/journal-entry" element={<JournalEntry />} />
-          <Route path="/hirarchy" element={<ResizableSAPSidebar />} />
+          <Route
+            path="/sample"
+            element={
+              <ThemedPage>
+                <Sample />
+              </ThemedPage>
+            }
+          />
+          <Route
+            path="/general-ledger"
+            element={
+              <ThemedPage>
+                <GeneralLedger />
+              </ThemedPage>
+            }
+          />
+          <Route
+            path="/glaccount-details"
+            element={
+              <ThemedPage>
+                <GeneralLedgerDetails />
+              </ThemedPage>
+            }
+          />
+          <Route
+            path="/field-status-group"
+            element={
+              <ThemedPage>
+                <FieldStatus />
+              </ThemedPage>
+            }
+          />
+          <Route
+            path="/crud"
+            element={
+              <ThemedPage>
+                <Crud />
+              </ThemedPage>
+            }
+          />
+          <Route
+            path="/journal-entry"
+            element={
+              <ThemedPage>
+                <JournalEntry />
+              </ThemedPage>
+            }
+          />
+          <Route
+            path="/hirarchy"
+            element={
+              <ThemedPage>
+                <ResizableSAPSidebar />
+              </ThemedPage>
+            }
+          />
+          {/* ThemeSettings page itself will also be themed */}
+          <Route
+            path="/settings"
+            element={
+              <ThemedPage>
+                <ThemeSettings />
+              </ThemedPage>
+            }
+          />
         </Routes>
 
         {/* Global Toast Notifications */}

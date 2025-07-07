@@ -130,7 +130,7 @@ const Login = () => {
         toast.success("Login successful!");
 
         setTimeout(() => {
-          navigate("/client");
+          navigate("/main");
         }, 1000);
       }
     } catch (err) {

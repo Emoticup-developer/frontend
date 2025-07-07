@@ -532,13 +532,13 @@ const GeneralLedgerDetails = () => {
                       <td className="px-2 py-0.5 whitespace-nowrap text-sm text-gray-500">
                         {account.short_text}
                       </td>
-                      <td className="px-2 py-0.5 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-2 py-0.5 whitespace-nowrap text-center text-sm text-gray-500">
                         {account.account_group}
                       </td>
-                      <td className="px-2 py-0.5 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-2 py-0.5 whitespace-nowrap text-center text-sm text-gray-500">
                         {account.pl_account_type}
                       </td>
-                      <td className="px-2 py-0.5 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-2 py-0.5 whitespace-nowrap text-center text-sm text-gray-500">
                         {account.account_type_indicator}
                       </td>
                       <td className="px-2 py-0.5 whitespace-nowrap text-sm text-gray-500">

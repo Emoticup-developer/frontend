@@ -25,6 +25,7 @@ import { ThemeProvider, useTheme } from "./context/ThemeContext";
 import MainPage from "./pages/MainPage";
 import GUI from "./pages/GUI";
 import Centrally from "./pages/Centrally";
+import GLAccountDocument from "./pages/GLAccountDocument";
 
 // A wrapper component to apply the global theme colors to each page
 const ThemedPage = ({ children }) => {
@@ -77,6 +78,15 @@ export default function App() {
               </ThemedPage>
             }
           />
+          <Route
+            path="/glaccount"
+            element={
+              <ThemedPage>
+                <GLAccountDocument />
+              </ThemedPage>
+            }
+          />
+
           <Route
             path="/centrally"
             element={

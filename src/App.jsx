@@ -79,7 +79,7 @@ export default function App() {
             }
           />
           <Route
-            path="/glaccount"
+            path="/gl-account-document"
             element={
               <ThemedPage>
                 <GLAccountDocument />

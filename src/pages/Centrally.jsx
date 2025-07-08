@@ -1,5 +1,8 @@
 import { useRef, useState, useEffect } from "react";
 import { FiChevronRight, FiChevronDown, FiChevronLeft } from "react-icons/fi";
+import { RiSideBarFill } from "react-icons/ri";
+import { BsCreditCardFill } from "react-icons/bs";
+import { IoIosPrint } from "react-icons/io";
 import {
   FaFolderOpen,
   FaFolder,
@@ -13,6 +16,10 @@ import {
   FaSearch,
   FaList,
   FaCircle,
+  FaRegHandPaper,
+  FaPlay,
+  FaRegBookmark,
+  FaEdit,
 } from "react-icons/fa";
 import Sidebar from "../components/Sidebar";
 
@@ -107,7 +114,7 @@ const Centrally = ({ isActiveTab }) => {
                 Control in Chart of Accounts YCOA Standard Chart of Accounts
               </p>
 
-              <div className="border border-gray-200 p-3 w-[800px] text-center">
+              <div className="border border-gray-300 bg-gray-200 p-3 w-[800px] text-center">
                 <div className="flex items-center justify-center mb-2">
                   <label htmlFor="gl-type" className="w-40 text-right mr-4">
                     G/L Account Type:
@@ -116,7 +123,7 @@ const Centrally = ({ isActiveTab }) => {
                     id="gl-type"
                     name="gl-type"
                     disabled={disabled}
-                    className={`border border-gray-200 p-1 rounded w-37  ${
+                    className={`border border-gray-200 bg-white p-1 rounded w-37  ${
                       disabled ? "bg-gray-100 cursor-not-allowed" : ""
                     }`}
                   >
@@ -141,7 +148,7 @@ const Centrally = ({ isActiveTab }) => {
                     id="account-group"
                     name="account-group"
                     disabled={disabled}
-                    className={`border border-gray-200 p-1 rounded w-37 ${
+                    className={`border border-gray-200 bg-white p-1 rounded w-37 ${
                       disabled ? "bg-gray-100 cursor-not-allowed" : ""
                     }`}
                   >
@@ -169,7 +176,7 @@ const Centrally = ({ isActiveTab }) => {
                         id="functional_area"
                         name="functional_area"
                         disabled={disabled}
-                        className={`border border-gray-200 p-1 rounded w-37 ${
+                        className={`border border-gray-200 bg-white p-1 rounded w-37 ${
                           disabled ? "bg-gray-100 cursor-not-allowed" : ""
                         }`}
                       />
@@ -180,7 +187,7 @@ const Centrally = ({ isActiveTab }) => {
 
               <div className="text-left w-[800px]">
                 <p className="mb-3 mt-3">Description</p>
-                <div className="border border-gray-200 pt-3">
+                <div className="border border-gray-200 bg-gray-200 pt-3">
                   <div>
                     <div className="flex items-center justify-center mb-2">
                       <label
@@ -193,7 +200,7 @@ const Centrally = ({ isActiveTab }) => {
                         id="short_text"
                         name="short_text"
                         disabled={disabled}
-                        className={`border border-gray-200 p-1 rounded w-37 ${
+                        className={`border border-gray-200 bg-white p-1 rounded w-37 ${
                           disabled ? "bg-gray-100 cursor-not-allowed" : ""
                         }`}
                       />
@@ -211,7 +218,7 @@ const Centrally = ({ isActiveTab }) => {
                         id="long_text"
                         name="long_text"
                         disabled={disabled}
-                        className={`border border-gray-200 p-1 rounded w-37 ${
+                        className={`border border-gray-200 bg-white p-1 rounded w-37 ${
                           disabled ? "bg-gray-100 cursor-not-allowed" : ""
                         }`}
                       />
@@ -225,7 +232,7 @@ const Centrally = ({ isActiveTab }) => {
                   Consolidation Data in Chart of Accounts YCOA Standard Chart of
                   Accounts
                 </p>
-                <div className="border border-gray-200 pt-3">
+                <div className="border border-gray-200 bg-gray-200 pt-3">
                   <div>
                     <div className="flex items-center justify-center mb-2">
                       <label
@@ -238,7 +245,7 @@ const Centrally = ({ isActiveTab }) => {
                         id="trading_partner_no"
                         name="trading_partner_no"
                         disabled={disabled}
-                        className={`border border-gray-200 p-1 rounded w-16 mr-21 ${
+                        className={`border border-gray-200 bg-white p-1 rounded w-16 mr-21 ${
                           disabled ? "bg-gray-100 cursor-not-allowed" : ""
                         }`}
                       />
@@ -257,7 +264,7 @@ const Centrally = ({ isActiveTab }) => {
                           id="group_account_number"
                           name="group_account_number"
                           disabled={disabled}
-                          className={`border border-gray-200 p-1 rounded w-37 mr-2 ${
+                          className={`border border-gray-200 bg-white p-1 rounded w-37 mr-2 ${
                             disabled ? "bg-gray-100 cursor-not-allowed" : ""
                           }`}
                         />
@@ -277,7 +284,7 @@ const Centrally = ({ isActiveTab }) => {
             className="p-4 border border-gray-300 bg-white w-full h-[299px] overflow-y-auto"
           >
             <p className="font-medium mb-3">Account Control in Company Code</p>
-            <div className="border border-gray-200 p-3 w-[800px] text-center">
+            <div className="border border-gray-200 bg-gray-200 p-3 w-[800px] text-center">
               {/* Account Currency */}
               <div className="flex items-center mb-2">
                 <label
@@ -292,7 +299,7 @@ const Centrally = ({ isActiveTab }) => {
                   name="account_currency"
                   disabled={disabled}
                   placeholder="INR"
-                  className={`border border-gray-200 p-1 rounded w-12 ${
+                  className={`border border-gray-200 bg-white p-1 rounded w-12 ${
                     disabled ? "bg-gray-100 cursor-not-allowed" : ""
                   }`}
                 />
@@ -313,7 +320,7 @@ const Centrally = ({ isActiveTab }) => {
                   name="balance_currency_check"
                   disabled={disabled}
                   placeholder="INR"
-                  className={`w-4 h-4 border border-gray-200 p-1 rounded ${
+                  className={`w-4 h-4 border border-gray-200 bg-white p-1 rounded ${
                     disabled ? "bg-gray-100 cursor-not-allowed" : ""
                   }`}
                 />
@@ -330,7 +337,7 @@ const Centrally = ({ isActiveTab }) => {
                   name="tax_category"
                   disabled={disabled}
                   placeholder="+1"
-                  className={`border border-gray-200 p-1 rounded w-12 mr-2 ${
+                  className={`border border-gray-200 bg-white p-1 rounded w-12 mr-2 ${
                     disabled ? "bg-gray-100 cursor-not-allowed" : ""
                   }`}
                 />
@@ -353,7 +360,7 @@ const Centrally = ({ isActiveTab }) => {
                 </label>
                 <input
                   type="text"
-                  className="border border-gray-300 px-2 py-1 w-40"
+                  className="border border-gray-300 bg-white px-2 py-1 w-40"
                   placeholder=""
                 />
               </div>
@@ -361,14 +368,14 @@ const Centrally = ({ isActiveTab }) => {
             <p className="font-medium mb-3 mt-3">
               Account Management in Company Code
             </p>
-            <div className="border border-gray-200 p-3 w-[800px] text-center">
+            <div className="border border-gray-200 bg-gray-200 p-3 w-[800px] text-center">
               {/* Account Currency */}
               <div className="flex items-center mb-2">
                 <label className="w-60 text-right pr-4">Sort Key:</label>
                 <input
                   type="text"
                   disabled={disabled}
-                  className={`border border-gray-200 p-1 rounded w-12 ${
+                  className={`border border-gray-200 bg-white p-1 rounded w-12 ${
                     disabled ? "bg-gray-100 cursor-not-allowed" : ""
                   }`}
                 />
@@ -378,7 +385,7 @@ const Centrally = ({ isActiveTab }) => {
             <p className="font-medium mb-3 mt-3">
               Account Settings in Controlling Area A000 Controlling Area A000
             </p>
-            <div className="border border-gray-200 p-3 w-[800px] text-center">
+            <div className="border border-gray-200 bg-gray-200 p-3 w-[800px] text-center">
               {/* CElEm Category */}
               <div className="flex items-center mb-2">
                 <label className="w-60 text-right pr-4">*CElEm category:</label>
@@ -386,7 +393,7 @@ const Centrally = ({ isActiveTab }) => {
                   type="text"
                   placeholder="11"
                   disabled={disabled}
-                  className={`border border-gray-300 px-2 py-1 w-12 rounded ${
+                  className={`border border-gray-300 bg-white px-2 py-1 w-12 rounded ${
                     disabled ? "bg-gray-100 cursor-not-allowed" : ""
                   }`}
                 />
@@ -418,7 +425,7 @@ const Centrally = ({ isActiveTab }) => {
             <p className="font-medium mt-2 mb-3">
               Joint venture data in company code
             </p>
-            <div className="border border-gray-200 p-3 w-[800px] text-center">
+            <div className="border border-gray-200 bg-gray-200 p-3 w-[800px] text-center">
               {/* Recovery Indicator */}
               <div className="flex items-center">
                 <label className="w-60 text-right pr-4">
@@ -442,7 +449,7 @@ const Centrally = ({ isActiveTab }) => {
             <p className="font-medium mb-3">
               Control of document creation in company code
             </p>
-            <div className="border border-gray-200 p-3 w-[800px] text-center">
+            <div className="border border-gray-200 bg-gray-200 p-3 w-[800px] text-center">
               {/* Field Status Group */}
               <div className="flex items-center mb-2">
                 <label className="w-60 text-right pr-4">
@@ -452,7 +459,7 @@ const Centrally = ({ isActiveTab }) => {
                   type="text"
                   placeholder="YB29"
                   disabled={disabled}
-                  className={`border border-gray-300 px-2 py-1 w-20 rounded ${
+                  className={`border border-gray-300 bg-white px-2 py-1 w-20 rounded ${
                     disabled ? "bg-gray-100 cursor-not-allowed" : ""
                   }`}
                 />
@@ -487,7 +494,7 @@ const Centrally = ({ isActiveTab }) => {
             <p className="font-medium mb-3 mt-3">
               Bank/financial details in company code
             </p>
-            <div className="border border-gray-200 p-3 w-[800px] text-center">
+            <div className="border border-gray-200 bg-gray-200 p-3 w-[800px] text-center">
               {/* Planning Level */}
               <div className="flex items-center mb-2">
                 <label className="w-60 text-right pr-4">Planning Level:</label>
@@ -495,7 +502,7 @@ const Centrally = ({ isActiveTab }) => {
                   type="text"
                   placeholder="F0"
                   disabled={disabled}
-                  className={`border border-gray-300 px-2 py-1 w-16 rounded ${
+                  className={`border border-gray-300 bg-white px-2 py-1 w-16 rounded ${
                     disabled ? "bg-gray-100 cursor-not-allowed" : ""
                   }`}
                 />
@@ -655,17 +662,11 @@ const Centrally = ({ isActiveTab }) => {
       <div className="relative flex items-center p-2 bg-[#9abddc] h-12">
         {/* Left - AERP */}
         <h1 className="text-black font-bold text-3xl">AERP</h1>
-
-        {/* Center - Dev.Cust */}
-        <h1 className="absolute left-1/2 transform -translate-x-1/2 text-black text-xl font-semibold">
-          Main Portal
-        </h1>
       </div>
-      {/* Toolbar below top menu 
-      <div className="bg-[#f5fbff] text-black font-semibold p-1 text-xs shadow-md flex justify-between items-center">
-  
-        <div className="flex items-center gap-2 mr-4">
-    
+
+      <div className="relative bg-[#f5fbff] border border-gray-200 text-black font-semibold p-1 text-xs shadow-md flex justify-between items-center">
+        {/* Sidebar Toggle Buttons */}
+        <div className="flex items-center gap-2 mr-4 z-10">
           <button
             className={`p-1 ${
               isSidebarVisible
@@ -679,7 +680,6 @@ const Centrally = ({ isActiveTab }) => {
             <FiChevronLeft size={18} />
           </button>
 
-        
           <button
             className={`p-1 ${
               !isSidebarVisible
@@ -694,7 +694,13 @@ const Centrally = ({ isActiveTab }) => {
           </button>
         </div>
 
-        <div className="relative flex items-center ml-4">
+        {/* Center Text */}
+        <p className="absolute left-1/2 transform -translate-x-1/2 text-[16px] font-semibold">
+          Edit G/L Account Centrally
+        </p>
+
+        {/* Search Box */}
+        <div className="relative flex items-center ml-4 z-10">
           <input
             type="text"
             placeholder="Search..."
@@ -706,567 +712,133 @@ const Centrally = ({ isActiveTab }) => {
       </div>
 
       <div className="flex flex-grow overflow-hidden">
-        {isSidebarVisible && (
-          <div
-            className="min-h-full bg-gradient-to-b from-blue-50 to-white border-r shadow-md overflow-auto resize-x"
-            style={{
-              resize: "vertically",
-              overflow: "auto",
-              minWidth: "250px",
-              maxWidth: "600px",
-              width: "300px",
-            }}
-          >
-            
-            <div className="p-2 text-[#151b54] text-sm h-full overflow-auto">
-              <ul className="text-xs text-blue-900 pl-6 space-y-0">
-          
-                <li>
-                  <div
-                    onClick={() => toggleMenu("devcust")}
-                    className="flex items-center justify-between hover:bg-gray-200 pt-2 px-2 rounded cursor-pointer"
-                  >
-                    <div className="flex items-center space-x-2">
-                      {openMenus.devcust ? <FaFolderOpen /> : <FaFolder />}
-                      <span>Dev.Cust</span>
-                    </div>
-                    {openMenus.devcust ? <FiChevronDown /> : <FiChevronRight />}
-                  </div>
+        {isSidebarVisible && <Sidebar />}
 
-                  {openMenus.devcust && (
-                    <ul className="pl-6 mt-1 text-blue-900 space-y-0">
-                  
-                      <li>
-                        <div
-                          onClick={() => toggleMenu("masterdata")}
-                          className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
-                        >
-                          <div className="flex items-center space-x-2">
-                            {openMenus.masterdata ? (
-                              <FaFolderOpen />
-                            ) : (
-                              <FaFolder />
-                            )}
-                            <span>Favourites</span>
-                          </div>
-                          {openMenus.masterdata ? (
-                            <FiChevronDown />
-                          ) : (
-                            <FiChevronRight />
-                          )}
-                        </div>
-
-                        {openMenus.masterdata && (
-                          <ul className="pl-6 mt-1 space-y-1">
-                            <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                              Customers
-                            </li>
-                            <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                              Vendors
-                            </li>
-                          </ul>
-                        )}
-                      </li>
-
-          
-                      <li>
-                        <div
-                          onClick={() => toggleMenu("aerp")}
-                          className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
-                        >
-                          <div className="flex items-center space-x-2">
-                            {openMenus.aerp ? <FaFolderOpen /> : <FaFolder />}
-                            <span>AERP Menu</span>
-                          </div>
-                          {openMenus.aerp ? (
-                            <FiChevronDown />
-                          ) : (
-                            <FiChevronRight />
-                          )}
-                        </div>
-
-                        {openMenus.aerp && (
-                          <ul className="pl-6 mt-1 space-y-1">
-                    
-                            <li>
-                              <div
-                                onClick={() => toggleMenu("client")}
-                                className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 rounded cursor-pointer"
-                              >
-                                <div className="flex items-center space-x-2">
-                                  {openMenus.client ? (
-                                    <FaFolderOpen />
-                                  ) : (
-                                    <FaFolder />
-                                  )}
-                                  <span>Client</span>
-                                </div>
-                                {openMenus.client ? (
-                                  <FiChevronDown />
-                                ) : (
-                                  <FiChevronRight />
-                                )}
-                              </div>
-
-                              {openMenus.client && (
-                                <ul className="pl-6 mt-1 space-y-1">
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Client Details
-                                  </li>
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Preferences
-                                  </li>
-                                </ul>
-                              )}
-                            </li>
-
-                  
-                            <li>
-                              <div
-                                onClick={() => toggleMenu("accounting")}
-                                className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 rounded cursor-pointer"
-                              >
-                                <div className="flex items-center space-x-2">
-                                  {openMenus.accounting ? (
-                                    <FaFolderOpen />
-                                  ) : (
-                                    <FaFolder />
-                                  )}
-                                  <span>Accounting</span>
-                                </div>
-                                {openMenus.accounting ? (
-                                  <FiChevronDown />
-                                ) : (
-                                  <FiChevronRight />
-                                )}
-                              </div>
-
-                              {openMenus.accounting && (
-                                <ul className="pl-6 space-y-0">
-                      
-                                  <li>
-                                    <div
-                                      onClick={() => toggleMenu("financial")}
-                                      className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
-                                    >
-                                      <div className="flex items-center space-x-2">
-                                        {openMenus.financial ? (
-                                          <FaFolderOpen />
-                                        ) : (
-                                          <FaFolder />
-                                        )}
-                                        <span>Financial Accounting</span>
-                                      </div>
-                                      {openMenus.financial ? (
-                                        <FiChevronDown />
-                                      ) : (
-                                        <FiChevronRight />
-                                      )}
-                                    </div>
-
-                                    {openMenus.financial && (
-                                      <ul className="pl-6 space-y-0">
-                          
-                                        <li>
-                                          <div
-                                            onClick={() => toggleMenu("ledger")}
-                                            className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
-                                          >
-                                            <div className="flex items-center space-x-2">
-                                              {openMenus.ledger ? (
-                                                <FaFolderOpen />
-                                              ) : (
-                                                <FaFolder />
-                                              )}
-                                              <span>General Ledger</span>
-                                            </div>
-                                            {openMenus.ledger ? (
-                                              <FiChevronDown />
-                                            ) : (
-                                              <FiChevronRight />
-                                            )}
-                                          </div>
-
-                                          {openMenus.ledger && (
-                                            <ul className="pl-6 space-y-0">
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Document Entry
-                                              </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Document
-                                              </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Account
-                                              </li>
-                                              <li>
-                                                <div
-                                                  onClick={() =>
-                                                    toggleMenu("masterRecord")
-                                                  }
-                                                  className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
-                                                >
-                                                  <div className="flex items-center space-x-2">
-                                                    {openMenus.masterRecord ? (
-                                                      <FaFolderOpen />
-                                                    ) : (
-                                                      <FaFolder />
-                                                    )}
-                                                    <span>Master Record</span>
-                                                  </div>
-                                                  {openMenus.masterRecord ? (
-                                                    <FiChevronDown />
-                                                  ) : (
-                                                    <FiChevronRight />
-                                                  )}
-                                                </div>
-
-                                                {openMenus.masterRecord && (
-                                                  <ul className="pl-6 space-y-0">
-                                                    <li>
-                                                      <div
-                                                        onClick={() =>
-                                                          toggleMenu(
-                                                            "glAccount"
-                                                          )
-                                                        }
-                                                        className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
-                                                      >
-                                                        <div className="flex items-center space-x-2">
-                                                          {openMenus.glAccount ? (
-                                                            <FaFolderOpen />
-                                                          ) : (
-                                                            <FaFolder />
-                                                          )}
-                                                          <span>
-                                                            G L Account
-                                                          </span>
-                                                        </div>
-                                                        {openMenus.glAccount ? (
-                                                          <FiChevronDown />
-                                                        ) : (
-                                                          <FiChevronRight />
-                                                        )}
-                                                      </div>
-
-                                                      {openMenus.glAccount && (
-                                                        <ul className="pl-6 space-y-0">
-                                                          <li>
-                                                            <div
-                                                              onClick={() =>
-                                                                toggleMenu(
-                                                                  "individualProcessing"
-                                                                )
-                                                              }
-                                                              className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
-                                                            >
-                                                              <div className="flex items-center space-x-2">
-                                                                {openMenus.individualProcessing ? (
-                                                                  <FaFolderOpen />
-                                                                ) : (
-                                                                  <FaFolder />
-                                                                )}
-                                                                <span>
-                                                                  Individual
-                                                                  Processing
-                                                                </span>
-                                                              </div>
-                                                              {openMenus.individualProcessing ? (
-                                                                <FiChevronDown />
-                                                              ) : (
-                                                                <FiChevronRight />
-                                                              )}
-                                                            </div>
-
-                                                            {openMenus.individualProcessing && (
-                                                              <ul className="pl-6 space-y-0">
-                                                                <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                                  <a href="/centrally">
-                                                                    Centrally
-                                                                  </a>
-                                                                </li>
-                                                                <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                                  In Chart of
-                                                                  Accounts
-                                                                </li>
-                                                                <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                                  In Company
-                                                                  Code
-                                                                </li>
-                                                              </ul>
-                                                            )}
-                                                          </li>
-                                                          <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                            Collective
-                                                            Processing
-                                                          </li>
-                                                          <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                            Display Charges
-                                                          </li>
-                                                          <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                            Compare Company Code
-                                                          </li>
-                                                          <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                            Sample Account
-                                                          </li>
-                                                        </ul>
-                                                      )}
-                                                    </li>
-                                                    <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                      Profit Center
-                                                    </li>
-                                                  </ul>
-                                                )}
-                                              </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Stastical Key Figures
-                                              </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Periodic Processing
-                                              </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Corrections
-                                              </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Reporting
-                                              </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Information System
-                                              </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Environment
-                                              </li>
-                                            </ul>
-                                          )}
-                                        </li>
-
-                                  
-                                        <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                          Statistical Key Figures
-                                        </li>
-                                        <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                          Periodic Processing
-                                        </li>
-                                        <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                          Corrections
-                                        </li>
-                                        <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                          Reporting
-                                        </li>
-                                        <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                          Information System
-                                        </li>
-                                        <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                          Environment
-                                        </li>
-                                      </ul>
-                                    )}
-                                  </li>
-
-                                  
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Accounts Payable
-                                  </li>
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Accounts Receivable
-                                  </li>
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Asset Accounting
-                                  </li>
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Bank Ledger
-                                  </li>
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Special Purpose Ledger
-                                  </li>
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Travel Management
-                                  </li>
-                                </ul>
-                              )}
-                            </li>
-                          </ul>
-                        )}
-                      </li>
-                    </ul>
-                  )}
-                </li>
-
-    
-                <li>
-                  <div
-                    onClick={() => toggleMenu("imgfunc")}
-                    className="flex items-center justify-between hover:bg-gray-200 pt-2 px-2 rounded cursor-pointer"
-                  >
-                    <div className="flex items-center space-x-2">
-                      {openMenus.imgfunc ? <FaFolderOpen /> : <FaFolder />}
-                      <span>IMG-Functionality</span>
-                    </div>
-                    {openMenus.imgfunc ? <FiChevronDown /> : <FiChevronRight />}
-                  </div>
-
-                  {openMenus.imgfunc && (
-                    <ul className="pl-6 mt-1 space-y-1 text-blue-900">
-                      <li>
-                        <div
-                          onClick={() => toggleMenu("imgsub")}
-                          className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
-                        >
-                          <div className="flex items-center space-x-2">
-                            {openMenus.imgsub ? <FaFolderOpen /> : <FaFolder />}
-                            <span>Configuration</span>
-                          </div>
-                          {openMenus.imgsub ? (
-                            <FiChevronDown />
-                          ) : (
-                            <FiChevronRight />
-                          )}
-                        </div>
-
-                        {openMenus.imgsub && (
-                          <ul className="pl-6 mt-1 space-y-1">
-                            <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                              System Setup
-                            </li>
-                            <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                              Integration
-                            </li>
-                          </ul>
-                        )}
-                      </li>
-
-                      <li className="hover:bg-gray-100 p-1 rounded cursor-pointer flex items-center space-x-2">
-                        <FaFolder />
-                        <span>Transport</span>
-                      </li>
-                    </ul>
-                  )}
-                </li>
-
-    
-                <li>
-                  <div
-                    onClick={() => toggleMenu("quickaccess")}
-                    className="flex items-center justify-between hover:bg-gray-200 pt-2 px-2 rounded cursor-pointer"
-                  >
-                    <div className="flex items-center space-x-2">
-                      {openMenus.quickaccess ? <FaFolderOpen /> : <FaFolder />}
-                      <span>Quick Access</span>
-                    </div>
-                    {openMenus.quickaccess ? (
-                      <FiChevronDown />
-                    ) : (
-                      <FiChevronRight />
-                    )}
-                  </div>
-
-                  {openMenus.quickaccess && (
-                    <ul className="pl-6 mt-1 space-y-1 text-blue-900">
-                      <li className="hover:bg-gray-100 p-1 rounded cursor-pointer flex items-center space-x-2">
-                        <FaFolder />
-                        <span>Recent Items</span>
-                      </li>
-                      <li className="hover:bg-gray-100 p-1 rounded cursor-pointer flex items-center space-x-2">
-                        <FaFolder />
-                        <span>Frequently Used</span>
-                      </li>
-                    </ul>
-                  )}
-                </li>
-              </ul>
+        {/* Main Content */}
+        <div className="flex-1 font-sans text-xs bg-gray-50">
+          <div className="bg-gray-50 p-2">
+            <div className="flex justify-between space-x-6 text-sm text-gray-700">
+              <div className="flex px-2">
+                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+                  <BsCreditCardFill />
+                  <span className="mr-5">Hold</span>
+                </div>
+                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+                  <RiSideBarFill />
+                  <span className="mr-5">Simulate</span>
+                </div>
+                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+                  <FaRegBookmark />
+                  <span className="mr-5">Park</span>
+                </div>
+                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+                  <FaEdit />
+                  <span className="mr-5">Editing Options</span>
+                </div>
+                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+                  <span>More</span>
+                  <FiChevronDown size={14} />
+                </div>
+              </div>
+              <div className="flex">
+                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+                  <IoIosPrint />
+                </div>
+                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+                  <span className="px-2">Exit</span>
+                </div>
+              </div>
             </div>
           </div>
-        )} */}
-
-      <Sidebar />
-
-      {/* Main Content */}
-      <div className="flex-1 overflow-auto font-sans text-xs bg-gray-50 space-y-2">
-        <div className="bg-[#e5f3fd] p-6">
-          {/* G/L Account Row */}
-          <div className="flex items-center space-x-2 space-y-2">
-            <label
-              htmlFor="glAccount"
-              className="w-32 text-right text-xs font-medium"
-            >
-              G/L Account <span className="text-amber-500 text-xs">*</span>
-            </label>
-            <input
-              id="glAccount"
-              name="glAccount"
-              type="text"
-              className="w-24 h-5 border rounded px-1 py-0.5 text-xs"
-            />
-            <FaSearch className="text-gray-600 cursor-pointer" />
-            <p className="text-xs whitespace-nowrap">Receivables Domestic</p>
-          </div>
-
-          {/* Company Code Row */}
-          <div className="flex items-center space-x-2">
-            <label
-              htmlFor="company_code"
-              className="w-32 text-right text-xs font-medium"
-            >
-              Company Code <span className="text-amber-500 text-xs">*</span>
-            </label>
-            <input
-              id="company_code"
-              name="company_code"
-              type="text"
-              className="w-12 h-5 border rounded px-1 py-0.5 text-xs"
-            />
-          </div>
-        </div>
-
-        <div className="w-full">
-          {/* Tabs */}
-          <div className="p-2 flex items-center">
-            <div
-              ref={scrollRef}
-              className="flex space-x-1 overflow-x-auto scrollbar-hide snap-x snap-mandatory"
-            >
-              {tabNames.map((tab, index) => (
-                <a
-                  key={tab.name}
-                  href={`#${tab.id}`} // use tab.id here
-                  onClick={(e) => handleTabClick(tab.name, index, e)}
-                  className={`snap-start px-3 py-0.5 whitespace-nowrap text-xs font-medium border-b-2 ${
-                    activeTab === tab.name
-                      ? "text-blue-900 border-blue-900"
-                      : "text-gray-700 border-transparent"
-                  }`}
-                >
-                  {tab.name}
-                </a>
-              ))}
-            </div>
-
-            {showScrollButton && (
-              <button
-                onClick={() =>
-                  scrollRef.current?.scrollBy({
-                    left: 120,
-                    behavior: "smooth",
-                  })
-                }
-                className="ml-2 p-1 bg-white rounded shadow hover:bg-gray-100"
+          <div className="bg-[#e5f3fd] p-6">
+            {/* G/L Account Row */}
+            <div className="flex items-center space-x-2 space-y-2">
+              <label
+                htmlFor="glAccount"
+                className="w-32 text-right text-xs font-medium"
               >
-                <FiChevronRight size={16} />
-              </button>
-            )}
+                G/L Account <span className="text-amber-500 text-xs">*</span>
+              </label>
+
+              <input
+                id="glAccount"
+                name="glAccount"
+                type="text"
+                className="w-24 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+              />
+
+              <FaSearch className="text-gray-600 cursor-pointer" />
+
+              <p className="text-xs whitespace-nowrap">Receivables Domestic</p>
+            </div>
+
+            {/* Company Code Row */}
+            <div className="flex items-center space-x-2">
+              <label
+                htmlFor="company_code"
+                className="w-32 text-right text-xs font-medium"
+              >
+                Company Code <span className="text-amber-500 text-xs">*</span>
+              </label>
+              <input
+                id="company_code"
+                name="company_code"
+                type="text"
+                className="w-12 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+              />
+            </div>
           </div>
 
-          {/* Optional message */}
-          {disabled && (
-            <div className="px-4 text-sm text-gray-500 mb-2">
-              Unlocking inputs...
-            </div>
-          )}
+          <div className="w-full">
+            {/* Tabs */}
+            <div className="p-2 flex items-center">
+              <div
+                ref={scrollRef}
+                className="flex space-x-1 overflow-x-auto scrollbar-hide snap-x snap-mandatory"
+              >
+                {tabNames.map((tab, index) => (
+                  <a
+                    key={tab.name}
+                    href={`#${tab.id}`} // use tab.id here
+                    onClick={(e) => handleTabClick(tab.name, index, e)}
+                    className={`snap-start px-3 py-0.5 whitespace-nowrap text-xs font-medium border-b-2 ${
+                      activeTab === tab.name
+                        ? "text-blue-900 border-blue-900"
+                        : "text-gray-700 border-transparent"
+                    }`}
+                  >
+                    {tab.name}
+                  </a>
+                ))}
+              </div>
 
-          {/* Tab Section Content */}
-          {renderSectionContent()}
+              {showScrollButton && (
+                <button
+                  onClick={() =>
+                    scrollRef.current?.scrollBy({
+                      left: 120,
+                      behavior: "smooth",
+                    })
+                  }
+                  className="ml-2 p-1 bg-white rounded shadow hover:bg-gray-100"
+                >
+                  <FiChevronRight size={16} />
+                </button>
+              )}
+            </div>
+
+            {/* Optional message */}
+            {disabled && (
+              <div className="px-4 text-sm text-gray-500 mb-2">
+                Unlocking inputs...
+              </div>
+            )}
+
+            {/* Tab Section Content */}
+            {renderSectionContent()}
+          </div>
         </div>
       </div>
-      {/* </div>  */}
     </div>
   );
 };

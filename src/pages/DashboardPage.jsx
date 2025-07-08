@@ -6,7 +6,6 @@ import {
   FaMoneyBillWave,
 } from "react-icons/fa";
 import Topbar from "../components/Topbar";
-import Sidebar from "../components/Sidebar";
 
 const DashboardPage = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);

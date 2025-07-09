@@ -392,7 +392,7 @@ const Sidebar = () => {
 
                                                       {openMenus.individualProcessing && (
                                                         <ul className="pl-6 space-y-0">
-                                                          <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                                          <li className="hover:bg-gray-100 font-bold p-1 rounded cursor-pointer">
                                                             <a href="/centrally">
                                                               Centrally
                                                             </a>

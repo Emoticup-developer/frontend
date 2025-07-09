@@ -3,6 +3,7 @@ import { FiChevronRight, FiChevronDown, FiChevronLeft } from "react-icons/fi";
 import { RiSideBarFill } from "react-icons/ri";
 import { BsCreditCardFill } from "react-icons/bs";
 import { IoIosPrint } from "react-icons/io";
+import { MdCancelScheduleSend } from "react-icons/md";
 import {
   FaFolderOpen,
   FaFolder,
@@ -383,7 +384,7 @@ const GLAccountDocument = ({ isActiveTab }) => {
                 <span>INR</span>
               </div>
             </div>
-            <div className="overflow-y-auto max-h-[150px]">
+            <div className="overflow-y-auto max-h-[165px]">
               <table className="w-full min-w-[800px] table-fixed">
                 <thead className="bg-gray-50">
                   <tr>
@@ -400,13 +401,13 @@ const GLAccountDocument = ({ isActiveTab }) => {
                     <th className="p-2 border-b border-gray-300 text-left text-xs font-bold text-gray-600 resize-x overflow-hidden min-w-[120px] whitespace-nowrap truncate">
                       Short Text
                     </th>
-                    <th className="p-2 border-b border-gray-300 text-left text-xs font-bold text-gray-600 resize-x overflow-hidden min-w-[60px] whitespace-nowrap truncate">
+                    <th className="p-2 border-b border-gray-300 text-left text-xs font-bold text-gray-600 resize-x overflow-hidden min-w-[60px] w-[60px] whitespace-nowrap truncate">
                       D/C
                     </th>
-                    <th className="p-2 border-b border-gray-300 text-left text-xs font-bold text-gray-600 resize-x overflow-hidden min-w-[160px] whitespace-nowrap truncate">
+                    <th className="p-2 border-b border-gray-300 text-left text-xs font-bold text-gray-600 resize-x overflow-hidden min-w-[110px] w-[110px] whitespace-nowrap truncate">
                       Amount in doc.curr.
                     </th>
-                    <th className="p-2 border-b border-gray-300 text-left text-xs font-bold text-gray-600 resize-x overflow-hidden min-w-[160px] whitespace-nowrap truncate">
+                    <th className="p-2 border-b border-gray-300 text-left text-xs font-bold text-gray-600 resize-x overflow-hidden min-w-[110px] w-[110px] whitespace-nowrap truncate">
                       Loc.curr.amount
                     </th>
                     <th className="p-2 border-b border-gray-300 text-center text-xs font-bold text-gray-600 overflow-hidden min-w-[40px] w-[40px] whitespace-nowrap truncate">
@@ -426,7 +427,7 @@ const GLAccountDocument = ({ isActiveTab }) => {
                       key={index}
                       className="border-b border-gray-200 hover:bg-gray-50"
                     >
-                      <td className="p-1 text-center">
+                      <td className="p-1 text-center border-r border-gray-200">
                         <input
                           type="checkbox"
                           checked={selectedRows.includes(index)}
@@ -561,34 +562,34 @@ const GLAccountDocument = ({ isActiveTab }) => {
             {/* Buttons */}
             <div className="flex justify-between items-center mt-2 px-4 py-2">
               {/* Left Buttons */}
-              <div className="flex gap-4">
+              <div className="flex gap-2">
                 <button
                   onClick={addNewLine}
-                  className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm"
+                  className="flex items-center space-x-1 cursor-pointer hover:text-blue-600"
                 >
                   <FaPlusCircle className="text-sm" />
-                  Add Line
+                  <span className="mr-2"> Add Line</span>
                 </button>
                 <button
                   onClick={() => {
                     if (selectedRows.length > 0) setShowDeleteModal(true);
                   }}
-                  className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm"
+                  className="flex items-center space-x-1 cursor-pointer hover:text-blue-600"
                 >
-                  <FaMinusCircle className="text-sm" />
-                  Delete Line
+                  <FaMinusCircle />
+                  <span className="mr-2"> Delete Line</span>
                 </button>
               </div>
 
               {/* Right Buttons */}
-              <div className="flex gap-4">
-                <button className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm">
-                  <FaPaperPlane className="text-sm" />
-                  Post
+              <div className="flex gap-2">
+                <button className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+                  <FaPaperPlane />
+                  <span className="mr-2">Post</span>
                 </button>
-                <button className="flex items-center gap-2 bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm">
-                  <FaTimesCircle className="text-sm" />
-                  Cancel
+                <button className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+                  <MdCancelScheduleSend />
+                  <span className="mr-2">Cancel</span>
                 </button>
               </div>
             </div>

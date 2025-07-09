@@ -43,7 +43,7 @@ const Login = () => {
   // Fetch all languages
   const fetchLanguages = async () => {
     try {
-      const res = await axios.get("http://192.168.0.235:8000/api/language");
+      const res = await axios.get("http://192.168.1.132:8000/api/language");
       setLanguageList(res.data);
     } catch (err) {
       toast.error("Failed to fetch languages");
@@ -118,7 +118,7 @@ const Login = () => {
 
     try {
       const res = await axios.post(
-        "http://192.168.0.235:8000/api/login",
+        "http://192.168.1.132:8000/api/login",
         formData
       );
 

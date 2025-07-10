@@ -26,6 +26,8 @@ import MainPage from "./pages/MainPage";
 import GUI from "./pages/GUI";
 import Centrally from "./pages/Centrally";
 import GLAccountDocument from "./pages/GLAccountDocument";
+import DefineCompany from "./pages/DefineCompany";
+import CreateCompany from "./pages/CreateCompany";
 
 // A wrapper component to apply the global theme colors to each page
 const ThemedPage = ({ children }) => {
@@ -86,7 +88,6 @@ export default function App() {
               </ThemedPage>
             }
           />
-
           <Route
             path="/centrally"
             element={
@@ -108,6 +109,22 @@ export default function App() {
             element={
               <ThemedPage>
                 <MainPage />
+              </ThemedPage>
+            }
+          />
+          <Route
+            path="/define-company"
+            element={
+              <ThemedPage>
+                <DefineCompany />
+              </ThemedPage>
+            }
+          />
+          <Route
+            path="/create-company"
+            element={
+              <ThemedPage>
+                <CreateCompany />
               </ThemedPage>
             }
           />

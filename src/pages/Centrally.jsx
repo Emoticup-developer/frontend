@@ -107,7 +107,7 @@ const Centrally = ({ isActiveTab }) => {
         return (
           <section
             id="type-description"
-            className="p-4 border border-gray-300 bg-white w-full h-[299px] overflow-y-auto"
+            className="p-4 border border-gray-300 bg-white w-full h-[270px] overflow-y-auto"
           >
             <div>
               <p className="mb-2">
@@ -281,7 +281,7 @@ const Centrally = ({ isActiveTab }) => {
         return (
           <section
             id="control-data"
-            className="p-4 border border-gray-300 bg-white w-full h-[299px] overflow-y-auto"
+            className="p-4 border border-gray-300 bg-white w-full h-[270px] overflow-y-auto"
           >
             <p className="font-medium mb-3">Account Control in Company Code</p>
             <div className="border border-gray-200 bg-gray-200 p-3 w-[800px] text-center">
@@ -444,7 +444,7 @@ const Centrally = ({ isActiveTab }) => {
         return (
           <section
             id="create-bank-interest"
-            className="p-4 border border-gray-300 bg-white w-full h-[299px] overflow-y-auto"
+            className="p-4 border border-gray-300 bg-white w-full h-[270px] overflow-y-auto"
           >
             <p className="font-medium mb-3">
               Control of document creation in company code

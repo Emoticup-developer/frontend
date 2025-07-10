@@ -775,82 +775,86 @@ const GLAccountDocument = ({ isActiveTab }) => {
       </div>
       <div className="flex flex-grow overflow-hidden">
         {isSidebarVisible && <Sidebar />}
-        <div className="flex-1 font-sans text-xs bg-gray-50">
-          <div className="bg-gray-50 p-2">
-            <div className="flex justify-between space-x-6 text-sm text-gray-700">
-              <div className="flex px-2">
-                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                  <BsCreditCardFill />
-                  <span className="mr-5">Hold</span>
-                </div>
-                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                  <RiSideBarFill />
-                  <span className="mr-5">Simulate</span>
-                </div>
-                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                  <FaRegBookmark />
-                  <span className="mr-5">Park</span>
-                </div>
-                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                  <FaEdit />
-                  <span className="mr-5">Editing Options</span>
-                </div>
-                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                  <span>More</span>
-                  <FiChevronDown size={14} />
+        <div className="flex flex-col min-h-screen w-full bg-gray-50 font-sans text-xs">
+          <div className="flex-grow w-full bg-[#f0f4f8] text-sm font-sans flex flex-col">
+            <div className="h-full w-full bg-gray-100 shadow-md border border-gray-300 rounded-sm flex flex-col">
+              <div className="bg-gray-50 p-2">
+                <div className="flex justify-between space-x-6 text-sm text-gray-700">
+                  <div className="flex px-2">
+                    <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+                      <BsCreditCardFill />
+                      <span className="mr-5">Hold</span>
+                    </div>
+                    <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+                      <RiSideBarFill />
+                      <span className="mr-5">Simulate</span>
+                    </div>
+                    <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+                      <FaRegBookmark />
+                      <span className="mr-5">Park</span>
+                    </div>
+                    <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+                      <FaEdit />
+                      <span className="mr-5">Editing Options</span>
+                    </div>
+                    <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+                      <span>More</span>
+                      <FiChevronDown size={14} />
+                    </div>
+                  </div>
+                  <div className="flex">
+                    <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+                      <IoIosPrint />
+                    </div>
+                    <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+                      <span className="px-2">Exit</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="flex">
-                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                  <IoIosPrint />
-                </div>
-                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                  <span className="px-2">Exit</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="w-full">
-            <div className="p-2 flex items-center">
-              <div
-                ref={scrollRef}
-                className="flex space-x-1 overflow-x-auto scrollbar-hide snap-x snap-mandatory"
-              >
-                {tabNames.map((tab, index) => (
-                  <a
-                    key={tab.name}
-                    href={`#${tab.id}`}
-                    onClick={(e) => handleTabClick(tab.name, index, e)}
-                    className={`snap-start px-3 py-0.5 whitespace-nowrap text-xs font-medium border-b-2 ${
-                      activeTab === tab.name
-                        ? "text-blue-900 border-blue-900"
-                        : "text-gray-700 border-transparent"
-                    }`}
+              <div className="w-full">
+                <div className="p-2 flex items-center">
+                  <div
+                    ref={scrollRef}
+                    className="flex space-x-1 overflow-x-auto scrollbar-hide snap-x snap-mandatory"
                   >
-                    {tab.name}
-                  </a>
-                ))}
+                    {tabNames.map((tab, index) => (
+                      <a
+                        key={tab.name}
+                        href={`#${tab.id}`}
+                        onClick={(e) => handleTabClick(tab.name, index, e)}
+                        className={`snap-start px-3 py-0.5 whitespace-nowrap text-xs font-medium border-b-2 ${
+                          activeTab === tab.name
+                            ? "text-blue-900 border-blue-900"
+                            : "text-gray-700 border-transparent"
+                        }`}
+                      >
+                        {tab.name}
+                      </a>
+                    ))}
+                  </div>
+                  {showScrollButton && (
+                    <button
+                      onClick={() =>
+                        scrollRef.current?.scrollBy({
+                          left: 120,
+                          behavior: "smooth",
+                        })
+                      }
+                      className="ml-2 p-1 bg-white rounded shadow hover:bg-gray-100"
+                    >
+                      <FiChevronRight size={16} />
+                    </button>
+                  )}
+                </div>
+                {disabled && (
+                  <div className="px-4 text-sm text-gray-500 mb-2">
+                    Unlocking inputs...
+                  </div>
+                )}
+                {renderSectionContent()}
               </div>
-              {showScrollButton && (
-                <button
-                  onClick={() =>
-                    scrollRef.current?.scrollBy({
-                      left: 120,
-                      behavior: "smooth",
-                    })
-                  }
-                  className="ml-2 p-1 bg-white rounded shadow hover:bg-gray-100"
-                >
-                  <FiChevronRight size={16} />
-                </button>
-              )}
             </div>
-            {disabled && (
-              <div className="px-4 text-sm text-gray-500 mb-2">
-                Unlocking inputs...
-              </div>
-            )}
-            {renderSectionContent()}
           </div>
         </div>
       </div>

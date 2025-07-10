@@ -19,6 +19,9 @@ const Sidebar = () => {
     individualProcessing: false,
     documentEntry: false,
     documentMenu: false,
+    enterpriseStructure: false,
+    fi: false,
+    mm: false,
   });
 
   const toggleMenu = (menu) => {
@@ -30,7 +33,7 @@ const Sidebar = () => {
       style={{
         minWidth: "250px",
         maxWidth: "600px",
-        width: "300px",
+        width: "400px",
       }}
     >
       <div className="min-w-[300px] p-2 text-[#151b54] text-sm">
@@ -488,6 +491,115 @@ const Sidebar = () => {
                             </li>
                             <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
                               Travel Management
+                            </li>
+                          </ul>
+                        )}
+                      </li>
+
+                      <li>
+                        <div
+                          onClick={() => toggleMenu("enterpriseStructure")}
+                          className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 rounded cursor-pointer"
+                        >
+                          <div className="flex items-center space-x-2">
+                            {openMenus.enterpriseStructure ? (
+                              <FaFolderOpen />
+                            ) : (
+                              <FaFolder />
+                            )}
+                            <span>Enterprise Structure</span>
+                          </div>
+                          {openMenus.enterpriseStructure ? (
+                            <FiChevronDown />
+                          ) : (
+                            <FiChevronRight />
+                          )}
+                        </div>
+
+                        {openMenus.enterpriseStructure && (
+                          <ul className="pl-6 space-y-0">
+                            {/* FI Folder */}
+                            <li>
+                              <div
+                                onClick={() => toggleMenu("fi")}
+                                className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
+                              >
+                                <div className="flex items-center space-x-2">
+                                  {openMenus.fi ? (
+                                    <FaFolderOpen />
+                                  ) : (
+                                    <FaFolder />
+                                  )}
+                                  <span>FI (Financial Accounting)</span>
+                                </div>
+                                {openMenus.fi ? (
+                                  <FiChevronDown />
+                                ) : (
+                                  <FiChevronRight />
+                                )}
+                              </div>
+
+                              {openMenus.fi && (
+                                <ul className="pl-6 mt-1 space-y-0 text-xs text-blue-900">
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    <a href="/define-company">Define Company</a>
+                                  </li>
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Define Company Code
+                                  </li>
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Assign Company Code to Company
+                                  </li>
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Define Business Area
+                                  </li>
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Define Functional Area
+                                  </li>
+                                </ul>
+                              )}
+                            </li>
+
+                            {/* MM Folder */}
+                            <li>
+                              <div
+                                onClick={() => toggleMenu("mm")}
+                                className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
+                              >
+                                <div className="flex items-center space-x-2">
+                                  {openMenus.mm ? (
+                                    <FaFolderOpen />
+                                  ) : (
+                                    <FaFolder />
+                                  )}
+                                  <span>MM (Materials Management)</span>
+                                </div>
+                                {openMenus.mm ? (
+                                  <FiChevronDown />
+                                ) : (
+                                  <FiChevronRight />
+                                )}
+                              </div>
+
+                              {openMenus.mm && (
+                                <ul className="pl-6 mt-1 space-y-0 text-xs text-blue-900">
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Define Plant
+                                  </li>
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Define Storage Location
+                                  </li>
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Define Purchasing Organization
+                                  </li>
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Assign Purchasing Org to Plant
+                                  </li>
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Assign Plant to Company Code
+                                  </li>
+                                </ul>
+                              )}
                             </li>
                           </ul>
                         )}

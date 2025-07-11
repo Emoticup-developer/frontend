@@ -22,12 +22,12 @@ import ThemeSettings from "./components/ThemeSettings";
 
 // Import ThemeProvider and useTheme from our new context file
 import { ThemeProvider, useTheme } from "./context/ThemeContext";
-import MainPage from "./pages/MainPage";
 import GUI from "./pages/GUI";
 import Centrally from "./pages/Centrally";
 import GLAccountDocument from "./pages/GLAccountDocument";
 import DefineCompany from "./pages/DefineCompany";
 import CreateCompany from "./pages/CreateCompany";
+import HomePage from "./pages/HomePage";
 
 // A wrapper component to apply the global theme colors to each page
 const ThemedPage = ({ children }) => {
@@ -105,10 +105,10 @@ export default function App() {
             }
           />
           <Route
-            path="/main"
+            path="/home"
             element={
               <ThemedPage>
-                <MainPage />
+                <HomePage />
               </ThemedPage>
             }
           />

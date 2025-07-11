@@ -1,13 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaFolder, FaFolderOpen } from "react-icons/fa";
 import { FiChevronDown, FiChevronRight } from "react-icons/fi";
+import { useSearch } from "../context/SearchContext";
 
 const Sidebar = () => {
+  const { searchTarget } = useSearch();
+
+  useEffect(() => {
+    if (searchTarget === "G001") {
+      // Expand the relevant parent menu, e.g., 'accounting'
+      setOpenMenus((prev) => ({ ...prev, accounting: true }));
+    }
+  }, [searchTarget]);
+
   const [openMenus, setOpenMenus] = useState({
     devcust: false,
     masterdata: false,
     aerp: false,
     client: false,
+    settings: false,
     accounting: false,
     imgfunc: false,
     imgsub: false,
@@ -20,8 +31,16 @@ const Sidebar = () => {
     documentEntry: false,
     documentMenu: false,
     enterpriseStructure: false,
-    fi: false,
-    mm: false,
+
+    // Enterprise Structure submenus
+    def: false, // Definition
+    fi: false, // Financial Accounting
+    co: false, // Controlling
+    lo: false, // Logistics - General
+    sd: false, // Sales & Distribution
+    mm: false, // Material Management
+    pm: false, // Plant Maintenance
+    hr: false, // Human Resource Management
   });
 
   const toggleMenu = (menu) => {
@@ -111,13 +130,44 @@ const Sidebar = () => {
                         </div>
 
                         {openMenus.client && (
-                          <ul className="pl-6 mt-1 space-y-1">
+                          <ul className="pl-6 mt-1 space-y-0">
                             <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                              Client Details
+                              <a href="/client-profile">Client Details</a>
                             </li>
                             <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
                               Preferences
                             </li>
+                          </ul>
+                        )}
+                      </li>
+                      <li>
+                        <div
+                          onClick={() => toggleMenu("settings")}
+                          className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 rounded cursor-pointer"
+                        >
+                          <div className="flex items-center space-x-2">
+                            {openMenus.settings ? (
+                              <FaFolderOpen />
+                            ) : (
+                              <FaFolder />
+                            )}
+                            <span>Settings</span>
+                          </div>
+                          {openMenus.settings ? (
+                            <FiChevronDown />
+                          ) : (
+                            <FiChevronRight />
+                          )}
+                        </div>
+
+                        {openMenus.settings && (
+                          <ul className="pl-6 mt-1 space-y-1">
+                            {/* <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                              Client Details
+                            </li>
+                            <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                              Preferences
+                            </li> */}
                           </ul>
                         )}
                       </li>
@@ -518,7 +568,46 @@ const Sidebar = () => {
 
                         {openMenus.enterpriseStructure && (
                           <ul className="pl-6 space-y-0">
-                            {/* FI Folder */}
+                            {/* Definition */}
+                            <li>
+                              <div
+                                onClick={() => toggleMenu("def")}
+                                className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
+                              >
+                                <div className="flex items-center space-x-2">
+                                  {openMenus.def ? (
+                                    <FaFolderOpen />
+                                  ) : (
+                                    <FaFolder />
+                                  )}
+                                  <span>Definition</span>
+                                </div>
+                                {openMenus.def ? (
+                                  <FiChevronDown />
+                                ) : (
+                                  <FiChevronRight />
+                                )}
+                              </div>
+
+                              {openMenus.def && (
+                                <ul className="pl-6 mt-1 space-y-0 text-xs text-blue-900">
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Define [Item 1]
+                                  </li>
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Define [Item 2]
+                                  </li>
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Define [Item 3]
+                                  </li>
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Define [Item 4]
+                                  </li>
+                                </ul>
+                              )}
+                            </li>
+
+                            {/* FI (Financial Accounting) */}
                             <li>
                               <div
                                 onClick={() => toggleMenu("fi")}
@@ -538,11 +627,10 @@ const Sidebar = () => {
                                   <FiChevronRight />
                                 )}
                               </div>
-
                               {openMenus.fi && (
                                 <ul className="pl-6 mt-1 space-y-0 text-xs text-blue-900">
                                   <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    <a href="/define-company">Define Company</a>
+                                    Define Company
                                   </li>
                                   <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
                                     Define Company Code
@@ -560,7 +648,115 @@ const Sidebar = () => {
                               )}
                             </li>
 
-                            {/* MM Folder */}
+                            {/* CO (Controlling) */}
+                            <li>
+                              <div
+                                onClick={() => toggleMenu("co")}
+                                className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
+                              >
+                                <div className="flex items-center space-x-2">
+                                  {openMenus.co ? (
+                                    <FaFolderOpen />
+                                  ) : (
+                                    <FaFolder />
+                                  )}
+                                  <span>CO (Controlling)</span>
+                                </div>
+                                {openMenus.co ? (
+                                  <FiChevronDown />
+                                ) : (
+                                  <FiChevronRight />
+                                )}
+                              </div>
+                              {openMenus.co && (
+                                <ul className="pl-6 mt-1 space-y-0 text-xs text-blue-900">
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Define Controlling Area
+                                  </li>
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Assign Company Code to Controlling Area
+                                  </li>
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Maintain Controlling Settings
+                                  </li>
+                                </ul>
+                              )}
+                            </li>
+
+                            {/* LO (Logistics General) */}
+                            <li>
+                              <div
+                                onClick={() => toggleMenu("lo")}
+                                className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
+                              >
+                                <div className="flex items-center space-x-2">
+                                  {openMenus.lo ? (
+                                    <FaFolderOpen />
+                                  ) : (
+                                    <FaFolder />
+                                  )}
+                                  <span>LO (Logistics - General)</span>
+                                </div>
+                                {openMenus.lo ? (
+                                  <FiChevronDown />
+                                ) : (
+                                  <FiChevronRight />
+                                )}
+                              </div>
+                              {openMenus.lo && (
+                                <ul className="pl-6 mt-1 space-y-0 text-xs text-blue-900">
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Define Division
+                                  </li>
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Define Distribution Channel
+                                  </li>
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Define Sales Organization
+                                  </li>
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Assign Sales Org to Company Code
+                                  </li>
+                                </ul>
+                              )}
+                            </li>
+
+                            {/* SD (Sales & Distribution) */}
+                            <li>
+                              <div
+                                onClick={() => toggleMenu("sd")}
+                                className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
+                              >
+                                <div className="flex items-center space-x-2">
+                                  {openMenus.sd ? (
+                                    <FaFolderOpen />
+                                  ) : (
+                                    <FaFolder />
+                                  )}
+                                  <span>SD (Sales & Distribution)</span>
+                                </div>
+                                {openMenus.sd ? (
+                                  <FiChevronDown />
+                                ) : (
+                                  <FiChevronRight />
+                                )}
+                              </div>
+                              {openMenus.sd && (
+                                <ul className="pl-6 mt-1 space-y-0 text-xs text-blue-900">
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Define Sales Office
+                                  </li>
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Define Sales Group
+                                  </li>
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Assign Sales Office to Sales Org
+                                  </li>
+                                </ul>
+                              )}
+                            </li>
+
+                            {/* MM (Material Management) */}
                             <li>
                               <div
                                 onClick={() => toggleMenu("mm")}
@@ -580,7 +776,6 @@ const Sidebar = () => {
                                   <FiChevronRight />
                                 )}
                               </div>
-
                               {openMenus.mm && (
                                 <ul className="pl-6 mt-1 space-y-0 text-xs text-blue-900">
                                   <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
@@ -597,6 +792,76 @@ const Sidebar = () => {
                                   </li>
                                   <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
                                     Assign Plant to Company Code
+                                  </li>
+                                </ul>
+                              )}
+                            </li>
+
+                            {/* PM (Plant Maintenance) */}
+                            <li>
+                              <div
+                                onClick={() => toggleMenu("pm")}
+                                className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
+                              >
+                                <div className="flex items-center space-x-2">
+                                  {openMenus.pm ? (
+                                    <FaFolderOpen />
+                                  ) : (
+                                    <FaFolder />
+                                  )}
+                                  <span>PM (Plant Maintenance)</span>
+                                </div>
+                                {openMenus.pm ? (
+                                  <FiChevronDown />
+                                ) : (
+                                  <FiChevronRight />
+                                )}
+                              </div>
+                              {openMenus.pm && (
+                                <ul className="pl-6 mt-1 space-y-0 text-xs text-blue-900">
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Define Maintenance Plant
+                                  </li>
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Assign Planning Plant
+                                  </li>
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Set Maintenance Planning Data
+                                  </li>
+                                </ul>
+                              )}
+                            </li>
+
+                            {/* HR (Human Resource Management) */}
+                            <li>
+                              <div
+                                onClick={() => toggleMenu("hr")}
+                                className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
+                              >
+                                <div className="flex items-center space-x-2">
+                                  {openMenus.hr ? (
+                                    <FaFolderOpen />
+                                  ) : (
+                                    <FaFolder />
+                                  )}
+                                  <span>HR (Human Resource Management)</span>
+                                </div>
+                                {openMenus.hr ? (
+                                  <FiChevronDown />
+                                ) : (
+                                  <FiChevronRight />
+                                )}
+                              </div>
+                              {openMenus.hr && (
+                                <ul className="pl-6 mt-1 space-y-0 text-xs text-blue-900">
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Define Personnel Area
+                                  </li>
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Define Personnel Subarea
+                                  </li>
+                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                    Assign Company Code to Personnel Area
                                   </li>
                                 </ul>
                               )}

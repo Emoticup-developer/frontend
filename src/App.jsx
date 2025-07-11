@@ -4,7 +4,7 @@ import Login from "./pages/Login";
 import DashboardPage from "./pages/DashboardPage";
 import ResizableSAPSidebar from "./pages/TreeItem";
 import Client from "./pages/Client";
-
+import { SearchProvider } from "./context/SearchContext";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Company from "./pages/Company";
@@ -28,6 +28,7 @@ import GLAccountDocument from "./pages/GLAccountDocument";
 import DefineCompany from "./pages/DefineCompany";
 import CreateCompany from "./pages/CreateCompany";
 import HomePage from "./pages/HomePage";
+import ClientProfile from "./pages/ClientProfile";
 
 // A wrapper component to apply the global theme colors to each page
 const ThemedPage = ({ children }) => {
@@ -53,201 +54,212 @@ export default function App() {
   return (
     // Wrap the entire application with ThemeProvider to make theme context available everywhere
     <ThemeProvider>
-      <BrowserRouter>
-        <Routes>
-          {/* Wrap each route element with ThemedPage to apply the theme's background and text color */}
-          <Route
-            path="/"
-            element={
-              <ThemedPage>
-                <Login />
-              </ThemedPage>
-            }
-          />
-          <Route
-            path="/dashboard"
-            element={
-              <ThemedPage>
-                <DashboardPage />
-              </ThemedPage>
-            }
-          />
-          <Route
-            path="/gui"
-            element={
-              <ThemedPage>
-                <GUI />
-              </ThemedPage>
-            }
-          />
-          <Route
-            path="/gl-account-document"
-            element={
-              <ThemedPage>
-                <GLAccountDocument />
-              </ThemedPage>
-            }
-          />
-          <Route
-            path="/centrally"
-            element={
-              <ThemedPage>
-                <Centrally />
-              </ThemedPage>
-            }
-          />
-          <Route
-            path="/client"
-            element={
-              <ThemedPage>
-                <Client />
-              </ThemedPage>
-            }
-          />
-          <Route
-            path="/home"
-            element={
-              <ThemedPage>
-                <HomePage />
-              </ThemedPage>
-            }
-          />
-          <Route
-            path="/define-company"
-            element={
-              <ThemedPage>
-                <DefineCompany />
-              </ThemedPage>
-            }
-          />
-          <Route
-            path="/create-company"
-            element={
-              <ThemedPage>
-                <CreateCompany />
-              </ThemedPage>
-            }
-          />
-          <Route
-            path="/company"
-            element={
-              <ThemedPage>
-                <Company />
-              </ThemedPage>
-            }
-          />
-          <Route
-            path="/company-code"
-            element={
-              <ThemedPage>
-                <CompanyCode />
-              </ThemedPage>
-            }
-          />
-          <Route
-            path="/business-area"
-            element={
-              <ThemedPage>
-                <BusinessArea />
-              </ThemedPage>
-            }
-          />
-          <Route
-            path="/plant"
-            element={
-              <ThemedPage>
-                <Plant />
-              </ThemedPage>
-            }
-          />
-          <Route
-            path="/enterprise-structure"
-            element={
-              <ThemedPage>
-                <EnterpriseStructure />
-              </ThemedPage>
-            }
-          />
-          <Route
-            path="/sample"
-            element={
-              <ThemedPage>
-                <Sample />
-              </ThemedPage>
-            }
-          />
-          <Route
-            path="/general-ledger"
-            element={
-              <ThemedPage>
-                <GeneralLedger />
-              </ThemedPage>
-            }
-          />
-          <Route
-            path="/glaccount-details"
-            element={
-              <ThemedPage>
-                <GeneralLedgerDetails />
-              </ThemedPage>
-            }
-          />
-          <Route
-            path="/field-status-group"
-            element={
-              <ThemedPage>
-                <FieldStatus />
-              </ThemedPage>
-            }
-          />
-          <Route
-            path="/crud"
-            element={
-              <ThemedPage>
-                <Crud />
-              </ThemedPage>
-            }
-          />
-          <Route
-            path="/journal-entry"
-            element={
-              <ThemedPage>
-                <JournalEntry />
-              </ThemedPage>
-            }
-          />
-          <Route
-            path="/hirarchy"
-            element={
-              <ThemedPage>
-                <ResizableSAPSidebar />
-              </ThemedPage>
-            }
-          />
-          {/* ThemeSettings page itself will also be themed */}
-          <Route
-            path="/settings"
-            element={
-              <ThemedPage>
-                <ThemeSettings />
-              </ThemedPage>
-            }
-          />
-        </Routes>
+      <SearchProvider>
+        {" "}
+        <BrowserRouter>
+          <Routes>
+            {/* Wrap each route element with ThemedPage to apply the theme's background and text color */}
+            <Route
+              path="/"
+              element={
+                <ThemedPage>
+                  <Login />
+                </ThemedPage>
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={
+                <ThemedPage>
+                  <DashboardPage />
+                </ThemedPage>
+              }
+            />
+            <Route
+              path="/gui"
+              element={
+                <ThemedPage>
+                  <GUI />
+                </ThemedPage>
+              }
+            />
+            <Route
+              path="/gl-account-document"
+              element={
+                <ThemedPage>
+                  <GLAccountDocument />
+                </ThemedPage>
+              }
+            />
+            <Route
+              path="/centrally"
+              element={
+                <ThemedPage>
+                  <Centrally />
+                </ThemedPage>
+              }
+            />
+            <Route
+              path="/client"
+              element={
+                <ThemedPage>
+                  <Client />
+                </ThemedPage>
+              }
+            />
+            <Route
+              path="/home"
+              element={
+                <ThemedPage>
+                  <HomePage />
+                </ThemedPage>
+              }
+            />
+            <Route
+              path="/client-profile"
+              element={
+                <ThemedPage>
+                  <ClientProfile />
+                </ThemedPage>
+              }
+            />
+            <Route
+              path="/define-company"
+              element={
+                <ThemedPage>
+                  <DefineCompany />
+                </ThemedPage>
+              }
+            />
+            <Route
+              path="/create-company"
+              element={
+                <ThemedPage>
+                  <CreateCompany />
+                </ThemedPage>
+              }
+            />
+            <Route
+              path="/company"
+              element={
+                <ThemedPage>
+                  <Company />
+                </ThemedPage>
+              }
+            />
+            <Route
+              path="/company-code"
+              element={
+                <ThemedPage>
+                  <CompanyCode />
+                </ThemedPage>
+              }
+            />
+            <Route
+              path="/business-area"
+              element={
+                <ThemedPage>
+                  <BusinessArea />
+                </ThemedPage>
+              }
+            />
+            <Route
+              path="/plant"
+              element={
+                <ThemedPage>
+                  <Plant />
+                </ThemedPage>
+              }
+            />
+            <Route
+              path="/enterprise-structure"
+              element={
+                <ThemedPage>
+                  <EnterpriseStructure />
+                </ThemedPage>
+              }
+            />
+            <Route
+              path="/sample"
+              element={
+                <ThemedPage>
+                  <Sample />
+                </ThemedPage>
+              }
+            />
+            <Route
+              path="/general-ledger"
+              element={
+                <ThemedPage>
+                  <GeneralLedger />
+                </ThemedPage>
+              }
+            />
+            <Route
+              path="/glaccount-details"
+              element={
+                <ThemedPage>
+                  <GeneralLedgerDetails />
+                </ThemedPage>
+              }
+            />
+            <Route
+              path="/field-status-group"
+              element={
+                <ThemedPage>
+                  <FieldStatus />
+                </ThemedPage>
+              }
+            />
+            <Route
+              path="/crud"
+              element={
+                <ThemedPage>
+                  <Crud />
+                </ThemedPage>
+              }
+            />
+            <Route
+              path="/journal-entry"
+              element={
+                <ThemedPage>
+                  <JournalEntry />
+                </ThemedPage>
+              }
+            />
+            <Route
+              path="/hirarchy"
+              element={
+                <ThemedPage>
+                  <ResizableSAPSidebar />
+                </ThemedPage>
+              }
+            />
+            {/* ThemeSettings page itself will also be themed */}
+            <Route
+              path="/settings"
+              element={
+                <ThemedPage>
+                  <ThemeSettings />
+                </ThemedPage>
+              }
+            />
+          </Routes>
 
-        {/* Global Toast Notifications */}
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-        />
-      </BrowserRouter>
+          {/* Global Toast Notifications */}
+          <ToastContainer
+            position="top-right"
+            autoClose={1000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+          />
+        </BrowserRouter>
+      </SearchProvider>
     </ThemeProvider>
   );
 }

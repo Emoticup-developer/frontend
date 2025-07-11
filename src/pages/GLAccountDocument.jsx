@@ -3,7 +3,8 @@ import { FiChevronRight, FiChevronDown, FiChevronLeft } from "react-icons/fi";
 import { RiSideBarFill } from "react-icons/ri";
 import { BsCreditCardFill } from "react-icons/bs";
 import { IoIosPrint } from "react-icons/io";
-import { MdCancelScheduleSend } from "react-icons/md";
+import { MdOutlineError } from "react-icons/md";
+
 import {
   FaFolderOpen,
   FaFolder,
@@ -21,12 +22,13 @@ import {
   FaPlay,
   FaRegBookmark,
   FaEdit,
-  FaPlusCircle,
-  FaMinusCircle,
   FaPaperPlane,
-  FaTimesCircle,
+  FaMinusCircle,
+  FaPlusCircle,
+  FaHome,
 } from "react-icons/fa";
 import Sidebar from "../components/Sidebar";
+import { MdCancelScheduleSend } from "react-icons/md";
 
 const GLAccountDocument = ({ isActiveTab }) => {
   const appRef = useRef(null);
@@ -51,6 +53,7 @@ const GLAccountDocument = ({ isActiveTab }) => {
       tax: false,
       taxJurisdiction: "",
       assignmentNo: "",
+      description: "",
     }))
   );
 
@@ -67,6 +70,7 @@ const GLAccountDocument = ({ isActiveTab }) => {
         tax: false,
         taxJurisdiction: "",
         assignmentNo: "",
+        description: "",
       },
     ]);
   };
@@ -205,13 +209,14 @@ const GLAccountDocument = ({ isActiveTab }) => {
     }
   }, []);
 
+  // Dynamic Section Content
   const renderSectionContent = () => {
     switch (activeTab) {
       case "Basic Data":
         return (
           <section
             id="basic-data"
-            className="border border-gray-300 bg-white w-full h-auto overflow-y-auto"
+            className="border border-gray-300 bg-white w-full h-[365px] overflow-y-auto"
           >
             <div className="bg-[#e5f3fd] p-4 rounded shadow-md">
               <div className="grid grid-cols-3 gap-x-6 gap-y-4 items-center">
@@ -226,7 +231,7 @@ const GLAccountDocument = ({ isActiveTab }) => {
                   </label>
                   <input
                     id="invoice_date"
-                    type="text"
+                    type="date"
                     className="w-28 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                   />
                 </div>
@@ -239,7 +244,7 @@ const GLAccountDocument = ({ isActiveTab }) => {
                   </label>
                   <input
                     id="posting_date"
-                    type="text"
+                    type="date"
                     className="w-28 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                   />
                 </div>
@@ -248,20 +253,25 @@ const GLAccountDocument = ({ isActiveTab }) => {
                     htmlFor="invoice_type"
                     className="w-40 text-right text-xs font-medium"
                   >
-                    Invoice Type <span className="text-amber-500 mr-2">*</span>
+                    Type <span className="text-amber-500 mr-2">*</span>
                   </label>
-                  <input
+                  <select
                     id="invoice_type"
-                    type="text"
                     className="w-28 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                  />
+                  >
+                    <option value="">--Select--</option>
+                    <option value="sales_invoice">Sales Invoice</option>
+                    <option value="purchase_order">Purchase Order</option>
+                    <option value="petty_cash">Petty Cash</option>
+                  </select>
                 </div>
+
                 <div className="flex items-center">
                   <label
                     htmlFor="doc_header"
                     className="w-40 text-right text-xs font-medium"
                   >
-                    Document Header Text{" "}
+                    Document Header Text
                     <span className="text-amber-500 mr-2">*</span>
                   </label>
                   <input
@@ -309,19 +319,34 @@ const GLAccountDocument = ({ isActiveTab }) => {
                     className="w-28 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                   />
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center mb-2">
                   <label
                     htmlFor="month"
                     className="w-40 text-right text-xs font-medium"
                   >
                     Month <span className="text-amber-500 mr-2">*</span>
                   </label>
-                  <input
+                  <select
                     id="month"
-                    type="text"
+                    name="month"
                     className="w-28 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                  />
+                  >
+                    <option value="">--Select--</option>
+                    <option value="01">January</option>
+                    <option value="02">February</option>
+                    <option value="03">March</option>
+                    <option value="04">April</option>
+                    <option value="05">May</option>
+                    <option value="06">June</option>
+                    <option value="07">July</option>
+                    <option value="08">August</option>
+                    <option value="09">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                  </select>
                 </div>
+
                 <div className="flex items-center">
                   <label
                     htmlFor="year"
@@ -329,17 +354,45 @@ const GLAccountDocument = ({ isActiveTab }) => {
                   >
                     Year <span className="text-amber-500 mr-2">*</span>
                   </label>
-                  <input
+                  <select
                     id="year"
-                    type="text"
+                    name="year"
                     className="w-28 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                  />
+                  >
+                    <option value="">--Select--</option>
+                    {Array.from({ length: 5 }, (_, i) => {
+                      const year = 2025 + i; // Start from 2025
+                      return (
+                        <option key={year} value={year}>
+                          {year}
+                        </option>
+                      );
+                    })}
+                  </select>
                 </div>
               </div>
             </div>
+
+            {/* Table Header */}
             <div className="bg-gray-200 p-2 border-b border-gray-300 flex justify-between items-center font-bold text-xs">
               <div>
                 <span>0 Items</span>
+              </div>
+
+              <div>
+                <div className="flex items-center">
+                  <label
+                    htmlFor="month"
+                    className="w-40 text-right text-xs font-medium"
+                  >
+                    Invoice No <span className="text-amber-500 mr-2">*</span>
+                  </label>
+                  <input
+                    id="month"
+                    type="text"
+                    className="w-14 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                  />
+                </div>
               </div>
 
               <div className="flex items-center gap-2">
@@ -384,7 +437,8 @@ const GLAccountDocument = ({ isActiveTab }) => {
                 <span>INR</span>
               </div>
             </div>
-            <div className="overflow-y-auto max-h-[165px]">
+
+            <div className="overflow-y-auto max-h-[150px]">
               <table className="w-full min-w-[800px] table-fixed">
                 <thead className="bg-gray-50">
                   <tr>
@@ -418,6 +472,9 @@ const GLAccountDocument = ({ isActiveTab }) => {
                     </th>
                     <th className="p-2 border-b border-gray-300 text-left text-xs font-bold text-gray-600 resize-x overflow-hidden min-w-[160px] whitespace-nowrap truncate">
                       Assignment no.
+                    </th>
+                    <th className="p-2 border-b border-gray-300 text-left text-xs font-bold text-gray-600 resize-x overflow-hidden min-w-[160px] whitespace-nowrap truncate">
+                      Description
                     </th>
                   </tr>
                 </thead>
@@ -553,6 +610,16 @@ const GLAccountDocument = ({ isActiveTab }) => {
                           className="w-full border border-gray-300 h-5 rounded px-1 py-0.5 text-xs"
                         />
                       </td>
+                      <td className="p-1 border-r border-gray-200">
+                        <input
+                          type="text"
+                          value={item.description}
+                          onChange={(e) =>
+                            updateLineItem(index, "description", e.target.value)
+                          }
+                          className="w-full border border-gray-300 h-5 rounded px-1 py-0.5 text-xs"
+                        />
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -596,9 +663,11 @@ const GLAccountDocument = ({ isActiveTab }) => {
 
             {/* Delete Confirmation Modal */}
             {showDeleteModal && (
-              <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+              <div className="fixed inset-0 bg-opacity-20 backdrop-blur-[2px] flex items-center justify-center z-50">
                 <div className="bg-white p-6 rounded shadow-lg text-center w-[300px]">
-                  <div className="text-yellow-500 text-4xl mb-2">⚠️</div>
+                  <div className="flex justify-center text-black text-4xl mb-2">
+                    <MdOutlineError />
+                  </div>
                   <p className="text-gray-700 font-semibold mb-4">
                     Are you sure you want to delete?
                   </p>
@@ -635,7 +704,166 @@ const GLAccountDocument = ({ isActiveTab }) => {
             className="p-4 border border-gray-300 bg-white w-full h-[299px] overflow-y-auto"
           >
             <p className="font-medium mb-3">Account Control in Company Code</p>
-            {/* Details content remains unchanged */}
+            <div className="border border-gray-200 bg-gray-200 p-3 w-[800px] text-center">
+              {/* Account Currency */}
+              <div className="flex items-center mb-2">
+                <label
+                  htmlFor="account_currency"
+                  className="w-60 text-right pr-4"
+                >
+                  Account Currency:
+                </label>
+                <input
+                  type="text"
+                  id="account_currency"
+                  name="account_currency"
+                  disabled={disabled}
+                  placeholder="INR"
+                  className={`border border-gray-200 bg-white p-1 rounded w-12 ${
+                    disabled ? "bg-gray-100 cursor-not-allowed" : ""
+                  }`}
+                />
+                <span className="ml-4">United States Dollar</span>
+              </div>
+
+              {/* Balances in Local Crcy Only */}
+              <div className="flex items-center mb-2">
+                <label
+                  htmlFor="balance_currency_check"
+                  className="w-60 text-right pr-4"
+                >
+                  Balances in Local Crcy Only:
+                </label>
+                <input
+                  type="checkbox"
+                  id="balance_currency_check"
+                  name="balance_currency_check"
+                  disabled={disabled}
+                  placeholder="INR"
+                  className={`w-4 h-4 border border-gray-200 bg-white p-1 rounded ${
+                    disabled ? "bg-gray-100 cursor-not-allowed" : ""
+                  }`}
+                />
+              </div>
+
+              {/* Tax Category + checkbox + explanation */}
+              <div className="flex items-center mb-2">
+                <label htmlFor="tax_category" className="w-60 text-right pr-4">
+                  Tax Category:
+                </label>
+                <input
+                  type="text"
+                  id="tax_category"
+                  name="tax_category"
+                  disabled={disabled}
+                  placeholder="+1"
+                  className={`border border-gray-200 bg-white p-1 rounded w-12 mr-2 ${
+                    disabled ? "bg-gray-100 cursor-not-allowed" : ""
+                  }`}
+                />
+                <FaCircle className="w-2 h-2 mr-2" />
+                <span>Only output tax allowed</span>
+              </div>
+
+              {/* Posting without tax */}
+              <div className="flex items-center mb-2">
+                <label className="w-60 text-right pr-4">
+                  Posting without tax allowed:
+                </label>
+                <input type="checkbox" className="w-4 h-4" />
+              </div>
+
+              {/* Alternative Account No */}
+              <div className="flex items-center">
+                <label className="w-60 text-right pr-4">
+                  Alternative Account No.:
+                </label>
+                <input
+                  type="text"
+                  className="border border-gray-300 bg-white px-2 py-1 w-40"
+                  placeholder=""
+                />
+              </div>
+            </div>
+            <p className="font-medium mb-3 mt-3">
+              Account Management in Company Code
+            </p>
+            <div className="border border-gray-200 bg-gray-200 p-3 w-[800px] text-center">
+              {/* Account Currency */}
+              <div className="flex items-center mb-2">
+                <label className="w-60 text-right pr-4">Sort Key:</label>
+                <input
+                  type="text"
+                  disabled={disabled}
+                  className={`border border-gray-200 bg-white p-1 rounded w-12 ${
+                    disabled ? "bg-gray-100 cursor-not-allowed" : ""
+                  }`}
+                />
+              </div>
+            </div>
+            {/* Account Settings in Controlling Area A000 */}
+            <p className="font-medium mb-3 mt-3">
+              Account Settings in Controlling Area A000 Controlling Area A000
+            </p>
+            <div className="border border-gray-200 bg-gray-200 p-3 w-[800px] text-center">
+              {/* CElEm Category */}
+              <div className="flex items-center mb-2">
+                <label className="w-60 text-right pr-4">*CElEm category:</label>
+                <input
+                  type="text"
+                  placeholder="11"
+                  disabled={disabled}
+                  className={`border border-gray-300 bg-white px-2 py-1 w-12 rounded ${
+                    disabled ? "bg-gray-100 cursor-not-allowed" : ""
+                  }`}
+                />
+                <span className="ml-4">Revenues</span>
+              </div>
+
+              {/* Record Quantity */}
+              <div className="flex items-center mb-2">
+                <label className="w-60 text-right pr-4">Record Quantity:</label>
+                <input
+                  type="checkbox"
+                  disabled={disabled}
+                  className="w-4 h-4"
+                />
+              </div>
+
+              {/* Internal UoM */}
+              <div className="flex items-center">
+                <label className="w-60 text-right pr-4">Internal UoM:</label>
+                <input
+                  type="checkbox"
+                  disabled={disabled}
+                  className="w-4 h-4"
+                />
+              </div>
+            </div>
+
+            {/* Joint Venture Data in Company Code */}
+            <p className="font-medium mt-2 mb-3">
+              Joint venture data in company code
+            </p>
+            <div className="border border-gray-200 bg-gray-200 p-3 w-[800px] text-center">
+              {/* Recovery Indicator */}
+              <div className="flex items-center">
+                <label className="w-60 text-right pr-4">
+                  Recovery Indicator:
+                </label>
+                <input
+                  type="checkbox"
+                  disabled={disabled}
+                  className="w-4 h-4"
+                />
+              </div>
+            </div>
+          </section>
+        );
+
+        return (
+          <section id="info-cocd" className="p-4 mt-4 border rounded bg-white">
+            <p>Company Code level information displayed here.</p>
           </section>
         );
       default:
@@ -643,10 +871,10 @@ const GLAccountDocument = ({ isActiveTab }) => {
     }
   };
 
-  // The rest of the component remains the same
   useEffect(() => {
-    const handleFullscreenChange = () =>
+    const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
+    };
     document.addEventListener("fullscreenchange", handleFullscreenChange);
     return () =>
       document.removeEventListener("fullscreenchange", handleFullscreenChange);
@@ -655,12 +883,34 @@ const GLAccountDocument = ({ isActiveTab }) => {
   const goFullscreen = () => {
     if (appRef.current?.requestFullscreen) appRef.current.requestFullscreen();
   };
+
   const exitFullscreen = () => {
     if (document.fullscreenElement && document.exitFullscreen)
       document.exitFullscreen();
   };
+
   const handleCloseApp = () => setShowApp(false);
   const toggleLock = () => setIsLocked((prev) => !prev);
+
+  const [openMenus, setOpenMenus] = useState({
+    devcust: false,
+    masterdata: false,
+    aerp: false,
+    client: false,
+    accounting: false,
+    imgfunc: false,
+    imgsub: false,
+    quickaccess: false,
+    financial: false,
+    ledger: false,
+    masterRecord: false,
+    glAccount: false,
+    individualProcessing: false,
+  });
+
+  const toggleMenu = (menu) => {
+    setOpenMenus((prev) => ({ ...prev, [menu]: !prev[menu] }));
+  };
 
   if (!showApp) {
     return (
@@ -682,6 +932,7 @@ const GLAccountDocument = ({ isActiveTab }) => {
       ref={appRef}
       className="w-screen h-screen bg-gray-100 overflow-hidden flex flex-col font-sans font-semibold"
     >
+      {/* Top Menu Bar */}
       <div className="bg-[#e5f3fd] p-1 text-xs shadow-md flex justify-between items-center">
         <div className="flex text-black">
           <FaBars className="mx-2 mt-1 text-xs cursor-pointer" title="Menu" />
@@ -693,6 +944,7 @@ const GLAccountDocument = ({ isActiveTab }) => {
           <h6 className="mx-2 text-sm">Help</h6>
         </div>
         <div className="flex items-center space-x-2 text-black">
+          <FaHome />
           <h6 className="mx-2 text-sm">Admin</h6>
           <button
             onClick={toggleLock}
@@ -731,9 +983,12 @@ const GLAccountDocument = ({ isActiveTab }) => {
         </div>
       </div>
       <div className="relative flex items-center p-2 bg-[#9abddc] h-12">
+        {/* Left - AERP */}
         <h1 className="text-black font-bold text-3xl">AERP</h1>
       </div>
+
       <div className="relative bg-[#f5fbff] border border-gray-200 text-black font-semibold p-1 text-xs shadow-md flex justify-between items-center">
+        {/* Sidebar Toggle Buttons */}
         <div className="flex items-center gap-2 mr-4 z-10">
           <button
             className={`p-1 ${
@@ -747,6 +1002,7 @@ const GLAccountDocument = ({ isActiveTab }) => {
           >
             <FiChevronLeft size={18} />
           </button>
+
           <button
             className={`p-1 ${
               !isSidebarVisible
@@ -760,9 +1016,13 @@ const GLAccountDocument = ({ isActiveTab }) => {
             <FiChevronRight size={18} />
           </button>
         </div>
+
+        {/* Center Text */}
         <p className="absolute left-1/2 transform -translate-x-1/2 text-[16px] font-semibold">
           Edit G/L Account Document
         </p>
+
+        {/* Search Box */}
         <div className="relative flex items-center ml-4 z-10">
           <input
             type="text"
@@ -773,88 +1033,96 @@ const GLAccountDocument = ({ isActiveTab }) => {
           <FaSearch className="absolute left-2 text-gray-400 text-sm" />
         </div>
       </div>
+
       <div className="flex flex-grow overflow-hidden">
         {isSidebarVisible && <Sidebar />}
-        <div className="flex flex-col min-h-screen w-full bg-gray-50 font-sans text-xs">
-          <div className="flex-grow w-full bg-[#f0f4f8] text-sm font-sans flex flex-col">
-            <div className="h-full w-full bg-gray-100 shadow-md border border-gray-300 rounded-sm flex flex-col">
-              <div className="bg-gray-50 p-2">
-                <div className="flex justify-between space-x-6 text-sm text-gray-700">
-                  <div className="flex px-2">
-                    <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                      <BsCreditCardFill />
-                      <span className="mr-5">Hold</span>
-                    </div>
-                    <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                      <RiSideBarFill />
-                      <span className="mr-5">Simulate</span>
-                    </div>
-                    <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                      <FaRegBookmark />
-                      <span className="mr-5">Park</span>
-                    </div>
-                    <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                      <FaEdit />
-                      <span className="mr-5">Editing Options</span>
-                    </div>
-                    <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                      <span>More</span>
-                      <FiChevronDown size={14} />
-                    </div>
-                  </div>
-                  <div className="flex">
-                    <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                      <IoIosPrint />
-                    </div>
-                    <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                      <span className="px-2">Exit</span>
-                    </div>
-                  </div>
+
+        {/* Main Content */}
+        <div className="flex-1 font-sans text-xs bg-gray-50">
+          <div className="bg-gray-50 p-2">
+            <div className="flex justify-between space-x-6 text-sm text-gray-700">
+              <div className="flex px-2">
+                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+                  <BsCreditCardFill />
+                  <span className="mr-5">Hold</span>
+                </div>
+                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+                  <RiSideBarFill />
+                  <span className="mr-5">Simulate</span>
+                </div>
+                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+                  <FaRegBookmark />
+                  <span className="mr-5">Park</span>
+                </div>
+                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+                  <FaEdit />
+                  <span className="mr-5">Editing Options</span>
+                </div>
+                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+                  <span>More</span>
+                  <FiChevronDown size={14} />
                 </div>
               </div>
-              <div className="w-full">
-                <div className="p-2 flex items-center">
-                  <div
-                    ref={scrollRef}
-                    className="flex space-x-1 overflow-x-auto scrollbar-hide snap-x snap-mandatory"
-                  >
-                    {tabNames.map((tab, index) => (
-                      <a
-                        key={tab.name}
-                        href={`#${tab.id}`}
-                        onClick={(e) => handleTabClick(tab.name, index, e)}
-                        className={`snap-start px-3 py-0.5 whitespace-nowrap text-xs font-medium border-b-2 ${
-                          activeTab === tab.name
-                            ? "text-blue-900 border-blue-900"
-                            : "text-gray-700 border-transparent"
-                        }`}
-                      >
-                        {tab.name}
-                      </a>
-                    ))}
-                  </div>
-                  {showScrollButton && (
-                    <button
-                      onClick={() =>
-                        scrollRef.current?.scrollBy({
-                          left: 120,
-                          behavior: "smooth",
-                        })
-                      }
-                      className="ml-2 p-1 bg-white rounded shadow hover:bg-gray-100"
-                    >
-                      <FiChevronRight size={16} />
-                    </button>
-                  )}
+              <div className="flex">
+                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+                  <IoIosPrint />
                 </div>
-                {disabled && (
-                  <div className="px-4 text-sm text-gray-500 mb-2">
-                    Unlocking inputs...
-                  </div>
-                )}
-                {renderSectionContent()}
+                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+                  <a href="/home">
+                    <span className="px-2">Exit</span>
+                  </a>
+                </div>
               </div>
             </div>
+          </div>
+
+          <div className="w-full">
+            {/* Tabs */}
+            <div className="p-2 flex items-center">
+              <div
+                ref={scrollRef}
+                className="flex space-x-1 overflow-x-auto scrollbar-hide snap-x snap-mandatory"
+              >
+                {tabNames.map((tab, index) => (
+                  <a
+                    key={tab.name}
+                    href={`#${tab.id}`} // use tab.id here
+                    onClick={(e) => handleTabClick(tab.name, index, e)}
+                    className={`snap-start px-3 py-0.5 whitespace-nowrap text-xs font-medium border-b-2 ${
+                      activeTab === tab.name
+                        ? "text-blue-900 border-blue-900"
+                        : "text-gray-700 border-transparent"
+                    }`}
+                  >
+                    {tab.name}
+                  </a>
+                ))}
+              </div>
+
+              {showScrollButton && (
+                <button
+                  onClick={() =>
+                    scrollRef.current?.scrollBy({
+                      left: 120,
+                      behavior: "smooth",
+                    })
+                  }
+                  className="ml-2 p-1 bg-white rounded shadow hover:bg-gray-100"
+                >
+                  <FiChevronRight size={16} />
+                </button>
+              )}
+            </div>
+
+            {/* Optional message */}
+            {disabled && (
+              <div className="px-4 text-sm text-gray-500 mb-2">
+                Unlocking inputs...
+              </div>
+            )}
+
+            {/* Tab Section Content */}
+            {renderSectionContent()}
           </div>
         </div>
       </div>

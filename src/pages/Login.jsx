@@ -150,13 +150,13 @@ const Login = () => {
   };
 
   return (
-    <div className="flex-1 h-screen overflow-y-hidden bg-[#d2ecf7] border bg-gradient-to-b from-blue-[#d2ecf7] to-blue-[#d2ecf7] border-black lg:p-0 p-4">
+    <div className="flex-1 h-screen overflow-y-hidden bg-[#e5f3fd] border bg-gradient-to-b from-blue-bg-[#e5f3fd] to-blue-[#d2ecf7] border-black lg:p-0 p-4">
       <form onSubmit={handleSubmit}>
         <div className="flex justify-between">
           {/* Left Side */}
           <div>
             {/* Logo */}
-            <div className="my-2 ml-3 px-4 py-1">
+            <div className="ml-3 px-4 py-1">
               <img src={logo} alt="logoImg" className="w-[220px] h-[130px]" />
             </div>
 
@@ -242,8 +242,8 @@ const Login = () => {
                   name="language"
                   value={formData.language}
                   readOnly
-                  className={`w-[35px] h-5 px-2 border border-gray-500 rounded-sm text-sm text-black ${
-                    formData.language ? "bg-amber-500" : "bg-white"
+                  className={`w-[40px] h-5 px-2 border border-gray-500 rounded-sm text-sm text-black ${
+                    formData.language ? "bg-gray-200" : "bg-white"
                   }`}
                 />
 
@@ -305,7 +305,7 @@ const Login = () => {
               </div>
 
               {/* Login Button */}
-              <div className="ml-[158px] mt-1">
+              <div className="ml-[158px] mt-1 mb-6">
                 <button
                   type="submit"
                   className="bg-amber-500 cursor-pointer font-bold h-5 text-black px-2 border border-black text-xs"
@@ -314,11 +314,11 @@ const Login = () => {
                 </button>
               </div>
 
-              <hr className="border-[#031015] border w-[650px]" />
+              <hr className="border-[#031015] border w-[750px]" />
 
-              <div className="w-[600px] h-16 font-semibold rounded-sm text-black mt-5">
-                Welcome to AERP — Intelligent Partner in Unifying Finance,
-                Sales, and Operations for Seamless Process Optimization.
+              <div className="w-[750px] h-16 font-semibold rounded-sm text-black mt-2">
+                AERP - Accelerated Enterprise Resource Planning that integrates
+                Business Process In Real Time
               </div>
 
               <div className="mt-8 text-xs font-semibold rounded-sm text-black">
@@ -329,7 +329,7 @@ const Login = () => {
 
           {/* Right Side - Banner */}
           <div>
-            <div className="w-[500px] h-[500px] mt-24 -ml-20">
+            <div className="w-[600px] h-[600px] mt-24 -ml-20">
               <Lottie animationData={banner} loop={true} />
             </div>
           </div>

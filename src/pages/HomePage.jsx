@@ -32,9 +32,10 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import { useSearch } from "../context/SearchContext";
+import Layout from "../components/Layout";
 
 const HomePage = ({ isActiveTab }) => {
-  const appRef = useRef(null);
+  // const appRef = useRef(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showApp, setShowApp] = useState(true);
   const [isLocked, setIsLocked] = useState(false);
@@ -299,224 +300,19 @@ const HomePage = ({ isActiveTab }) => {
   }
 
   return (
-    <div
-      ref={appRef}
-      className="w-screen h-screen bg-gray-100 overflow-hidden flex flex-col font-sans font-semibold"
-    >
-      <div className="bg-gray-200 p-1 text-xs shadow-md flex justify-between items-center">
-        <div className="flex text-black">
-          <FaBars className="mx-2 mt-1 text-xs cursor-pointer" title="Menu" />
-          <h6 className="mx-2 text-sm">Menu</h6>
-          <h6 className="mx-2 text-sm">Edit</h6>
-          <h6 className="mx-2 text-sm">Favorites</h6>
-          <h6 className="mx-2 text-sm">Extras</h6>
-          <h6 className="mx-2 text-sm">System</h6>
-          <h6 className="mx-2 text-sm">Help</h6>
-        </div>
-        <div className="flex items-center space-x-2 text-black">
-          <FaHome />
-          <h6 className="mx-2 text-sm">Admin</h6>
-          <button
-            onClick={toggleLock}
-            title={isLocked ? "Unlock" : "Lock"}
-            className="hover:bg-gray-200 p-1 rounded"
-          >
-            {isLocked ? <FaLock /> : <FaLockOpen />}
-          </button>
-          <button
-            onClick={exitFullscreen}
-            disabled={!isFullscreen || isLocked}
-            className={`hover:bg-gray-200 p-1 rounded ${
-              !isFullscreen || isLocked ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-            title="Exit Fullscreen"
-          >
-            <FaMinus />
-          </button>
-          <button
-            onClick={goFullscreen}
-            disabled={isFullscreen || isLocked}
-            className={`hover:bg-gray-200 p-1 rounded ${
-              isFullscreen || isLocked ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-            title="Fullscreen"
-          >
-            <FaExpand />
-          </button>
-          <button
-            onClick={handleCloseApp}
-            title="Close"
-            className="hover:bg-gray-200 p-1 rounded"
-          >
-            <FaTimes />
-          </button>
-        </div>
-      </div>
-
-      <div className="relative flex items-center p-2 bg-[#9abddc] h-12">
-        <h1 className="text-black font-bold text-3xl">AERP</h1>
-      </div>
-      <div className="relative bg-[#f5fbff] border border-gray-200 text-black font-semibold p-1 text-xs shadow-md flex justify-between items-center">
-        <div className="flex items-center gap-2 mr-4 z-10">
-          <button
-            className={`p-1 ${
-              isSidebarVisible
-                ? "text-blue-600 hover:text-blue-800"
-                : "text-gray-400 cursor-not-allowed"
-            }`}
-            onClick={() => isSidebarVisible && setIsSidebarVisible(false)}
-            title="Hide Sidebar"
-            disabled={!isSidebarVisible}
-          >
-            <FiChevronLeft size={18} />
-          </button>
-          <button
-            className={`p-1 ${
-              !isSidebarVisible
-                ? "text-blue-600 hover:text-blue-800"
-                : "text-gray-400 cursor-not-allowed"
-            }`}
-            onClick={() => !isSidebarVisible && setIsSidebarVisible(true)}
-            title="Show Sidebar"
-            disabled={isSidebarVisible}
-          >
-            <FiChevronRight size={18} />
-          </button>
-        </div>
-        <p className="absolute left-1/2 transform -translate-x-1/2 text-[16px] font-semibold">
-          Main Page
-        </p>
-
-        <div className="relative flex items-center ml-4 mr-3 z-10">
-          <div className="relative flex items-center">
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-              placeholder="Search..."
-              className="pl-8 pr-2 py-0.5 mr-2 bg-gray-100 rounded-sm border border-gray-500 text-xs text-gray-800 w-40"
-            />
-            <FaSearch
-              onClick={handleSearch}
-              className="absolute left-2 text-gray-400 text-sm cursor-pointer"
-            />
-          </div>
-          <button
-            onClick={handleLogout}
-            className="text-xs h-5 px-2 py-0.5 rounded bg-white border border-black text-black"
-          >
-            Logout
-          </button>
-
-          {/* <input
-            type="text"
-            placeholder="Search..."
-            className="pl-8 pr-2 py-0.5 rounded-sm border border-gray-300 text-xs text-gray-800 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            style={{ width: "150px" }}
-          />
-          <FaSearch className="absolute left-2 text-gray-400 text-sm" /> */}
-        </div>
-      </div>
-      <div className="flex flex-grow overflow-hidden">
-        {isSidebarVisible && <Sidebar />}
-        <div className="flex flex-col min-h-screen w-full bg-[#e5f3fd] font-sans text-xs">
-          <div className="flex-grow w-full bg-[#f0f4f8] text-sm font-sans flex flex-col">
-            <div className="h-full w-full bg-[#e5f3fd] shadow-md border border-gray-300 rounded-sm flex flex-col">
-              {/* <div className="bg-gray-50 p-2">
-                <div className="flex justify-between space-x-6 text-sm text-gray-700">
-                  <div className="flex px-2">
-                    <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                      <BsCreditCardFill />
-                      <span className="mr-5">Hold</span>
-                    </div>
-                    <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                      <RiSideBarFill />
-                      <span className="mr-5">Simulate</span>
-                    </div>
-                    <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                      <FaRegBookmark />
-                      <span className="mr-5">Park</span>
-                    </div>
-                    <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                      <FaEdit />
-                      <span className="mr-5">Editing Options</span>
-                    </div>
-                    <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                      <span>More</span>
-                      <FiChevronDown size={14} />
-                    </div>
-                  </div>
-                  <div className="flex">
-                    <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                      <IoIosPrint />
-                    </div>
-                    <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                      <span className="px-2">Exit</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="w-full">
-                <div className="p-2 flex items-center">
-                  <div
-                    ref={scrollRef}
-                    className="flex space-x-1 overflow-x-auto scrollbar-hide snap-x snap-mandatory"
-                  >
-                    {tabNames.map((tab, index) => (
-                      <a
-                        key={tab.name}
-                        href={`#${tab.id}`}
-                        onClick={(e) => handleTabClick(tab.name, index, e)}
-                        className={`snap-start px-3 py-0.5 whitespace-nowrap text-xs font-medium border-b-2 ${
-                          activeTab === tab.name
-                            ? "text-blue-900 border-blue-900"
-                            : "text-gray-700 border-transparent"
-                        }`}
-                      >
-                        {tab.name}
-                      </a>
-                    ))}
-                  </div>
-                  {showScrollButton && (
-                    <button
-                      onClick={() =>
-                        scrollRef.current?.scrollBy({
-                          left: 120,
-                          behavior: "smooth",
-                        })
-                      }
-                      className="ml-2 p-1 bg-white rounded shadow hover:bg-gray-100"
-                    >
-                      <FiChevronRight size={16} />
-                    </button>
-                  )}
-                </div>
-                {disabled && (
-                  <div className="px-4 text-sm text-gray-500 mb-2">
-                    Unlocking inputs...
-                  </div>
-                )}
-                {renderSectionContent()}
-              </div> */}
-
-              <div className="bg-white border border-gray-300 rounded text-justify p-4 mx-4 my-4 text-xs font-sans leading-normal text-gray-800 shadow-md">
-                <strong>About AERP:</strong> (Accelerated Enterprise Resource
-                Planning) is a modern ERP software platform designed to
-                streamline and automate core business processes such as finance,
-                inventory, sales, procurement, HR, and production. Tailored for
-                small to mid-sized businesses, AERP offers real-time data
-                visibility, customizable modules, and integration capabilities.
-                It helps companies improve efficiency, maintain compliance,
-                reduce operational costs, and enhance decision-making through
-                analytics. AERP supports both cloud and on-premise deployments
-                and ensures user-friendly interfaces with role-based access. Its
-                scalable architecture enables businesses to adapt and grow
-                seamlessly while maintaining control over complex operations.
-              </div>
-            </div>
-          </div>
-        </div>
+    <div className="bg-[#e5f3fd] w-full min-h-screen overflow-y-auto">
+      <div className="bg-white border border-gray-300 rounded text-justify p-4 mx-4 my-4 text-xs font-sans leading-normal text-gray-800 shadow-md">
+        <strong>About AERP:</strong> (Accelerated Enterprise Resource Planning)
+        is a modern ERP software platform designed to streamline and automate
+        core business processes such as finance, inventory, sales, procurement,
+        HR, and production. Tailored for small to mid-sized businesses, AERP
+        offers real-time data visibility, customizable modules, and integration
+        capabilities. It helps companies improve efficiency, maintain
+        compliance, reduce operational costs, and enhance decision-making
+        through analytics. AERP supports both cloud and on-premise deployments
+        and ensures user-friendly interfaces with role-based access. Its
+        scalable architecture enables businesses to adapt and grow seamlessly
+        while maintaining control over complex operations.
       </div>
     </div>
   );

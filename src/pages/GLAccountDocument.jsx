@@ -194,8 +194,14 @@ const GLAccountDocument = ({ isActiveTab }) => {
   const handleTabClick = (tabName, index, event) => {
     event.preventDefault();
     setActiveTab(tabName);
-    const tabEl = scrollRef.current?.children[index];
-    tabEl?.scrollIntoView({ behavior: "smooth", inline: "center" });
+    const tabEl = document.getElementById(
+      tabName.toLowerCase().replace(/ /g, "-")
+    );
+    if (tabEl) {
+      const offset = 100; // Adjust according to your header height
+      const top = tabEl.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: "smooth" });
+    }
   };
 
   const disabled = disabledStates[activeTab];
@@ -216,7 +222,7 @@ const GLAccountDocument = ({ isActiveTab }) => {
         return (
           <section
             id="basic-data"
-            className="border border-gray-300 bg-white w-full h-[365px] overflow-y-auto"
+            className="border border-gray-300 bg-white w-full scroll-mt-[100px]"
           >
             <div className="bg-[#e5f3fd] p-4 rounded shadow-md">
               <div className="grid grid-cols-3 gap-x-6 gap-y-4 items-center">
@@ -438,7 +444,7 @@ const GLAccountDocument = ({ isActiveTab }) => {
               </div>
             </div>
 
-            <div className="overflow-y-auto max-h-[150px]">
+            <div className="overflow-y-auto max-h-[155px]">
               <table className="w-full min-w-[800px] table-fixed">
                 <thead className="bg-gray-50">
                   <tr>
@@ -701,7 +707,7 @@ const GLAccountDocument = ({ isActiveTab }) => {
         return (
           <section
             id="details"
-            className="p-4 border border-gray-300 bg-white w-full h-[299px] overflow-y-auto"
+            className="p-5 border border-gray-300 bg-white w-full scroll-mt-[100px] h-[365px] overflow-y-auto"
           >
             <p className="font-medium mb-3">Account Control in Company Code</p>
             <div className="border border-gray-200 bg-gray-200 p-3 w-[800px] text-center">
@@ -861,11 +867,6 @@ const GLAccountDocument = ({ isActiveTab }) => {
           </section>
         );
 
-        return (
-          <section id="info-cocd" className="p-4 mt-4 border rounded bg-white">
-            <p>Company Code level information displayed here.</p>
-          </section>
-        );
       default:
         return null;
     }
@@ -928,203 +929,91 @@ const GLAccountDocument = ({ isActiveTab }) => {
   }
 
   return (
-    <div
-      ref={appRef}
-      className="w-screen h-screen bg-gray-100 overflow-hidden flex flex-col font-sans font-semibold"
-    >
-      {/* Top Menu Bar */}
-      <div className="bg-[#e5f3fd] p-1 text-xs shadow-md flex justify-between items-center">
-        <div className="flex text-black">
-          <FaBars className="mx-2 mt-1 text-xs cursor-pointer" title="Menu" />
-          <h6 className="mx-2 text-sm">Menu</h6>
-          <h6 className="mx-2 text-sm">Edit</h6>
-          <h6 className="mx-2 text-sm">Favorites</h6>
-          <h6 className="mx-2 text-sm">Extras</h6>
-          <h6 className="mx-2 text-sm">System</h6>
-          <h6 className="mx-2 text-sm">Help</h6>
-        </div>
-        <div className="flex items-center space-x-2 text-black">
-          <FaHome />
-          <h6 className="mx-2 text-sm">Admin</h6>
-          <button
-            onClick={toggleLock}
-            title={isLocked ? "Unlock" : "Lock"}
-            className="hover:bg-gray-200 p-1 rounded"
-          >
-            {isLocked ? <FaLock /> : <FaLockOpen />}
-          </button>
-          <button
-            onClick={exitFullscreen}
-            disabled={!isFullscreen || isLocked}
-            className={`hover:bg-gray-200 p-1 rounded ${
-              !isFullscreen || isLocked ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-            title="Exit Fullscreen"
-          >
-            <FaMinus />
-          </button>
-          <button
-            onClick={goFullscreen}
-            disabled={isFullscreen || isLocked}
-            className={`hover:bg-gray-200 p-1 rounded ${
-              isFullscreen || isLocked ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-            title="Fullscreen"
-          >
-            <FaExpand />
-          </button>
-          <button
-            onClick={handleCloseApp}
-            title="Close"
-            className="hover:bg-gray-200 p-1 rounded"
-          >
-            <FaTimes />
-          </button>
-        </div>
-      </div>
-      <div className="relative flex items-center p-2 bg-[#9abddc] h-12">
-        {/* Left - AERP */}
-        <h1 className="text-black font-bold text-3xl">AERP</h1>
-      </div>
-
-      <div className="relative bg-[#f5fbff] border border-gray-200 text-black font-semibold p-1 text-xs shadow-md flex justify-between items-center">
-        {/* Sidebar Toggle Buttons */}
-        <div className="flex items-center gap-2 mr-4 z-10">
-          <button
-            className={`p-1 ${
-              isSidebarVisible
-                ? "text-blue-600 hover:text-blue-800"
-                : "text-gray-400 cursor-not-allowed"
-            }`}
-            onClick={() => isSidebarVisible && setIsSidebarVisible(false)}
-            title="Hide Sidebar"
-            disabled={!isSidebarVisible}
-          >
-            <FiChevronLeft size={18} />
-          </button>
-
-          <button
-            className={`p-1 ${
-              !isSidebarVisible
-                ? "text-blue-600 hover:text-blue-800"
-                : "text-gray-400 cursor-not-allowed"
-            }`}
-            onClick={() => !isSidebarVisible && setIsSidebarVisible(true)}
-            title="Show Sidebar"
-            disabled={isSidebarVisible}
-          >
-            <FiChevronRight size={18} />
-          </button>
-        </div>
-
-        {/* Center Text */}
-        <p className="absolute left-1/2 transform -translate-x-1/2 text-[16px] font-semibold">
-          Edit G/L Account Document
-        </p>
-
-        {/* Search Box */}
-        <div className="relative flex items-center ml-4 z-10">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="pl-8 pr-2 py-0.5 rounded-sm border border-gray-300 text-xs text-gray-800 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            style={{ width: "150px" }}
-          />
-          <FaSearch className="absolute left-2 text-gray-400 text-sm" />
-        </div>
-      </div>
-
-      <div className="flex flex-grow overflow-hidden">
-        {isSidebarVisible && <Sidebar />}
-
-        {/* Main Content */}
-        <div className="flex-1 font-sans text-xs bg-gray-50">
-          <div className="bg-gray-50 p-2">
-            <div className="flex justify-between space-x-6 text-sm text-gray-700">
-              <div className="flex px-2">
-                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                  <BsCreditCardFill />
-                  <span className="mr-5">Hold</span>
-                </div>
-                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                  <RiSideBarFill />
-                  <span className="mr-5">Simulate</span>
-                </div>
-                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                  <FaRegBookmark />
-                  <span className="mr-5">Park</span>
-                </div>
-                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                  <FaEdit />
-                  <span className="mr-5">Editing Options</span>
-                </div>
-                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                  <span>More</span>
-                  <FiChevronDown size={14} />
-                </div>
-              </div>
-              <div className="flex">
-                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                  <IoIosPrint />
-                </div>
-                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                  <a href="/home">
-                    <span className="px-2">Exit</span>
-                  </a>
-                </div>
-              </div>
+    <div>
+      <div className="bg-gray-50 p-2">
+        <div className="flex justify-between space-x-6 text-sm text-gray-700">
+          <div className="flex px-2">
+            <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+              <BsCreditCardFill />
+              <span className="mr-5">Hold</span>
+            </div>
+            <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+              <RiSideBarFill />
+              <span className="mr-5">Simulate</span>
+            </div>
+            <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+              <FaRegBookmark />
+              <span className="mr-5">Park</span>
+            </div>
+            <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+              <FaEdit />
+              <span className="mr-5">Editing Options</span>
+            </div>
+            <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+              <span>More</span>
+              <FiChevronDown size={14} />
             </div>
           </div>
+          <div className="flex">
+            <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+              <IoIosPrint />
+            </div>
+            <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+              <a href="/home">
+                <span className="px-2">Exit</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
 
-          <div className="w-full">
-            {/* Tabs */}
-            <div className="p-2 flex items-center">
-              <div
-                ref={scrollRef}
-                className="flex space-x-1 overflow-x-auto scrollbar-hide snap-x snap-mandatory"
+      <div className="w-full">
+        {/* Tabs */}
+        <div className="p-2 flex items-center">
+          <div
+            ref={scrollRef}
+            className="flex space-x-1 overflow-x-auto scrollbar-hide snap-x snap-mandatory"
+          >
+            {tabNames.map((tab, index) => (
+              <a
+                key={tab.name}
+                href={`#${tab.id}`} // use tab.id here
+                onClick={(e) => handleTabClick(tab.name, index, e)}
+                className={`snap-start px-3 py-0.5 whitespace-nowrap text-xs font-medium border-b-2 ${
+                  activeTab === tab.name
+                    ? "text-blue-900 border-blue-900"
+                    : "text-gray-700 border-transparent"
+                }`}
               >
-                {tabNames.map((tab, index) => (
-                  <a
-                    key={tab.name}
-                    href={`#${tab.id}`} // use tab.id here
-                    onClick={(e) => handleTabClick(tab.name, index, e)}
-                    className={`snap-start px-3 py-0.5 whitespace-nowrap text-xs font-medium border-b-2 ${
-                      activeTab === tab.name
-                        ? "text-blue-900 border-blue-900"
-                        : "text-gray-700 border-transparent"
-                    }`}
-                  >
-                    {tab.name}
-                  </a>
-                ))}
-              </div>
-
-              {showScrollButton && (
-                <button
-                  onClick={() =>
-                    scrollRef.current?.scrollBy({
-                      left: 120,
-                      behavior: "smooth",
-                    })
-                  }
-                  className="ml-2 p-1 bg-white rounded shadow hover:bg-gray-100"
-                >
-                  <FiChevronRight size={16} />
-                </button>
-              )}
-            </div>
-
-            {/* Optional message */}
-            {disabled && (
-              <div className="px-4 text-sm text-gray-500 mb-2">
-                Unlocking inputs...
-              </div>
-            )}
-
-            {/* Tab Section Content */}
-            {renderSectionContent()}
+                {tab.name}
+              </a>
+            ))}
           </div>
+
+          {showScrollButton && (
+            <button
+              onClick={() =>
+                scrollRef.current?.scrollBy({
+                  left: 120,
+                  behavior: "smooth",
+                })
+              }
+              className="ml-2 p-1 bg-white rounded shadow hover:bg-gray-100"
+            >
+              <FiChevronRight size={16} />
+            </button>
+          )}
         </div>
+
+        {/* Optional message */}
+        {disabled && (
+          <div className="px-4 text-sm text-gray-500 mb-2">
+            Unlocking inputs...
+          </div>
+        )}
+
+        {/* Tab Section Content */}
+        {renderSectionContent()}
       </div>
     </div>
   );

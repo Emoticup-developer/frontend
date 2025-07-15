@@ -1,46 +1,41 @@
 import { useRef, useState, useEffect } from "react";
-import { FiChevronRight, FiChevronDown, FiChevronLeft } from "react-icons/fi";
+import { FiChevronRight, FiChevronDown } from "react-icons/fi";
 import { RiSideBarFill } from "react-icons/ri";
 import { BsCreditCardFill } from "react-icons/bs";
 import { IoIosPrint } from "react-icons/io";
-import {
-  FaFolderOpen,
-  FaFolder,
-  FaExpand,
-  FaCompress,
-  FaTimes,
-  FaBars,
-  FaMinus,
-  FaLockOpen,
-  FaLock,
-  FaSearch,
-  FaList,
-  FaCircle,
-  FaRegHandPaper,
-  FaPlay,
-  FaRegBookmark,
-  FaEdit,
-} from "react-icons/fa";
-import Sidebar from "../components/Sidebar";
+import { FaSearch, FaCircle, FaRegBookmark, FaEdit } from "react-icons/fa";
+
+const tabNames = [
+  { name: "Type Description", id: "type-description" },
+  { name: "Control Data", id: "control-data" },
+  { name: "Create/bank/interest", id: "create-bank-interest" },
+  { name: "Key word/translation", id: "keyword-translation" },
+  { name: "Information(C/A)", id: "info-ca" },
+  { name: "Information(CoCd)", id: "info-cocd" },
+];
 
 const Centrally = ({ isActiveTab }) => {
-  const appRef = useRef(null);
-  const [isFullscreen, setIsFullscreen] = useState(false);
   const [showApp, setShowApp] = useState(true);
-  const [isLocked, setIsLocked] = useState(false);
-  const [isSidebarVisible, setIsSidebarVisible] = useState(true);
-  const scrollRef = useRef(null);
+
   const [activeTab, setActiveTab] = useState("Type Description");
+  const [disabled, setDisabled] = useState(true);
+  const scrollRef = useRef(null);
   const [showScrollButton, setShowScrollButton] = useState(false);
 
-  const tabNames = [
-    { name: "Type Description", id: "type-description" },
-    { name: "Control Data", id: "control-data" },
-    { name: "Create/bank/interest", id: "create-bank-interest" },
-    { name: "Key word/translation", id: "keyword-translation" },
-    { name: "Information(C/A)", id: "info-ca" },
-    { name: "Information(CoCd)", id: "info-cocd" },
-  ];
+  useEffect(() => {
+    const el = document.activeElement;
+    if (el && typeof el.blur === "function") el.blur();
+  }, [activeTab]);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el && el.scrollWidth > el.clientWidth) setShowScrollButton(true);
+    else setShowScrollButton(false);
+  }, []);
+
+  const handleTabClick = (name, index, e) => {
+    setActiveTab(name);
+  };
 
   // Individual disabled state for each tab
   const [disabledStates, setDisabledStates] = useState(() => {
@@ -81,14 +76,14 @@ const Centrally = ({ isActiveTab }) => {
     return () => clearTimeout(timeout);
   }, [activeTab]);
 
-  const handleTabClick = (tabName, index, event) => {
-    event.preventDefault();
-    setActiveTab(tabName); // match by name
-    const tabEl = scrollRef.current?.children[index];
-    tabEl?.scrollIntoView({ behavior: "smooth", inline: "center" });
-  };
+  // const handleTabClick = (tabName, index, event) => {
+  //   event.preventDefault();
+  //   setActiveTab(tabName); // match by name
+  //   const tabEl = scrollRef.current?.children[index];
+  //   tabEl?.scrollIntoView({ behavior: "smooth", inline: "center" });
+  // };
 
-  const disabled = disabledStates[activeTab];
+  // const disabled = disabledStates[activeTab];
 
   // Show or hide scroll button
   useEffect(() => {
@@ -105,16 +100,13 @@ const Centrally = ({ isActiveTab }) => {
     switch (activeTab) {
       case "Type Description":
         return (
-          <section
-            id="type-description"
-            className="p-4 border border-gray-300 bg-white w-full h-[270px] overflow-y-auto"
-          >
+          <section className="p-5 w-full">
             <div>
               <p className="mb-2">
                 Control in Chart of Accounts YCOA Standard Chart of Accounts
               </p>
 
-              <div className="border border-gray-300 bg-gray-200 p-3 w-[800px] text-center">
+              <div className="border border-gray-300 bg-gray-200 p-3 text-center w-[800px] max-w-[800px]">
                 <div className="flex items-center justify-center mb-2">
                   <label htmlFor="gl-type" className="w-40 text-right mr-4">
                     G/L Account Type:
@@ -279,12 +271,9 @@ const Centrally = ({ isActiveTab }) => {
         );
       case "Control Data":
         return (
-          <section
-            id="control-data"
-            className="p-4 border border-gray-300 bg-white w-full h-[270px] overflow-y-auto"
-          >
+          <section className="p-5 w-full">
             <p className="font-medium mb-3">Account Control in Company Code</p>
-            <div className="border border-gray-200 bg-gray-200 p-3 w-[800px] text-center">
+            <div className="border border-gray-300 bg-gray-200 p-3 text-center w-[800px] max-w-[800px]">
               {/* Account Currency */}
               <div className="flex items-center mb-2">
                 <label
@@ -442,14 +431,11 @@ const Centrally = ({ isActiveTab }) => {
         );
       case "Create/bank/interest":
         return (
-          <section
-            id="create-bank-interest"
-            className="p-4 border border-gray-300 bg-white w-full h-[270px] overflow-y-auto"
-          >
+          <section className="p-5 w-full">
             <p className="font-medium mb-3">
               Control of document creation in company code
             </p>
-            <div className="border border-gray-200 bg-gray-200 p-3 w-[800px] text-center">
+            <div className="border border-gray-300 bg-gray-200 p-3 text-center w-[800px] max-w-[800px]">
               {/* Field Status Group */}
               <div className="flex items-center mb-2">
                 <label className="w-60 text-right pr-4">
@@ -525,23 +511,32 @@ const Centrally = ({ isActiveTab }) => {
         );
       case "Key word/translation":
         return (
-          <section
-            id="keyword-translation"
-            className="p-4 mt-4 border rounded bg-white"
-          >
-            <p>Keyword and translation details go here.</p>
+          <section className="p-5 w-full">
+            <p className="font-medium mb-3">
+              Keyword and translation details go here.
+            </p>
+
+            <div className="border border-gray-300 bg-gray-200 p-3 text-center w-[800px] max-w-[800px]"></div>
           </section>
         );
       case "Information(C/A)":
         return (
-          <section id="info-ca" className="p-4 mt-4 border rounded bg-white">
-            <p>Chart of Account information and configuration notes.</p>
+          <section className="p-5 w-full">
+            <p className="font-medium mb-3">
+              Chart of Account information and configuration notes.
+            </p>
+
+            <div className="border border-gray-300 bg-gray-200 p-3 text-center w-[800px] max-w-[800px]"></div>
           </section>
         );
       case "Information(CoCd)":
         return (
-          <section id="info-cocd" className="p-4 mt-4 border rounded bg-white">
-            <p>Company Code level information displayed here.</p>
+          <section className="p-5 w-full">
+            <p className="font-medium mb-3">
+              Company Code level information displayed here.
+            </p>
+
+            <div className="border border-gray-300 bg-gray-200 p-3 text-center w-[800px] max-w-[800px]"></div>
           </section>
         );
       default:
@@ -606,235 +601,126 @@ const Centrally = ({ isActiveTab }) => {
   }
 
   return (
-    <div
-      ref={appRef}
-      className="w-screen h-screen bg-gray-100 overflow-hidden flex flex-col font-sans font-semibold"
-    >
-      {/* Top Menu Bar */}
-      <div className="bg-[#e5f3fd] p-1 text-xs shadow-md flex justify-between items-center">
-        <div className="flex text-black">
-          <FaBars className="mx-2 mt-1 text-xs cursor-pointer" title="Menu" />
-          <h6 className="mx-2 text-sm">Menu</h6>
-          <h6 className="mx-2 text-sm">Edit</h6>
-          <h6 className="mx-2 text-sm">Favorites</h6>
-          <h6 className="mx-2 text-sm">Extras</h6>
-          <h6 className="mx-2 text-sm">System</h6>
-          <h6 className="mx-2 text-sm">Help</h6>
-        </div>
-        <div className="flex items-center space-x-2 text-black">
-          <h6 className="mx-2 text-sm">Admin</h6>
-          <button
-            onClick={toggleLock}
-            title={isLocked ? "Unlock" : "Lock"}
-            className="hover:bg-gray-200 p-1 rounded"
-          >
-            {isLocked ? <FaLock /> : <FaLockOpen />}
-          </button>
-          <button
-            onClick={exitFullscreen}
-            disabled={!isFullscreen || isLocked}
-            className={`hover:bg-gray-200 p-1 rounded ${
-              !isFullscreen || isLocked ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-            title="Exit Fullscreen"
-          >
-            <FaMinus />
-          </button>
-          <button
-            onClick={goFullscreen}
-            disabled={isFullscreen || isLocked}
-            className={`hover:bg-gray-200 p-1 rounded ${
-              isFullscreen || isLocked ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-            title="Fullscreen"
-          >
-            <FaExpand />
-          </button>
-          <button
-            onClick={handleCloseApp}
-            title="Close"
-            className="hover:bg-gray-200 p-1 rounded"
-          >
-            <FaTimes />
-          </button>
+    <div>
+      <div className="bg-gray-50 p-2">
+        <div className="flex justify-between space-x-6 text-sm text-gray-700">
+          <div className="flex px-2">
+            <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+              <BsCreditCardFill />
+              <span className="mr-5">Hold</span>
+            </div>
+            <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+              <RiSideBarFill />
+              <span className="mr-5">Simulate</span>
+            </div>
+            <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+              <FaRegBookmark />
+              <span className="mr-5">Park</span>
+            </div>
+            <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+              <FaEdit />
+              <span className="mr-5">Editing Options</span>
+            </div>
+            <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+              <span>More</span>
+              <FiChevronDown size={14} />
+            </div>
+          </div>
+          <div className="flex">
+            <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+              <IoIosPrint />
+            </div>
+            <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
+              <span className="px-2">Exit</span>
+            </div>
+          </div>
         </div>
       </div>
-      <div className="relative flex items-center p-2 bg-[#9abddc] h-12">
-        {/* Left - AERP */}
-        <h1 className="text-black font-bold text-3xl">AERP</h1>
-      </div>
-
-      <div className="relative bg-[#f5fbff] border border-gray-200 text-black font-semibold p-1 text-xs shadow-md flex justify-between items-center">
-        {/* Sidebar Toggle Buttons */}
-        <div className="flex items-center gap-2 mr-4 z-10">
-          <button
-            className={`p-1 ${
-              isSidebarVisible
-                ? "text-blue-600 hover:text-blue-800"
-                : "text-gray-400 cursor-not-allowed"
-            }`}
-            onClick={() => isSidebarVisible && setIsSidebarVisible(false)}
-            title="Hide Sidebar"
-            disabled={!isSidebarVisible}
+      <div className="bg-[#e5f3fd] p-6">
+        {/* G/L Account Row */}
+        <div className="flex items-center space-x-2 space-y-2">
+          <label
+            htmlFor="glAccount"
+            className="w-32 text-right text-xs font-medium"
           >
-            <FiChevronLeft size={18} />
-          </button>
+            G/L Account <span className="text-amber-500 text-xs">*</span>
+          </label>
 
-          <button
-            className={`p-1 ${
-              !isSidebarVisible
-                ? "text-blue-600 hover:text-blue-800"
-                : "text-gray-400 cursor-not-allowed"
-            }`}
-            onClick={() => !isSidebarVisible && setIsSidebarVisible(true)}
-            title="Show Sidebar"
-            disabled={isSidebarVisible}
-          >
-            <FiChevronRight size={18} />
-          </button>
-        </div>
-
-        {/* Center Text */}
-        <p className="absolute left-1/2 transform -translate-x-1/2 text-[16px] font-semibold">
-          Edit G/L Account Centrally
-        </p>
-
-        {/* Search Box */}
-        <div className="relative flex items-center ml-4 z-10">
           <input
+            id="glAccount"
+            name="glAccount"
             type="text"
-            placeholder="Search..."
-            className="pl-8 pr-2 py-0.5 rounded-sm border border-gray-300 text-xs text-gray-800 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            style={{ width: "150px" }}
+            className="w-24 h-5 border rounded px-1 py-0.5 text-xs bg-white"
           />
-          <FaSearch className="absolute left-2 text-gray-400 text-sm" />
+
+          <FaSearch className="text-gray-600 cursor-pointer" />
+
+          <p className="text-xs whitespace-nowrap">Receivables Domestic</p>
+        </div>
+
+        {/* Company Code Row */}
+        <div className="flex items-center space-x-2">
+          <label
+            htmlFor="company_code"
+            className="w-32 text-right text-xs font-medium"
+          >
+            Company Code <span className="text-amber-500 text-xs">*</span>
+          </label>
+          <input
+            id="company_code"
+            name="company_code"
+            type="text"
+            className="w-12 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+          />
         </div>
       </div>
 
-      <div className="flex flex-grow overflow-hidden">
-        {isSidebarVisible && <Sidebar />}
-
-        {/* Main Content */}
-        <div className="flex-1 font-sans text-xs bg-gray-50">
-          <div className="bg-gray-50 p-2">
-            <div className="flex justify-between space-x-6 text-sm text-gray-700">
-              <div className="flex px-2">
-                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                  <BsCreditCardFill />
-                  <span className="mr-5">Hold</span>
-                </div>
-                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                  <RiSideBarFill />
-                  <span className="mr-5">Simulate</span>
-                </div>
-                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                  <FaRegBookmark />
-                  <span className="mr-5">Park</span>
-                </div>
-                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                  <FaEdit />
-                  <span className="mr-5">Editing Options</span>
-                </div>
-                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                  <span>More</span>
-                  <FiChevronDown size={14} />
-                </div>
-              </div>
-              <div className="flex">
-                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                  <IoIosPrint />
-                </div>
-                <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                  <span className="px-2">Exit</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="bg-[#e5f3fd] p-6">
-            {/* G/L Account Row */}
-            <div className="flex items-center space-x-2 space-y-2">
-              <label
-                htmlFor="glAccount"
-                className="w-32 text-right text-xs font-medium"
+      <div className="w-full">
+        {/* Tabs */}
+        <div className="p-2 flex items-center">
+          <div
+            ref={scrollRef}
+            className="flex space-x-1 overflow-x-auto scrollbar-hide snap-x snap-mandatory"
+          >
+            {tabNames.map((tab, index) => (
+              <button
+                key={tab.name}
+                onClick={(e) => handleTabClick(tab.name, index, e)}
+                className={`snap-start px-3 py-0.5 whitespace-nowrap cursor-pointer text-xs font-medium border-b-2 ${
+                  activeTab === tab.name
+                    ? "text-blue-900 border-blue-900"
+                    : "text-gray-700 border-transparent"
+                }`}
               >
-                G/L Account <span className="text-amber-500 text-xs">*</span>
-              </label>
-
-              <input
-                id="glAccount"
-                name="glAccount"
-                type="text"
-                className="w-24 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-              />
-
-              <FaSearch className="text-gray-600 cursor-pointer" />
-
-              <p className="text-xs whitespace-nowrap">Receivables Domestic</p>
-            </div>
-
-            {/* Company Code Row */}
-            <div className="flex items-center space-x-2">
-              <label
-                htmlFor="company_code"
-                className="w-32 text-right text-xs font-medium"
-              >
-                Company Code <span className="text-amber-500 text-xs">*</span>
-              </label>
-              <input
-                id="company_code"
-                name="company_code"
-                type="text"
-                className="w-12 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-              />
-            </div>
+                {tab.name}
+              </button>
+            ))}
           </div>
 
-          <div className="w-full">
-            {/* Tabs */}
-            <div className="p-2 flex items-center">
-              <div
-                ref={scrollRef}
-                className="flex space-x-1 overflow-x-auto scrollbar-hide snap-x snap-mandatory"
-              >
-                {tabNames.map((tab, index) => (
-                  <a
-                    key={tab.name}
-                    href={`#${tab.id}`} // use tab.id here
-                    onClick={(e) => handleTabClick(tab.name, index, e)}
-                    className={`snap-start px-3 py-0.5 whitespace-nowrap text-xs font-medium border-b-2 ${
-                      activeTab === tab.name
-                        ? "text-blue-900 border-blue-900"
-                        : "text-gray-700 border-transparent"
-                    }`}
-                  >
-                    {tab.name}
-                  </a>
-                ))}
-              </div>
+          {showScrollButton && (
+            <button
+              onClick={() =>
+                scrollRef.current?.scrollBy({
+                  left: 120,
+                  behavior: "smooth",
+                })
+              }
+              className="ml-2 p-1 bg-white rounded shadow hover:bg-gray-100"
+            >
+              <FiChevronRight size={16} />
+            </button>
+          )}
+        </div>
 
-              {showScrollButton && (
-                <button
-                  onClick={() =>
-                    scrollRef.current?.scrollBy({
-                      left: 120,
-                      behavior: "smooth",
-                    })
-                  }
-                  className="ml-2 p-1 bg-white rounded shadow hover:bg-gray-100"
-                >
-                  <FiChevronRight size={16} />
-                </button>
-              )}
-            </div>
+        {/* {disabled && (
+          <div className="px-4 text-sm text-gray-500 mb-2">
+            Unlocking inputs...
+          </div>
+        )} */}
 
-            {/* Optional message */}
-            {disabled && (
-              <div className="px-4 text-sm text-gray-500 mb-2">
-                Unlocking inputs...
-              </div>
-            )}
-
-            {/* Tab Section Content */}
+        {/* Fixed Height Tab Content */}
+        <div className="relative w-full h-[270px] overflow-y-auto border border-gray-300 bg-white rounded">
+          <div className="min-h-[270px] w-full pr-2">
             {renderSectionContent()}
           </div>
         </div>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaFolder, FaFolderOpen } from "react-icons/fa";
+import { FaCube, FaFolder, FaFolderOpen } from "react-icons/fa";
 import { FiChevronDown, FiChevronRight } from "react-icons/fi";
 import { useSearch } from "../context/SearchContext";
 
@@ -30,9 +30,37 @@ const Sidebar = () => {
     individualProcessing: false,
     documentEntry: false,
     documentMenu: false,
-    enterpriseStructure: false,
 
-    // Enterprise Structure submenus
+    // img guide
+    enterprise: false,
+    fiSettings: false,
+    glConfig: false,
+    accountsPayable: false,
+    accountsReceivable: false,
+    assetAccounting: false,
+    controlling: false,
+    taxation: false,
+    travelManagement: false,
+    specialPurposeLedger: false,
+    reportingConfiguration: false,
+    userRoles: false,
+    systemSettings: false,
+
+    // quick access
+    quickMaster: false,
+    quickFinance: false,
+    quickReporting: false,
+    quickSpecial: false,
+    quickUtilities: false,
+    financeGL: false,
+    financeAP: false,
+    financeAR: false,
+    financeAsset: false,
+    financeBank: false,
+    financeTravel: false,
+
+    // Enterprise Structure
+    enterpriseStructure: false,
     def: false, // Definition
     fi: false, // Financial Accounting
     co: false, // Controlling
@@ -47,14 +75,7 @@ const Sidebar = () => {
     setOpenMenus((prev) => ({ ...prev, [menu]: !prev[menu] }));
   };
   return (
-    <div
-      className="min-h-full bg-gradient-to-b from-blue-50 to-white border-r shadow-md overflow-x-auto overflow-y-auto resize-x"
-      style={{
-        minWidth: "250px",
-        maxWidth: "600px",
-        width: "400px",
-      }}
-    >
+    <div className="min-h-full w-80 bg-gradient-to-b from-blue-50 to-white border-r shadow-md overflow-x-auto overflow-y-auto resize-x">
       <div className="min-w-[300px] p-2 text-[#151b54] text-sm">
         <ul className="text-xs text-blue-900 pl-6 space-y-0">
           <li>
@@ -88,12 +109,12 @@ const Sidebar = () => {
                   </div>
 
                   {openMenus.masterdata && (
-                    <ul className="pl-6 mt-1 space-y-1">
-                      <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                        Customers
+                    <ul className="pl-6 mt-1 space-y-0">
+                      <li className="hover:bg-gray-100 p-1 rounded flex items-center gap-2 cursor-pointer">
+                        <FaCube /> Customers
                       </li>
-                      <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                        Vendors
+                      <li className="hover:bg-gray-100 p-1 rounded flex items-center gap-2 cursor-pointer">
+                        <FaCube /> Vendors
                       </li>
                     </ul>
                   )}
@@ -131,10 +152,12 @@ const Sidebar = () => {
 
                         {openMenus.client && (
                           <ul className="pl-6 mt-1 space-y-0">
-                            <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
                               <a href="/client-profile">Client Details</a>
                             </li>
-                            <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
                               Preferences
                             </li>
                           </ul>
@@ -197,7 +220,7 @@ const Sidebar = () => {
                             <li>
                               <div
                                 onClick={() => toggleMenu("financial")}
-                                className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
+                                className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
                               >
                                 <div className="flex items-center space-x-2">
                                   {openMenus.financial ? (
@@ -219,7 +242,7 @@ const Sidebar = () => {
                                   <li>
                                     <div
                                       onClick={() => toggleMenu("ledger")}
-                                      className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
+                                      className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
                                     >
                                       <div className="flex items-center space-x-2">
                                         {openMenus.ledger ? (
@@ -243,7 +266,7 @@ const Sidebar = () => {
                                             onClick={() =>
                                               toggleMenu("documentEntry")
                                             }
-                                            className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
+                                            className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
                                           >
                                             <div className="flex items-center space-x-2">
                                               {openMenus.documentEntry ? (
@@ -262,46 +285,78 @@ const Sidebar = () => {
 
                                           {openMenus.documentEntry && (
                                             <ul className="pl-6 mt-1 space-y-0 text-xs text-blue-900">
-                                              <li className="hover:bg-gray-100 font-bold p-1 rounded cursor-pointer">
+                                              <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                <FaCube />
                                                 <a href="/gl-account-document">
                                                   Enter G/L Account
                                                 </a>
                                               </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Enter G/L Account Document for
-                                                Ledger Group
+                                              <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                <FaCube />
+                                                <a href="#">
+                                                  Enter G/L Account Document for
+                                                  Ledger Group
+                                                </a>
                                               </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                General Posting
+                                              <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                <FaCube />
+                                                <a href="#">General Posting</a>
                                               </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Enter General Posting for Ledger
-                                                Group
+                                              <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                <FaCube />
+                                                <a href="#">
+                                                  Enter General Posting for
+                                                  Ledger Group
+                                                </a>
                                               </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Edit or Park G/L Document
+                                              <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                <FaCube />
+                                                <a href="#">
+                                                  Edit or Park G/L Document
+                                                </a>
                                               </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Park G/L Account Document for
-                                                Ledger Group
+                                              <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                <FaCube />
+                                                <a href="#">
+                                                  Park G/L Account Document for
+                                                  Ledger Group
+                                                </a>
                                               </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                General Document Parking
+                                              <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                <FaCube />
+                                                <a href="#">
+                                                  General Document Parking
+                                                </a>
                                               </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Post with Clearing
+                                              <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                <FaCube />
+                                                <a href="#">
+                                                  Post with Clearing
+                                                </a>
                                               </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Incoming Payments
+                                              <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                <FaCube />
+                                                <a href="#">
+                                                  Incoming Payments
+                                                </a>
                                               </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Outgoing Payments
+                                              <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                <FaCube />
+                                                <a href="#">
+                                                  Outgoing Payments
+                                                </a>
                                               </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Cash Journal Posting
+                                              <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                <FaCube />
+                                                <a href="#">
+                                                  Cash Journal Posting
+                                                </a>
                                               </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Valuate Foriegn Currency
+                                              <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                <FaCube />
+                                                <a href="#">
+                                                  Valuate Foriegn Currency
+                                                </a>
                                               </li>
                                             </ul>
                                           )}
@@ -312,7 +367,7 @@ const Sidebar = () => {
                                             onClick={() =>
                                               toggleMenu("documentMenu")
                                             }
-                                            className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
+                                            className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
                                           >
                                             <div className="flex items-center space-x-2">
                                               {openMenus.documentMenu ? (
@@ -331,49 +386,71 @@ const Sidebar = () => {
 
                                           {openMenus.documentMenu && (
                                             <ul className="pl-6 mt-1 space-y-0 text-xs text-blue-900">
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Change
+                                              <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                <FaCube />
+                                                <a href="#">Change</a>
                                               </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Change Line of Items
+                                              <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                <FaCube />
+                                                <a href="#">
+                                                  Change Line of Items
+                                                </a>
                                               </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Display
+                                              <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                <FaCube />
+                                                <a href="#">Display</a>
                                               </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Display in Ledger View
+                                              <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                <FaCube />
+                                                <a href="#">
+                                                  Display in Ledger View
+                                                </a>
                                               </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Display Changes
+                                              <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                <FaCube />
+                                                <a href="#">Display Changes</a>
                                               </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Reset Cleared Items
+                                              <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                <FaCube />
+                                                <a href="#">
+                                                  Reset Cleared Items
+                                                </a>
                                               </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Parked Documents
+                                              <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                <FaCube />
+                                                <a href="#">Parked Documents</a>
                                               </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Reference Documents
+                                              <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                <FaCube />
+                                                <a href="#">
+                                                  Reference Documents
+                                                </a>
                                               </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Cross Company Code Transactions
+                                              <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                <FaCube />
+                                                <a href="#">
+                                                  Cross Company Code
+                                                  Transactions
+                                                </a>
                                               </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Reverse
+                                              <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                <FaCube />
+                                                <a href="#">Reverse</a>
                                               </li>
                                             </ul>
                                           )}
                                         </li>
 
-                                        <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                          Account
+                                        <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                          <FaCube />
+                                          <a href="#">Account</a>
                                         </li>
                                         <li>
                                           <div
                                             onClick={() =>
                                               toggleMenu("masterRecord")
                                             }
-                                            className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
+                                            className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
                                           >
                                             <div className="flex items-center space-x-2">
                                               {openMenus.masterRecord ? (
@@ -445,64 +522,91 @@ const Sidebar = () => {
 
                                                       {openMenus.individualProcessing && (
                                                         <ul className="pl-6 space-y-0">
-                                                          <li className="hover:bg-gray-100 font-bold p-1 rounded cursor-pointer">
+                                                          <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                            <FaCube />
                                                             <a href="/centrally">
                                                               Centrally
                                                             </a>
                                                           </li>
-                                                          <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                            In Chart of Accounts
+                                                          <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                            <FaCube />
+                                                            <a href="#">
+                                                              In Chart of
+                                                              Accounts
+                                                            </a>
                                                           </li>
-                                                          <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                            In Company Code
+                                                          <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                            <FaCube />
+                                                            <a href="#">
+                                                              In Company Code
+                                                            </a>
                                                           </li>
                                                         </ul>
                                                       )}
                                                     </li>
-                                                    <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                      Collective Processing
+                                                    <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                      <FaCube />
+                                                      <a href="#">
+                                                        Collective Processing
+                                                      </a>
                                                     </li>
-                                                    <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                      Display Charges
+                                                    <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                      <FaCube />
+                                                      <a href="#">
+                                                        Display Charges
+                                                      </a>
                                                     </li>
-                                                    <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                      Compare Company Code
+                                                    <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                      <FaCube />
+                                                      <a href="#">
+                                                        Compare Company Code
+                                                      </a>
                                                     </li>
-                                                    <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                      Sample Account
+                                                    <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                      <FaCube />
+                                                      <a href="#">
+                                                        Sample Account
+                                                      </a>
                                                     </li>
                                                   </ul>
                                                 )}
                                               </li>
-                                              <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                                Profit Center
+                                              <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                                <FaCube />
+                                                <a href="#">Profit Center</a>
                                               </li>
                                             </ul>
                                           )}
                                         </li>
-                                        <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                          Stastical Key Figures
+                                        <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                          <FaCube />
+                                          <a href="#">Stastical Key Figures</a>
                                         </li>
-                                        <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                          Periodic Processing
+                                        <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                          <FaCube />
+                                          <a href="#">Periodic Processing</a>
                                         </li>
-                                        <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                          Corrections
+                                        <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                          <FaCube />
+                                          <a href="#">Corrections</a>
                                         </li>
-                                        <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                          Reporting
+                                        <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                          <FaCube />
+                                          <a href="#">Reporting</a>
                                         </li>
-                                        <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                          Information System
+                                        <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                          <FaCube />
+                                          <a href="#">Information System</a>
                                         </li>
-                                        <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                          Environment
+                                        <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                          <FaCube />
+                                          <a href="#">Environment</a>
                                         </li>
                                       </ul>
                                     )}
                                   </li>
 
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                  {/* <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
                                     Statistical Key Figures
                                   </li>
                                   <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
@@ -519,28 +623,34 @@ const Sidebar = () => {
                                   </li>
                                   <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
                                     Environment
-                                  </li>
+                                  </li> */}
                                 </ul>
                               )}
                             </li>
 
-                            <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                              Accounts Payable
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Accounts Payable</a>
                             </li>
-                            <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                              Accounts Receivable
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Accounts Receivable</a>
                             </li>
-                            <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                              Asset Accounting
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Asset Accounting</a>
                             </li>
-                            <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                              Bank Ledger
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Bank Ledger</a>
                             </li>
-                            <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                              Special Purpose Ledger
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Special Purpose Ledger</a>
                             </li>
-                            <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                              Travel Management
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Travel Management</a>
                             </li>
                           </ul>
                         )}
@@ -549,7 +659,7 @@ const Sidebar = () => {
                       <li>
                         <div
                           onClick={() => toggleMenu("enterpriseStructure")}
-                          className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 rounded cursor-pointer"
+                          className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
                         >
                           <div className="flex items-center space-x-2">
                             {openMenus.enterpriseStructure ? (
@@ -572,7 +682,7 @@ const Sidebar = () => {
                             <li>
                               <div
                                 onClick={() => toggleMenu("def")}
-                                className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
+                                className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
                               >
                                 <div className="flex items-center space-x-2">
                                   {openMenus.def ? (
@@ -591,7 +701,7 @@ const Sidebar = () => {
 
                               {openMenus.def && (
                                 <ul className="pl-6 mt-1 space-y-0 text-xs text-blue-900">
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
+                                  {/* <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
                                     Define [Item 1]
                                   </li>
                                   <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
@@ -602,7 +712,7 @@ const Sidebar = () => {
                                   </li>
                                   <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
                                     Define [Item 4]
-                                  </li>
+                                  </li> */}
                                 </ul>
                               )}
                             </li>
@@ -611,7 +721,7 @@ const Sidebar = () => {
                             <li>
                               <div
                                 onClick={() => toggleMenu("fi")}
-                                className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
+                                className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
                               >
                                 <div className="flex items-center space-x-2">
                                   {openMenus.fi ? (
@@ -629,20 +739,27 @@ const Sidebar = () => {
                               </div>
                               {openMenus.fi && (
                                 <ul className="pl-6 mt-1 space-y-0 text-xs text-blue-900">
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Define Company
+                                  <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                    <FaCube />
+                                    <a href="/define-company">Define Company</a>
                                   </li>
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Define Company Code
+                                  <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                    <FaCube />
+                                    <a href="#">Define Company Code</a>
                                   </li>
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Assign Company Code to Company
+                                  <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                    <FaCube />
+                                    <a href="#">
+                                      Assign Company Code to Company
+                                    </a>
                                   </li>
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Define Business Area
+                                  <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                    <FaCube />
+                                    <a href="#">Define Business Area</a>
                                   </li>
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Define Functional Area
+                                  <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                    <FaCube />
+                                    <a href="#">Define Functional Area</a>
                                   </li>
                                 </ul>
                               )}
@@ -652,7 +769,7 @@ const Sidebar = () => {
                             <li>
                               <div
                                 onClick={() => toggleMenu("co")}
-                                className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
+                                className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
                               >
                                 <div className="flex items-center space-x-2">
                                   {openMenus.co ? (
@@ -670,14 +787,21 @@ const Sidebar = () => {
                               </div>
                               {openMenus.co && (
                                 <ul className="pl-6 mt-1 space-y-0 text-xs text-blue-900">
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Define Controlling Area
+                                  <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                    <FaCube />
+                                    <a href="#">Define Controlling Area</a>
                                   </li>
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Assign Company Code to Controlling Area
+                                  <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                    <FaCube />
+                                    <a href="#">
+                                      Assign Company Code to Controlling Area
+                                    </a>
                                   </li>
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Maintain Controlling Settings
+                                  <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                    <FaCube />
+                                    <a href="#">
+                                      Maintain Controlling Settings
+                                    </a>
                                   </li>
                                 </ul>
                               )}
@@ -687,7 +811,7 @@ const Sidebar = () => {
                             <li>
                               <div
                                 onClick={() => toggleMenu("lo")}
-                                className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
+                                className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
                               >
                                 <div className="flex items-center space-x-2">
                                   {openMenus.lo ? (
@@ -705,17 +829,23 @@ const Sidebar = () => {
                               </div>
                               {openMenus.lo && (
                                 <ul className="pl-6 mt-1 space-y-0 text-xs text-blue-900">
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Define Division
+                                  <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                    <FaCube />
+                                    <a href="#">Define Division</a>
                                   </li>
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Define Distribution Channel
+                                  <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                    <FaCube />
+                                    <a href="#">Define Distribution Channel</a>
                                   </li>
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Define Sales Organization
+                                  <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                    <FaCube />
+                                    <a href="#">Define Sales Organization</a>
                                   </li>
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Assign Sales Org to Company Code
+                                  <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                    <FaCube />
+                                    <a href="#">
+                                      Assign Sales Org to Company Code
+                                    </a>
                                   </li>
                                 </ul>
                               )}
@@ -725,7 +855,7 @@ const Sidebar = () => {
                             <li>
                               <div
                                 onClick={() => toggleMenu("sd")}
-                                className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
+                                className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
                               >
                                 <div className="flex items-center space-x-2">
                                   {openMenus.sd ? (
@@ -743,14 +873,19 @@ const Sidebar = () => {
                               </div>
                               {openMenus.sd && (
                                 <ul className="pl-6 mt-1 space-y-0 text-xs text-blue-900">
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Define Sales Office
+                                  <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                    <FaCube />
+                                    <a href="#">Define Sales Office</a>
                                   </li>
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Define Sales Group
+                                  <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                    <FaCube />
+                                    <a href="#">Define Sales Group</a>
                                   </li>
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Assign Sales Office to Sales Org
+                                  <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                    <FaCube />
+                                    <a href="#">
+                                      Assign Sales Office to Sales Org
+                                    </a>
                                   </li>
                                 </ul>
                               )}
@@ -760,7 +895,7 @@ const Sidebar = () => {
                             <li>
                               <div
                                 onClick={() => toggleMenu("mm")}
-                                className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
+                                className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
                               >
                                 <div className="flex items-center space-x-2">
                                   {openMenus.mm ? (
@@ -778,20 +913,29 @@ const Sidebar = () => {
                               </div>
                               {openMenus.mm && (
                                 <ul className="pl-6 mt-1 space-y-0 text-xs text-blue-900">
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Define Plant
+                                  <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                    <FaCube />
+                                    <a href="#">Define Plant</a>
                                   </li>
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Define Storage Location
+                                  <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                    <FaCube />
+                                    <a href="#">Define Storage Location</a>
                                   </li>
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Define Purchasing Organization
+                                  <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                    <FaCube />
+                                    <a href="#">
+                                      Define Purchasing Organization
+                                    </a>
                                   </li>
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Assign Purchasing Org to Plant
+                                  <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                    <FaCube />
+                                    <a href="#">
+                                      Assign Purchasing Org to Plant
+                                    </a>
                                   </li>
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Assign Plant to Company Code
+                                  <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                    <FaCube />
+                                    <a href="#">Assign Plant to Company Code</a>
                                   </li>
                                 </ul>
                               )}
@@ -801,7 +945,7 @@ const Sidebar = () => {
                             <li>
                               <div
                                 onClick={() => toggleMenu("pm")}
-                                className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
+                                className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
                               >
                                 <div className="flex items-center space-x-2">
                                   {openMenus.pm ? (
@@ -819,14 +963,19 @@ const Sidebar = () => {
                               </div>
                               {openMenus.pm && (
                                 <ul className="pl-6 mt-1 space-y-0 text-xs text-blue-900">
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Define Maintenance Plant
+                                  <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                    <FaCube />
+                                    <a href="#">Define Maintenance Plant</a>
                                   </li>
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Assign Planning Plant
+                                  <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                    <FaCube />
+                                    <a href="#">Assign Planning Plant</a>
                                   </li>
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Set Maintenance Planning Data
+                                  <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                    <FaCube />
+                                    <a href="#">
+                                      Set Maintenance Planning Data
+                                    </a>
                                   </li>
                                 </ul>
                               )}
@@ -836,7 +985,7 @@ const Sidebar = () => {
                             <li>
                               <div
                                 onClick={() => toggleMenu("hr")}
-                                className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
+                                className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
                               >
                                 <div className="flex items-center space-x-2">
                                   {openMenus.hr ? (
@@ -854,14 +1003,19 @@ const Sidebar = () => {
                               </div>
                               {openMenus.hr && (
                                 <ul className="pl-6 mt-1 space-y-0 text-xs text-blue-900">
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Define Personnel Area
+                                  <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                    <FaCube />
+                                    <a href="#">Define Personnel Area</a>
                                   </li>
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Define Personnel Subarea
+                                  <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                    <FaCube />
+                                    <a href="#">Define Personnel Subarea</a>
                                   </li>
-                                  <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                                    Assign Company Code to Personnel Area
+                                  <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                                    <FaCube />
+                                    <a href="#">
+                                      Assign Company Code to Personnel Area
+                                    </a>
                                   </li>
                                 </ul>
                               )}
@@ -890,38 +1044,518 @@ const Sidebar = () => {
 
             {openMenus.imgfunc && (
               <ul className="pl-6 mt-1 space-y-1 text-blue-900">
+                {/* 🔻 Enterprise Structure Configuration */}
                 <li>
                   <div
-                    onClick={() => toggleMenu("imgsub")}
+                    onClick={() => toggleMenu("enterprise")}
                     className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
                   >
                     <div className="flex items-center space-x-2">
-                      {openMenus.imgsub ? <FaFolderOpen /> : <FaFolder />}
-                      <span>Configuration</span>
+                      {openMenus.enterprise ? <FaFolderOpen /> : <FaFolder />}
+                      <span>Enterprise Structure Configuration</span>
                     </div>
-                    {openMenus.imgsub ? <FiChevronDown /> : <FiChevronRight />}
+                    {openMenus.enterprise ? (
+                      <FiChevronDown />
+                    ) : (
+                      <FiChevronRight />
+                    )}
                   </div>
 
-                  {openMenus.imgsub && (
-                    <ul className="pl-6 mt-1 space-y-1">
-                      <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                        System Setup
+                  {openMenus.enterprise && (
+                    <ul className="pl-6 mt-1 space-y-0">
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="/define-company">Define Company</a>
                       </li>
-                      <li className="hover:bg-gray-100 p-1 rounded cursor-pointer">
-                        Integration
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Define Company Code</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Assign Company Code to Company</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Define Business Area</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">
+                          Define Plant, Storage Location, Sales Org, Purchasing
+                          Org
+                        </a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Assign Org Units</a>
                       </li>
                     </ul>
                   )}
                 </li>
+                {/* 🔻 Financial Accounting Settings (FI) */}
+                <li>
+                  <div
+                    onClick={() => toggleMenu("fiSettings")}
+                    className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                  >
+                    <div className="flex items-center space-x-2">
+                      {openMenus.fiSettings ? <FaFolderOpen /> : <FaFolder />}
+                      <span>Financial Accounting Settings (FI)</span>
+                    </div>
+                    {openMenus.fiSettings ? (
+                      <FiChevronDown />
+                    ) : (
+                      <FiChevronRight />
+                    )}
+                  </div>
 
-                <li className="hover:bg-gray-100 p-1 rounded cursor-pointer flex items-center space-x-2">
-                  <FaFolder />
-                  <span>Transport</span>
+                  {openMenus.fiSettings && (
+                    <ul className="pl-6 mt-1 space-y-0">
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Define Chart of Accounts</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Define Account Groups</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Field Status Variants</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Posting Period Variant</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Document Types & Number Ranges</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">
+                          Tax on Sales & Purchases (Define Tax Codes)
+                        </a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Tolerance Groups</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Withholding Tax Settings</a>
+                      </li>
+                    </ul>
+                  )}
+                </li>
+                {/* 🔻 General Ledger Configuration */}
+                <li>
+                  <div
+                    onClick={() => toggleMenu("glConfig")}
+                    className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                  >
+                    <div className="flex items-center space-x-2">
+                      {openMenus.glConfig ? <FaFolderOpen /> : <FaFolder />}
+                      <span>General Ledger Configuration</span>
+                    </div>
+                    {openMenus.glConfig ? (
+                      <FiChevronDown />
+                    ) : (
+                      <FiChevronRight />
+                    )}
+                  </div>
+
+                  {openMenus.glConfig && (
+                    <ul className="pl-6 mt-1 space-y-0">
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">GL Account Types</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">GL Account Master Data Control</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Parallel Accounting / Ledgers</a>
+                      </li>
+                    </ul>
+                  )}
+                </li>
+                {/* 🔻 Accounts Payable */}
+                <li>
+                  <div
+                    onClick={() => toggleMenu("accountsPayable")}
+                    className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                  >
+                    <div className="flex items-center space-x-2">
+                      {openMenus.accountsPayable ? (
+                        <FaFolderOpen />
+                      ) : (
+                        <FaFolder />
+                      )}
+                      <span>Accounts Payable</span>
+                    </div>
+                    {openMenus.accountsPayable ? (
+                      <FiChevronDown />
+                    ) : (
+                      <FiChevronRight />
+                    )}
+                  </div>
+
+                  {openMenus.accountsPayable && (
+                    <ul className="pl-6 mt-1 space-y-0">
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Vendor Account Groups</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Number Ranges for Vendors</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Dunning Configuration</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Payment Terms / Methods</a>
+                      </li>
+                    </ul>
+                  )}
+                </li>
+                {/* 🔻 Accounts Receivable */}
+                <li>
+                  <div
+                    onClick={() => toggleMenu("accountsReceivable")}
+                    className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                  >
+                    <div className="flex items-center space-x-2">
+                      {openMenus.accountsReceivable ? (
+                        <FaFolderOpen />
+                      ) : (
+                        <FaFolder />
+                      )}
+                      <span>Accounts Receivable</span>
+                    </div>
+                    {openMenus.accountsReceivable ? (
+                      <FiChevronDown />
+                    ) : (
+                      <FiChevronRight />
+                    )}
+                  </div>
+
+                  {openMenus.accountsReceivable && (
+                    <ul className="pl-6 mt-1 space-y-0">
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Customer Account Groups</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Credit Management Settings</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Customer Number Ranges</a>
+                      </li>
+                    </ul>
+                  )}
+                </li>
+                {/* 🔻 Asset Accounting */}
+                <li>
+                  <div
+                    onClick={() => toggleMenu("assetAccounting")}
+                    className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                  >
+                    <div className="flex items-center space-x-2">
+                      {openMenus.assetAccounting ? (
+                        <FaFolderOpen />
+                      ) : (
+                        <FaFolder />
+                      )}
+                      <span>Asset Accounting</span>
+                    </div>
+                    {openMenus.assetAccounting ? (
+                      <FiChevronDown />
+                    ) : (
+                      <FiChevronRight />
+                    )}
+                  </div>
+
+                  {openMenus.assetAccounting && (
+                    <ul className="pl-6 mt-1 space-y-0">
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Define Chart of Depreciation</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Asset Classes</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Depreciation Areas</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Integration with GL</a>
+                      </li>
+                    </ul>
+                  )}
+                </li>
+                {/* 🔻 Controlling (CO) */}
+                <li>
+                  <div
+                    onClick={() => toggleMenu("controlling")}
+                    className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                  >
+                    <div className="flex items-center space-x-2">
+                      {openMenus.controlling ? <FaFolderOpen /> : <FaFolder />}
+                      <span>Controlling (CO)</span>
+                    </div>
+                    {openMenus.controlling ? (
+                      <FiChevronDown />
+                    ) : (
+                      <FiChevronRight />
+                    )}
+                  </div>
+
+                  {openMenus.controlling && (
+                    <ul className="pl-6 mt-1 space-y-0">
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Define Controlling Area</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Assign Company Codes to CO Area</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Cost Center/Profit Center Hierarchy</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Define Secondary Cost Elements</a>
+                      </li>
+                    </ul>
+                  )}
+                </li>
+                {/* 🔻 Taxation */}
+                <li>
+                  <div
+                    onClick={() => toggleMenu("taxation")}
+                    className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                  >
+                    <div className="flex items-center space-x-2">
+                      {openMenus.taxation ? <FaFolderOpen /> : <FaFolder />}
+                      <span>Taxation</span>
+                    </div>
+                    {openMenus.taxation ? (
+                      <FiChevronDown />
+                    ) : (
+                      <FiChevronRight />
+                    )}
+                  </div>
+
+                  {openMenus.taxation && (
+                    <ul className="pl-6 mt-1 space-y-0">
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Define Tax Jurisdictions</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Maintain Tax Codes</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">GST/VAT Setup</a>
+                      </li>
+                    </ul>
+                  )}
+                </li>
+                {/* 🔻 Travel Management */}
+                <li>
+                  <div
+                    onClick={() => toggleMenu("travelManagement")}
+                    className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                  >
+                    <div className="flex items-center space-x-2">
+                      {openMenus.travelManagement ? (
+                        <FaFolderOpen />
+                      ) : (
+                        <FaFolder />
+                      )}
+                      <span>Travel Management</span>
+                    </div>
+                    {openMenus.travelManagement ? (
+                      <FiChevronDown />
+                    ) : (
+                      <FiChevronRight />
+                    )}
+                  </div>
+
+                  {openMenus.travelManagement && (
+                    <ul className="pl-6 mt-1 space-y-0">
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Define Travel Types</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Approval Workflow Setup</a>
+                      </li>
+                    </ul>
+                  )}
+                </li>
+                {/* 🔻 Special Purpose Ledger (SPL) */}
+                <li>
+                  <div
+                    onClick={() => toggleMenu("specialPurposeLedger")}
+                    className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                  >
+                    <div className="flex items-center space-x-2">
+                      {openMenus.specialPurposeLedger ? (
+                        <FaFolderOpen />
+                      ) : (
+                        <FaFolder />
+                      )}
+                      <span>Special Purpose Ledger (SPL)</span>
+                    </div>
+                    {openMenus.specialPurposeLedger ? (
+                      <FiChevronDown />
+                    ) : (
+                      <FiChevronRight />
+                    )}
+                  </div>
+
+                  {openMenus.specialPurposeLedger && (
+                    <ul className="pl-6 mt-1 space-y-0">
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Ledger Definition</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Transfer Rules</a>
+                      </li>
+                    </ul>
+                  )}
+                </li>
+                {/* 🔻 Reporting Configuration */}
+                <li>
+                  <div
+                    onClick={() => toggleMenu("reportingConfiguration")}
+                    className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                  >
+                    <div className="flex items-center space-x-2">
+                      {openMenus.reportingConfiguration ? (
+                        <FaFolderOpen />
+                      ) : (
+                        <FaFolder />
+                      )}
+                      <span>Reporting Configuration</span>
+                    </div>
+                    {openMenus.reportingConfiguration ? (
+                      <FiChevronDown />
+                    ) : (
+                      <FiChevronRight />
+                    )}
+                  </div>
+
+                  {openMenus.reportingConfiguration && (
+                    <ul className="pl-6 mt-1 space-y-0">
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Report Painter/Writer Setup</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Financial Statement Versions</a>
+                      </li>
+                    </ul>
+                  )}
+                </li>
+                {/* 🔻 User Roles and Authorizations */}
+                <li>
+                  <div
+                    onClick={() => toggleMenu("userRoles")}
+                    className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                  >
+                    <div className="flex items-center space-x-2">
+                      {openMenus.userRoles ? <FaFolderOpen /> : <FaFolder />}
+                      <span>User Roles and Authorizations</span>
+                    </div>
+                    {openMenus.userRoles ? (
+                      <FiChevronDown />
+                    ) : (
+                      <FiChevronRight />
+                    )}
+                  </div>
+
+                  {openMenus.userRoles && (
+                    <ul className="pl-6 mt-1 space-y-0">
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Define Roles</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Field Status Groups</a>
+                      </li>
+                    </ul>
+                  )}
+                </li>
+                {/* 🔻 System Settings */}
+                <li>
+                  <div
+                    onClick={() => toggleMenu("systemSettings")}
+                    className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                  >
+                    <div className="flex items-center space-x-2">
+                      {openMenus.systemSettings ? (
+                        <FaFolderOpen />
+                      ) : (
+                        <FaFolder />
+                      )}
+                      <span>System Settings</span>
+                    </div>
+                    {openMenus.systemSettings ? (
+                      <FiChevronDown />
+                    ) : (
+                      <FiChevronRight />
+                    )}
+                  </div>
+
+                  {openMenus.systemSettings && (
+                    <ul className="pl-6 mt-1 space-y-0">
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Define Fiscal Year Variant</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Currency & Exchange Rate Types</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Time Zone Settings</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Backup/Restore Parameters</a>
+                      </li>
+                    </ul>
+                  )}
                 </li>
               </ul>
             )}
           </li>
 
+          {/* 🔻 Quick Access */}
           <li>
             <div
               onClick={() => toggleMenu("quickaccess")}
@@ -936,13 +1570,434 @@ const Sidebar = () => {
 
             {openMenus.quickaccess && (
               <ul className="pl-6 mt-1 space-y-1 text-blue-900">
-                <li className="hover:bg-gray-100 p-1 rounded cursor-pointer flex items-center space-x-2">
-                  <FaFolder />
-                  <span>Recent Items</span>
+                {/* 1. Master Data Maintenance */}
+                <li>
+                  <div
+                    onClick={() => toggleMenu("quickMaster")}
+                    className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                  >
+                    <div className="flex items-center space-x-2">
+                      {openMenus.quickMaster ? <FaFolderOpen /> : <FaFolder />}
+                      <span>Master Data Maintenance</span>
+                    </div>
+                    {openMenus.quickMaster ? (
+                      <FiChevronDown />
+                    ) : (
+                      <FiChevronRight />
+                    )}
+                  </div>
+                  {openMenus.quickMaster && (
+                    <ul className="pl-6 mt-1 space-y-0">
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Vendor Master (Create/Change/Display)</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Customer Master (Create/Change/Display)</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">GL Account Master</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Asset Master</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Cost Center / Profit Center</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Bank Master</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Employee Travel Profiles</a>
+                      </li>
+                    </ul>
+                  )}
                 </li>
-                <li className="hover:bg-gray-100 p-1 rounded cursor-pointer flex items-center space-x-2">
-                  <FaFolder />
-                  <span>Frequently Used</span>
+
+                {/* 2. Financial Transactions */}
+                <li>
+                  <div
+                    onClick={() => toggleMenu("quickFinance")}
+                    className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                  >
+                    <div className="flex items-center space-x-2">
+                      {openMenus.quickFinance ? <FaFolderOpen /> : <FaFolder />}
+                      <span>Financial Transactions</span>
+                    </div>
+                    {openMenus.quickFinance ? (
+                      <FiChevronDown />
+                    ) : (
+                      <FiChevronRight />
+                    )}
+                  </div>
+
+                  {openMenus.quickFinance && (
+                    <ul className="pl-6 mt-1 space-y-0">
+                      {/* General Ledger */}
+                      <li>
+                        <div
+                          onClick={() => toggleMenu("financeGL")}
+                          className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                        >
+                          <div className="flex items-center space-x-2">
+                            {openMenus.financeGL ? (
+                              <FaFolderOpen />
+                            ) : (
+                              <FaFolder />
+                            )}
+                            <span>General Ledger</span>
+                          </div>
+                          {openMenus.financeGL ? (
+                            <FiChevronDown />
+                          ) : (
+                            <FiChevronRight />
+                          )}
+                        </div>
+                        {openMenus.financeGL && (
+                          <ul className="pl-6 mt-1 space-y-0">
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Post Journal Entry</a>
+                            </li>
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Display GL Balances</a>
+                            </li>
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Display Line Items</a>
+                            </li>
+                          </ul>
+                        )}
+                      </li>
+
+                      {/* Accounts Payable */}
+                      <li>
+                        <div
+                          onClick={() => toggleMenu("financeAP")}
+                          className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                        >
+                          <div className="flex items-center space-x-2">
+                            {openMenus.financeAP ? (
+                              <FaFolderOpen />
+                            ) : (
+                              <FaFolder />
+                            )}
+                            <span>Accounts Payable</span>
+                          </div>
+                          {openMenus.financeAP ? (
+                            <FiChevronDown />
+                          ) : (
+                            <FiChevronRight />
+                          )}
+                        </div>
+                        {openMenus.financeAP && (
+                          <ul className="pl-6 mt-1 space-y-0">
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Enter Incoming Invoice</a>
+                            </li>
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Make Payment</a>
+                            </li>
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Display Vendor Line Items</a>
+                            </li>
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Dunning Run</a>
+                            </li>
+                          </ul>
+                        )}
+                      </li>
+
+                      {/* Accounts Receivable */}
+                      <li>
+                        <div
+                          onClick={() => toggleMenu("financeAR")}
+                          className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                        >
+                          <div className="flex items-center space-x-2">
+                            {openMenus.financeAR ? (
+                              <FaFolderOpen />
+                            ) : (
+                              <FaFolder />
+                            )}
+                            <span>Accounts Receivable</span>
+                          </div>
+                          {openMenus.financeAR ? (
+                            <FiChevronDown />
+                          ) : (
+                            <FiChevronRight />
+                          )}
+                        </div>
+                        {openMenus.financeAR && (
+                          <ul className="pl-6 mt-1 space-y-0">
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Create Outgoing Invoice</a>
+                            </li>
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Post Incoming Payment</a>
+                            </li>
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Display Customer Line Items</a>
+                            </li>
+                          </ul>
+                        )}
+                      </li>
+
+                      {/* Asset Accounting */}
+                      <li>
+                        <div
+                          onClick={() => toggleMenu("financeAsset")}
+                          className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                        >
+                          <div className="flex items-center space-x-2">
+                            {openMenus.financeAsset ? (
+                              <FaFolderOpen />
+                            ) : (
+                              <FaFolder />
+                            )}
+                            <span>Asset Accounting</span>
+                          </div>
+                          {openMenus.financeAsset ? (
+                            <FiChevronDown />
+                          ) : (
+                            <FiChevronRight />
+                          )}
+                        </div>
+                        {openMenus.financeAsset && (
+                          <ul className="pl-6 mt-1 space-y-0">
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Acquire Asset</a>
+                            </li>
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Retire Asset</a>
+                            </li>
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Run Depreciation</a>
+                            </li>
+                          </ul>
+                        )}
+                      </li>
+
+                      {/* Bank Ledger */}
+                      <li>
+                        <div
+                          onClick={() => toggleMenu("financeBank")}
+                          className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                        >
+                          <div className="flex items-center space-x-2">
+                            {openMenus.financeBank ? (
+                              <FaFolderOpen />
+                            ) : (
+                              <FaFolder />
+                            )}
+                            <span>Bank Ledger</span>
+                          </div>
+                          {openMenus.financeBank ? (
+                            <FiChevronDown />
+                          ) : (
+                            <FiChevronRight />
+                          )}
+                        </div>
+                        {openMenus.financeBank && (
+                          <ul className="pl-6 mt-1 space-y-0">
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Bank Statement Upload</a>
+                            </li>
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Manual Bank Entry</a>
+                            </li>
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Bank Reconciliation</a>
+                            </li>
+                          </ul>
+                        )}
+                      </li>
+
+                      {/* Travel Management */}
+                      <li>
+                        <div
+                          onClick={() => toggleMenu("financeTravel")}
+                          className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                        >
+                          <div className="flex items-center space-x-2">
+                            {openMenus.financeTravel ? (
+                              <FaFolderOpen />
+                            ) : (
+                              <FaFolder />
+                            )}
+                            <span>Travel Management</span>
+                          </div>
+                          {openMenus.financeTravel ? (
+                            <FiChevronDown />
+                          ) : (
+                            <FiChevronRight />
+                          )}
+                        </div>
+                        {openMenus.financeTravel && (
+                          <ul className="pl-6 mt-1 space-y-0">
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Create Travel Request</a>
+                            </li>
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Submit Expense Report</a>
+                            </li>
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Approve Expenses</a>
+                            </li>
+                          </ul>
+                        )}
+                      </li>
+                    </ul>
+                  )}
+                </li>
+
+                {/* 3. Reporting */}
+                <li>
+                  <div
+                    onClick={() => toggleMenu("quickReporting")}
+                    className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                  >
+                    <div className="flex items-center space-x-2">
+                      {openMenus.quickReporting ? (
+                        <FaFolderOpen />
+                      ) : (
+                        <FaFolder />
+                      )}
+                      <span>Reporting</span>
+                    </div>
+                    {openMenus.quickReporting ? (
+                      <FiChevronDown />
+                    ) : (
+                      <FiChevronRight />
+                    )}
+                  </div>
+                  {openMenus.quickReporting && (
+                    <ul className="pl-6 mt-1 space-y-0">
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Trial Balance</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Profit & Loss</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Balance Sheet</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">AP/AR Aging</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Tax Reports (GST/TDS)</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Asset Register</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Bank Reconciliation Report</a>
+                      </li>
+                    </ul>
+                  )}
+                </li>
+
+                {/* 4. Special Purpose Reports */}
+                <li>
+                  <div
+                    onClick={() => toggleMenu("quickSpecial")}
+                    className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                  >
+                    <div className="flex items-center space-x-2">
+                      {openMenus.quickSpecial ? <FaFolderOpen /> : <FaFolder />}
+                      <span>Special Purpose Reports</span>
+                    </div>
+                    {openMenus.quickSpecial ? (
+                      <FiChevronDown />
+                    ) : (
+                      <FiChevronRight />
+                    )}
+                  </div>
+                  {openMenus.quickSpecial && (
+                    <ul className="pl-6 mt-1 space-y-0">
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Ledger Comparison</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Forecast vs Actual</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Cost Element Reporting</a>
+                      </li>
+                    </ul>
+                  )}
+                </li>
+
+                {/* 5. Utilities */}
+                <li>
+                  <div
+                    onClick={() => toggleMenu("quickUtilities")}
+                    className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                  >
+                    <div className="flex items-center space-x-2">
+                      {openMenus.quickUtilities ? (
+                        <FaFolderOpen />
+                      ) : (
+                        <FaFolder />
+                      )}
+                      <span>Utilities</span>
+                    </div>
+                    {openMenus.quickUtilities ? (
+                      <FiChevronDown />
+                    ) : (
+                      <FiChevronRight />
+                    )}
+                  </div>
+                  {openMenus.quickUtilities && (
+                    <ul className="pl-6 mt-1 space-y-0">
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Import Master Data (Excel)</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">User Logs</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="#">Password Reset</a>
+                      </li>
+                    </ul>
+                  )}
                 </li>
               </ul>
             )}

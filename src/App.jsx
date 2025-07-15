@@ -19,16 +19,17 @@ import JournalEntry from "./pages/JournalEntry";
 import Sample from "./pages/Sample";
 import Crud from "./pages/Crud";
 import ThemeSettings from "./components/ThemeSettings";
+import Layout from "./components/Layout";
 
 // Import ThemeProvider and useTheme from our new context file
 import { ThemeProvider, useTheme } from "./context/ThemeContext";
 import GUI from "./pages/GUI";
 import Centrally from "./pages/Centrally";
-import GLAccountDocument from "./pages/GLAccountDocument";
 import DefineCompany from "./pages/DefineCompany";
 import CreateCompany from "./pages/CreateCompany";
 import HomePage from "./pages/HomePage";
 import ClientProfile from "./pages/ClientProfile";
+import GLAccountDocument from "./pages/GLAccountDocument";
 
 // A wrapper component to apply the global theme colors to each page
 const ThemedPage = ({ children }) => {
@@ -67,184 +68,186 @@ export default function App() {
                 </ThemedPage>
               }
             />
-            <Route
-              path="/dashboard"
-              element={
-                <ThemedPage>
-                  <DashboardPage />
-                </ThemedPage>
-              }
-            />
-            <Route
-              path="/gui"
-              element={
-                <ThemedPage>
-                  <GUI />
-                </ThemedPage>
-              }
-            />
-            <Route
-              path="/gl-account-document"
-              element={
-                <ThemedPage>
-                  <GLAccountDocument />
-                </ThemedPage>
-              }
-            />
-            <Route
-              path="/centrally"
-              element={
-                <ThemedPage>
-                  <Centrally />
-                </ThemedPage>
-              }
-            />
-            <Route
-              path="/client"
-              element={
-                <ThemedPage>
-                  <Client />
-                </ThemedPage>
-              }
-            />
-            <Route
-              path="/home"
-              element={
-                <ThemedPage>
-                  <HomePage />
-                </ThemedPage>
-              }
-            />
-            <Route
-              path="/client-profile"
-              element={
-                <ThemedPage>
-                  <ClientProfile />
-                </ThemedPage>
-              }
-            />
-            <Route
-              path="/define-company"
-              element={
-                <ThemedPage>
-                  <DefineCompany />
-                </ThemedPage>
-              }
-            />
-            <Route
-              path="/create-company"
-              element={
-                <ThemedPage>
-                  <CreateCompany />
-                </ThemedPage>
-              }
-            />
-            <Route
-              path="/company"
-              element={
-                <ThemedPage>
-                  <Company />
-                </ThemedPage>
-              }
-            />
-            <Route
-              path="/company-code"
-              element={
-                <ThemedPage>
-                  <CompanyCode />
-                </ThemedPage>
-              }
-            />
-            <Route
-              path="/business-area"
-              element={
-                <ThemedPage>
-                  <BusinessArea />
-                </ThemedPage>
-              }
-            />
-            <Route
-              path="/plant"
-              element={
-                <ThemedPage>
-                  <Plant />
-                </ThemedPage>
-              }
-            />
-            <Route
-              path="/enterprise-structure"
-              element={
-                <ThemedPage>
-                  <EnterpriseStructure />
-                </ThemedPage>
-              }
-            />
-            <Route
-              path="/sample"
-              element={
-                <ThemedPage>
-                  <Sample />
-                </ThemedPage>
-              }
-            />
+            <Route element={<Layout />}>
+              <Route
+                path="/dashboard"
+                element={
+                  <ThemedPage>
+                    <DashboardPage />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/gui"
+                element={
+                  <ThemedPage>
+                    <GUI />
+                  </ThemedPage>
+                }
+              />
 
-            <Route
-              path="/general-ledger"
-              element={
-                <ThemedPage>
-                  <GeneralLedger />
-                </ThemedPage>
-              }
-            />
-            <Route
-              path="/glaccount-details"
-              element={
-                <ThemedPage>
-                  <GeneralLedgerDetails />
-                </ThemedPage>
-              }
-            />
-            <Route
-              path="/field-status-group"
-              element={
-                <ThemedPage>
-                  <FieldStatus />
-                </ThemedPage>
-              }
-            />
-            <Route
-              path="/crud"
-              element={
-                <ThemedPage>
-                  <Crud />
-                </ThemedPage>
-              }
-            />
-            <Route
-              path="/journal-entry"
-              element={
-                <ThemedPage>
-                  <JournalEntry />
-                </ThemedPage>
-              }
-            />
-            <Route
-              path="/hirarchy"
-              element={
-                <ThemedPage>
-                  <ResizableSAPSidebar />
-                </ThemedPage>
-              }
-            />
-            {/* ThemeSettings page itself will also be themed */}
-            <Route
-              path="/settings"
-              element={
-                <ThemedPage>
-                  <ThemeSettings />
-                </ThemedPage>
-              }
-            />
+              <Route
+                path="/gl-account-document"
+                element={
+                  <ThemedPage>
+                    <GLAccountDocument />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/centrally"
+                element={
+                  <ThemedPage>
+                    <Centrally />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/client"
+                element={
+                  <ThemedPage>
+                    <Client />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/home"
+                element={
+                  <ThemedPage>
+                    <HomePage />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/client-profile"
+                element={
+                  <ThemedPage>
+                    <ClientProfile />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/define-company"
+                element={
+                  <ThemedPage>
+                    <DefineCompany />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/create-company"
+                element={
+                  <ThemedPage>
+                    <CreateCompany />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/company"
+                element={
+                  <ThemedPage>
+                    <Company />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/company-code"
+                element={
+                  <ThemedPage>
+                    <CompanyCode />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/business-area"
+                element={
+                  <ThemedPage>
+                    <BusinessArea />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/plant"
+                element={
+                  <ThemedPage>
+                    <Plant />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/enterprise-structure"
+                element={
+                  <ThemedPage>
+                    <EnterpriseStructure />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/sample"
+                element={
+                  <ThemedPage>
+                    <Sample />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/general-ledger"
+                element={
+                  <ThemedPage>
+                    <GeneralLedger />
+                  </ThemedPage>
+                }
+              />
+
+              <Route
+                path="/glaccount-details"
+                element={
+                  <ThemedPage>
+                    <GeneralLedgerDetails />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/field-status-group"
+                element={
+                  <ThemedPage>
+                    <FieldStatus />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/crud"
+                element={
+                  <ThemedPage>
+                    <Crud />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/journal-entry"
+                element={
+                  <ThemedPage>
+                    <JournalEntry />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/hirarchy"
+                element={
+                  <ThemedPage>
+                    <ResizableSAPSidebar />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/settings"
+                element={
+                  <ThemedPage>
+                    <ThemeSettings />
+                  </ThemedPage>
+                }
+              />
+            </Route>
           </Routes>
 
           {/* Global Toast Notifications */}

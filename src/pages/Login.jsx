@@ -1,16 +1,14 @@
 import { useState, useEffect } from "react";
-import { FaList, FaTimes, FaEdit, FaTrash } from "react-icons/fa";
+import { FaList, FaTimes } from "react-icons/fa";
 import { toast } from "react-toastify";
 import Lottie from "lottie-react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-
 import banner from "../assets/banner.json";
 import logo from "../assets/logoaerp.png";
 
 const Login = () => {
-  // const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -27,18 +25,6 @@ const Login = () => {
 
   const [languageList, setLanguageList] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
-  const [showAddPopup, setShowAddPopup] = useState(false);
-  const [showEditPopup, setShowEditPopup] = useState(false);
-
-  const [newLanguage, setNewLanguage] = useState({
-    language_code: "",
-    language_name: "",
-  });
-
-  const [editLanguage, setEditLanguage] = useState({
-    language_code: "",
-    language_name: "",
-  });
 
   // Fetch all languages
   const fetchLanguages = async () => {
@@ -49,60 +35,6 @@ const Login = () => {
       toast.error("Failed to fetch languages");
     }
   };
-
-  // // Add language
-  // const handleAdd = async () => {
-  //   try {
-  //     await axios.post("http://192.168.0.235:8000/api/language", newLanguage);
-  //     toast.success("Language added");
-  //     setShowAddPopup(false);
-  //     setNewLanguage({ language_code: "", language_name: "" });
-  //     fetchLanguages();
-  //   } catch (err) {
-  //     toast.error("Add failed");
-  //   }
-  // };
-
-  // const handleUpdate = async () => {
-  //   const { language_code, language_name } = editLanguage;
-
-  //   try {
-  //     // Update language using PUT
-  //     await axios.put(
-  //       `http://192.168.0.235:8000/api/language/${language_code}`,
-  //       { language_code, language_name }
-  //     );
-
-  //     // Update local list instantly
-  //     setLanguageList((prevList) =>
-  //       prevList.map((lang) =>
-  //         lang.language_code === language_code
-  //           ? { language_code, language_name }
-  //           : lang
-  //       )
-  //     );
-
-  //     toast.success("Language updated successfully");
-  //     setShowEditPopup(false); // ✅ Close edit popup
-  //     setShowPopup(true); // ✅ Return to main popup
-  //   } catch (err) {
-  //     toast.error("Failed to update language");
-  //     console.error(err);
-  //   }
-  // };
-
-  // // Delete language
-  // const handleDelete = async (language_name) => {
-  //   try {
-  //     await axios.delete(
-  //       `http://192.168.0.235:8000/api/language/${language_name}`
-  //     );
-  //     toast.success("Language deleted");
-  //     fetchLanguages();
-  //   } catch (err) {
-  //     toast.error("Delete failed");
-  //   }
-  // };
 
   // Select language for main input
   const handleLanguageSelect = (code) => {

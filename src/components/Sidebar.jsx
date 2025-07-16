@@ -749,7 +749,7 @@ const Sidebar = () => {
                                   </li>
                                   <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                                     <FaCube />
-                                    <a href="#">
+                                    <a href="/assign-company-to-company-code">
                                       Assign Company Code to Company
                                     </a>
                                   </li>
@@ -1065,15 +1065,17 @@ const Sidebar = () => {
                     <ul className="pl-6 mt-1 space-y-0">
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
-                        <a href="/define-company">Define Company</a>
+                        <a href="/create-company">Define Company</a>
                       </li>
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
-                        <a href="#">Define Company Code</a>
+                        <a href="/create-company-code">Define Company Code</a>
                       </li>
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
-                        <a href="#">Assign Company Code to Company</a>
+                        <a href="/assign-company-to-company-code">
+                          Assign Company Code to Company
+                        </a>
                       </li>
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
@@ -1114,15 +1116,23 @@ const Sidebar = () => {
                     <ul className="pl-6 mt-1 space-y-0">
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
-                        <a href="#">Define Chart of Accounts</a>
+                        <a href="/charts-of-accounts">
+                          Define Chart of Accounts
+                        </a>
                       </li>
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
-                        <a href="#">Define Account Groups</a>
+                        <a href="/assign-coa-to-company-code">
+                          Assign CoA to Company Code
+                        </a>
                       </li>
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
-                        <a href="#">Field Status Variants</a>
+                        <a href="/define-account-groups">Define Account Groups</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="/field-status-variants">Field Status Variants</a>
                       </li>
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
@@ -1534,7 +1544,15 @@ const Sidebar = () => {
                     <ul className="pl-6 mt-1 space-y-0">
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
-                        <a href="#">Define Fiscal Year Variant</a>
+                        <a href="/define-fiscal-year">
+                          Define Fiscal Year Variant
+                        </a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="/assign-fiscal-year">
+                          Assign Fiscal Year Variant to Company Code
+                        </a>
                       </li>
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />

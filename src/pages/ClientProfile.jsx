@@ -580,7 +580,7 @@ const ClientProfile = ({ isActiveTab }) => {
 
                           {/* Tooltip */}
                           {showClientIDTooltip && (
-                            <div className="absolute left-[70px] top-0 z-10 w-48 bg-gray-800 text-white text-xs p-2 rounded shadow-md">
+                            <div className="absolute left-[70px] top-0 z-10 w-32 bg-gray-800 text-white text-xs p-2 rounded shadow-md">
                               This Client ID is auto-generated and cannot be
                               edited.
                             </div>
@@ -619,7 +619,7 @@ const ClientProfile = ({ isActiveTab }) => {
 
                             {/* Tooltip */}
                             {showLanguageTooltip && (
-                              <div className="absolute left-[50px] top-0 z-10 w-54 bg-gray-800 text-white text-xs p-2 rounded shadow-md">
+                              <div className="absolute left-[50px] top-0 z-10 w-37 bg-gray-800 text-white text-xs p-2 rounded shadow-md">
                                 The language code is auto-detected. Select from
                                 the list if needed.
                               </div>
@@ -685,7 +685,7 @@ const ClientProfile = ({ isActiveTab }) => {
 
                             {/* Tooltip */}
                             {showCurrencyTooltip && (
-                              <div className="absolute left-[60px] top-0 z-10 w-28 bg-gray-800 text-white text-xs p-2 rounded shadow-md">
+                              <div className="absolute left-[60px] top-0 z-10 w-35 bg-gray-800 text-white text-xs p-2 rounded shadow-md">
                                 Currency code is required. Click the list icon
                                 to select one.
                               </div>
@@ -808,7 +808,7 @@ const ClientProfile = ({ isActiveTab }) => {
 
                             {/* Tooltip */}
                             {showTimeZoneTooltip && (
-                              <div className="absolute left-[60px] top-0 z-10 w-49 bg-gray-800 text-white text-xs p-2 rounded shadow-md">
+                              <div className="absolute left-[60px] top-0 z-10 w-35 bg-gray-800 text-white text-xs p-2 rounded shadow-md">
                                 Select the appropriate time zone for your
                                 region.
                               </div>
@@ -882,7 +882,7 @@ const ClientProfile = ({ isActiveTab }) => {
                             />
 
                             {showCountryCodeTooltip && (
-                              <div className="absolute left-[60px] top-0 z-10 w-64 bg-gray-800 text-white text-xs p-2 rounded shadow-md">
+                              <div className="absolute left-[60px] top-0 z-10 w-35 bg-gray-800 text-white text-xs p-2 rounded shadow-md">
                                 Country code is assigned based on your selected
                                 country.
                               </div>
@@ -981,7 +981,7 @@ const ClientProfile = ({ isActiveTab }) => {
                             />
 
                             {showFiscalYearTooltip && (
-                              <div className="absolute left-[120px] top-0 z-10 w-64 bg-gray-800 text-white text-xs p-2 rounded shadow-md">
+                              <div className="absolute left-[120px] top-0 z-10 w-35 bg-gray-800 text-white text-xs p-2 rounded shadow-md">
                                 Select the fiscal year range your company
                                 follows.
                               </div>
@@ -1048,7 +1048,7 @@ const ClientProfile = ({ isActiveTab }) => {
                             />
 
                             {showNumberRangeTooltip && (
-                              <div className="absolute left-[60px] top-0 z-10 w-30 bg-gray-800 text-white text-xs p-2 rounded shadow-md">
+                              <div className="absolute left-[60px] top-0 z-10 w-36 bg-gray-800 text-white text-xs p-2 rounded shadow-md">
                                 Choose a number range for document IDs.
                               </div>
                             )}
@@ -1108,7 +1108,7 @@ const ClientProfile = ({ isActiveTab }) => {
                             />
 
                             {showTaxCodeTooltip && (
-                              <div className="absolute left-[60px] top-0 z-10 w-30 bg-gray-800 text-white text-xs p-2 rounded shadow-md">
+                              <div className="absolute left-[60px] top-0 z-10 w-36 bg-gray-800 text-white text-xs p-2 rounded shadow-md">
                                 Choose the applicable tax code for this company.
                               </div>
                             )}

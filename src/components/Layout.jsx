@@ -38,7 +38,11 @@ const Layout = () => {
     "/gl-account-document": "Enter Account Document",
     "/centrally": "Centrally",
     "/define-company": "Define Company",
-    "/create-company": "Create Company",
+    "/create-company": "Define Company",
+    "/define-fiscal-year": "Define Fiscal Year Variant",
+    "/charts-of-accounts": "Charts of Accounts",
+    "/assign-coa-to-company-code": "Assign CoA to Company Code",
+    "/create-company-code": "Define Company Code",
   };
 
   const pageTitle = routeTitles[location.pathname] || "Dashboard";

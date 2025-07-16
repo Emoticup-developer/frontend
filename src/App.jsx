@@ -1,4 +1,3 @@
-// src/App.jsx
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import DashboardPage from "./pages/DashboardPage";
@@ -20,8 +19,6 @@ import Sample from "./pages/Sample";
 import Crud from "./pages/Crud";
 import ThemeSettings from "./components/ThemeSettings";
 import Layout from "./components/Layout";
-
-// Import ThemeProvider and useTheme from our new context file
 import { ThemeProvider, useTheme } from "./context/ThemeContext";
 import GUI from "./pages/GUI";
 import Centrally from "./pages/Centrally";
@@ -30,14 +27,20 @@ import CreateCompany from "./pages/CreateCompany";
 import HomePage from "./pages/HomePage";
 import ClientProfile from "./pages/ClientProfile";
 import GLAccountDocument from "./pages/GLAccountDocument";
+import FiscalYearVariantForm from "./components/FiscalYearVariantForm";
+import ChartsofAccounts from "./pages/ChartsofAccounts";
+import AssignCOAToCompanyCode from "./pages/AssignCOAToCompanyCode";
+import CreateCompanyCode from "./pages/CreateCompanyCode";
+import DefineFiscalYear from "./pages/DefineFiscalYear";
+import AssignFiscalYeartoCompanyCode from "./pages/AssignFiscalYeartoCompanyCode";
+import AssignCompanytoCompanyCode from "./pages/AssignCompanytoCompanyCode";
+import DefineAccountGroups from "./pages/DefineAccountGroups";
+import FieldStatusVariants from "./pages/FieldStatusVariants";
 
-// A wrapper component to apply the global theme colors to each page
 const ThemedPage = ({ children }) => {
-  const { colors } = useTheme(); // Get the current effective colors from context
+  const { colors } = useTheme();
 
   return (
-    // Apply background and text color to the page's root div
-    // minHeight: '100vh' ensures the background covers the entire viewport
     <div
       style={{
         backgroundColor: colors.background,
@@ -53,13 +56,10 @@ const ThemedPage = ({ children }) => {
 
 export default function App() {
   return (
-    // Wrap the entire application with ThemeProvider to make theme context available everywhere
     <ThemeProvider>
       <SearchProvider>
-        {" "}
         <BrowserRouter>
           <Routes>
-            {/* Wrap each route element with ThemedPage to apply the theme's background and text color */}
             <Route
               path="/"
               element={
@@ -111,6 +111,62 @@ export default function App() {
                 }
               />
               <Route
+                path="/define-fiscal-year"
+                element={
+                  <ThemedPage>
+                    <DefineFiscalYear />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/assign-fiscal-year"
+                element={
+                  <ThemedPage>
+                    <AssignFiscalYeartoCompanyCode />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/charts-of-accounts"
+                element={
+                  <ThemedPage>
+                    <ChartsofAccounts />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/define-account-groups"
+                element={
+                  <ThemedPage>
+                    <DefineAccountGroups />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/field-status-variants"
+                element={
+                  <ThemedPage>
+                    <FieldStatusVariants />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/assign-coa-to-company-code"
+                element={
+                  <ThemedPage>
+                    <AssignCOAToCompanyCode />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/assign-company-to-company-code"
+                element={
+                  <ThemedPage>
+                    <AssignCompanytoCompanyCode />
+                  </ThemedPage>
+                }
+              />
+              <Route
                 path="/home"
                 element={
                   <ThemedPage>
@@ -139,6 +195,14 @@ export default function App() {
                 element={
                   <ThemedPage>
                     <CreateCompany />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/create-company-code"
+                element={
+                  <ThemedPage>
+                    <CreateCompanyCode />
                   </ThemedPage>
                 }
               />

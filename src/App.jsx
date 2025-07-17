@@ -40,6 +40,12 @@ import FieldStatusGroups from "./pages/FieldStatusGroups";
 import TypicalFieldGroups from "./pages/TypicalFieldGroups";
 import PostingPeriodVariant from "./pages/PostingPeriodVariant";
 import DefineToleranceGroups from "./pages/DefineToleranceGroups";
+import TaxonSalesandPurchase from "./pages/TaxonSalesandPurchase";
+import DocumentTypes from "./pages/DocumentTypes";
+import NumberRanges from "./pages/NumberRanges";
+import DefineGLAccountTypes from "./pages/DefineGLAccountTypes";
+import ChartsAccountsFields from "./pages/ChartsAccountsFields";
+import CompanyCodeFields from "./pages/CompanyCodeFields";
 
 const ThemedPage = ({ children }) => {
   const { colors } = useTheme();
@@ -182,6 +188,54 @@ export default function App() {
                 element={
                   <ThemedPage>
                     <DefineToleranceGroups />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/tax-on-sales-and-purchase"
+                element={
+                  <ThemedPage>
+                    <TaxonSalesandPurchase />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/document-types"
+                element={
+                  <ThemedPage>
+                    <DocumentTypes />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/number-ranges"
+                element={
+                  <ThemedPage>
+                    <NumberRanges />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/define-gl-account-types"
+                element={
+                  <ThemedPage>
+                    <DefineGLAccountTypes />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/charts-of-accounts-level-fields"
+                element={
+                  <ThemedPage>
+                    <ChartsAccountsFields />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/company-code-level-fields"
+                element={
+                  <ThemedPage>
+                    <CompanyCodeFields />
                   </ThemedPage>
                 }
               />

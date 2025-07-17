@@ -91,7 +91,7 @@ const TypicalFieldGroups = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="field_group"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Field Group
                         </label>
@@ -107,7 +107,7 @@ const TypicalFieldGroups = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="document_header"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Document Header
                         </label>
@@ -123,7 +123,7 @@ const TypicalFieldGroups = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="line_item_basic"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Line Item Basic
                         </label>
@@ -139,7 +139,7 @@ const TypicalFieldGroups = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="additional_details"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Additional Details
                         </label>
@@ -155,7 +155,7 @@ const TypicalFieldGroups = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="tax_information"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Tax Information
                         </label>
@@ -171,7 +171,7 @@ const TypicalFieldGroups = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="payment_information"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Payment Information
                         </label>
@@ -187,7 +187,7 @@ const TypicalFieldGroups = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="bank_data"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Bank Data
                         </label>

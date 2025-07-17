@@ -121,7 +121,7 @@ const CreateCompany = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="company"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Company
                         </label>
@@ -139,7 +139,7 @@ const CreateCompany = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="companyName"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Company Name
                         </label>
@@ -157,7 +157,7 @@ const CreateCompany = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="companyName2"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Name of Company 2
                         </label>
@@ -175,7 +175,7 @@ const CreateCompany = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="street"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Street
                         </label>
@@ -193,7 +193,7 @@ const CreateCompany = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="poBox"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           PO Box
                         </label>
@@ -211,7 +211,7 @@ const CreateCompany = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="postalCode"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Postal Code
                         </label>
@@ -229,7 +229,7 @@ const CreateCompany = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="city"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           City
                         </label>
@@ -247,7 +247,7 @@ const CreateCompany = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="country"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Country
                         </label>
@@ -265,7 +265,7 @@ const CreateCompany = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="languageKey"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Language Key
                         </label>
@@ -283,7 +283,7 @@ const CreateCompany = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="currency"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Currency
                         </label>

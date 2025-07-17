@@ -119,7 +119,7 @@ const ChartsofAccounts = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="chartOfAccounts"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Chart of Accounts
                         </label>
@@ -138,7 +138,7 @@ const ChartsofAccounts = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="name"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Name
                         </label>
@@ -157,7 +157,7 @@ const ChartsofAccounts = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="language"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Language
                         </label>
@@ -176,7 +176,7 @@ const ChartsofAccounts = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="glLength"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Length of G/L Account Number
                         </label>
@@ -195,7 +195,7 @@ const ChartsofAccounts = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="groupChartOfAccounts"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Group Chart of Accounts
                         </label>
@@ -214,7 +214,7 @@ const ChartsofAccounts = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="blockIndicator"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Block Indicator
                         </label>
@@ -237,7 +237,7 @@ const ChartsofAccounts = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="manualCostElements"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Manual Creation of Cost Elements
                         </label>

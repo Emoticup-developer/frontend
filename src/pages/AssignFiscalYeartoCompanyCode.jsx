@@ -84,7 +84,7 @@ const AssignFiscalYeartoCompanyCode = () => {
                     <div className="space-y-2">
                       {/* Fiscal Year Variant */}
                       <div className="flex items-center">
-                        <label className="w-56 text-left text-xs font-medium">
+                        <label className="w-64 text-left text-xs font-medium">
                           Company Code
                         </label>
                         <input
@@ -100,7 +100,7 @@ const AssignFiscalYeartoCompanyCode = () => {
 
                       {/* Fiscal Year Variant */}
                       <div className="flex items-center">
-                        <label className="w-56 text-left text-xs font-medium">
+                        <label className="w-64 text-left text-xs font-medium">
                           Fiscal Year Variant
                         </label>
                         <input

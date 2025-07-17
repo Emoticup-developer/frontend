@@ -88,7 +88,7 @@ const PostingPeriodVariant = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="variant_code"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Variant Code
                         </label>
@@ -104,7 +104,7 @@ const PostingPeriodVariant = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="from_to_period"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           From / To Period
                         </label>
@@ -120,7 +120,7 @@ const PostingPeriodVariant = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="year"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Year
                         </label>
@@ -136,7 +136,7 @@ const PostingPeriodVariant = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="authorization_group"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Authorization Group
                         </label>

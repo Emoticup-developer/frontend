@@ -48,6 +48,15 @@ const Layout = () => {
     "/typical-field-groups": "Typical Field Groups",
     "/posting-period-variant": "Posting Period Variant",
     "/define-tolerance-groups": "Define Tolerance Groups",
+    "/tax-on-sales-and-purchase": "Tax on Sales & Purchases (Define Tax Codes)",
+    "/define-account-groups": "Define Account Groups",
+    "/assign-company-to-company-code": "Assign Company Code to Company",
+    "/assign-fiscal-year": "Assign Fiscal Year Variant to Company Code",
+    "/document-types": "Document Types",
+    "/number-ranges": "Number Ranges",
+    "/define-gl-account-types": "Define G/L Account Types",
+    "/charts-of-accounts-level-fields": "Charts of Accounts Level Fields",
+    "/company-code-level-fields": "Company Code Level Fields",
   };
 
   const pageTitle = routeTitles[location.pathname] || "Dashboard";

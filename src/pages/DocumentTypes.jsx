@@ -4,13 +4,11 @@ import { MdCancelScheduleSend, MdOutlinePreview } from "react-icons/md";
 import { FiChevronDown } from "react-icons/fi";
 import { IoIosPrint } from "react-icons/io";
 
-const DefineFiscalYear = () => {
+const DocumentTypes = () => {
   const [formData, setFormData] = useState({
-    fiscal_year_variant: "",
+    doc_type: "",
     description: "",
-    year_dependent: "",
-    number_of_posting_periods: "",
-    period_texts: "",
+    posting_key_behavior: "",
   });
 
   const handleChange = (e) => {
@@ -24,6 +22,7 @@ const DefineFiscalYear = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Submitted data:", formData);
+    // API call here if needed
   };
 
   return (
@@ -82,106 +81,71 @@ const DefineFiscalYear = () => {
               {/* Scrollable Content */}
               <div className="relative w-full h-[404px] overflow-y-auto">
                 <div className="min-h-[404px] w-full">
-                  {/* Table Fields (Styled like Form Fields) */}
-                  <div className="p-4 space-y-2">
+                  {/* Form Fields */}
+                  <div className="p-4 space-y-4">
                     <div className="space-y-2">
-                      {/* Fiscal Year Variant */}
                       <div className="flex items-center">
-                        <label className="w-64 text-left text-xs font-medium">
-                          Fiscal Year Variant
+                        <label
+                          htmlFor="doc_type"
+                          className="w-64 text-left text-xs font-medium"
+                        >
+                          Document Type
                         </label>
                         <input
                           type="text"
-                          id="fiscal_year_variant"
-                          name="fiscal_year_variant"
-                          placeholder="K1"
-                          value={formData.fiscal_year_variant}
+                          id="doc_type"
+                          name="doc_type"
+                          value={formData.doc_type}
                           onChange={handleChange}
-                          className="w-6 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                         />
                       </div>
-
-                      {/* Description */}
                       <div className="flex items-center">
-                        <label className="w-64 text-left text-xs font-medium">
+                        <label
+                          htmlFor="description"
+                          className="w-64 text-left text-xs font-medium"
+                        >
                           Description
                         </label>
                         <input
                           type="text"
                           id="description"
                           name="description"
-                          placeholder="April-March"
                           value={formData.description}
                           onChange={handleChange}
-                          className="w-30 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                         />
                       </div>
-
-                      {/* Year-Dependent Dropdown */}
                       <div className="flex items-center">
                         <label
-                          htmlFor="year_dependent"
+                          htmlFor="posting_key_behavior"
                           className="w-64 text-left text-xs font-medium"
                         >
-                          Year-Dependent
-                        </label>
-                        <select
-                          id="year_dependent"
-                          name="year_dependent"
-                          value={formData.year_dependent}
-                          onChange={handleChange}
-                          className="w-12 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                        >
-                          <option value="">---</option>
-                          <option value="Yes">Yes</option>
-                          <option value="No">No</option>
-                        </select>
-                      </div>
-
-                      {/* Number of Posting Periods */}
-                      <div className="flex items-center">
-                        <label className="w-64 text-left text-xs font-medium">
-                          Number of Posting Periods
+                          Posting Key Behavior
                         </label>
                         <input
                           type="text"
-                          id="number_of_posting_periods"
-                          name="number_of_posting_periods"
-                          placeholder="12"
-                          value={formData.number_of_posting_periods}
+                          id="posting_key_behavior"
+                          name="posting_key_behavior"
+                          value={formData.posting_key_behavior}
                           onChange={handleChange}
-                          className="w-6 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                        />
-                      </div>
-
-                      {/* Period Texts */}
-                      <div className="flex items-center">
-                        <label className="w-64 text-left text-xs font-medium">
-                          Period Texts
-                        </label>
-                        <input
-                          type="text"
-                          id="period_texts"
-                          name="period_texts"
-                          placeholder="4"
-                          value={formData.period_texts}
-                          onChange={handleChange}
-                          className="w-5 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                         />
                       </div>
                     </div>
                   </div>
 
-                  {/* Info Section */}
+                  {/* Information Section */}
                   <div className="p-4">
                     <label className="block text-xs font-bold text-gray-700 mb-1">
                       Information:
                     </label>
                     <div className="w-full border border-gray-300 rounded-sm bg-white p-2 text-xs leading-relaxed text-gray-800">
-                      This section defines the fiscal year variant used in your
-                      company for financial postings and reports. It helps in
-                      organizing months, posting periods, and year dependency
-                      for your accounting system.
+                      Document types classify accounting documents and determine
+                      the number range, posting key control, and transaction
+                      purpose (e.g., General Journal, Vendor Invoice). They also
+                      influence how data like vendor or customer is
+                      automatically assigned during posting.
                     </div>
                   </div>
                 </div>
@@ -194,4 +158,4 @@ const DefineFiscalYear = () => {
   );
 };
 
-export default DefineFiscalYear;
+export default DocumentTypes;

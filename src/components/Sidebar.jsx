@@ -48,6 +48,7 @@ const Sidebar = () => {
     fieldStatus: false,
     chartOfAccounts: false,
     documentControl: false,
+    glMasterControl: false,
 
     // quick access
     quickMaster: false,
@@ -477,7 +478,7 @@ const Sidebar = () => {
                                                   onClick={() =>
                                                     toggleMenu("glAccount")
                                                   }
-                                                  className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
+                                                  className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
                                                 >
                                                   <div className="flex items-center space-x-2">
                                                     {openMenus.glAccount ? (
@@ -503,7 +504,7 @@ const Sidebar = () => {
                                                             "individualProcessing"
                                                           )
                                                         }
-                                                        className="flex items-center justify-between hover:bg-gray-100 p-1 rounded cursor-pointer"
+                                                        className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
                                                       >
                                                         <div className="flex items-center space-x-2">
                                                           {openMenus.individualProcessing ? (
@@ -1199,11 +1200,11 @@ const Sidebar = () => {
                           <ul className="pl-6 mt-1 space-y-0">
                             <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                               <FaCube />
-                              <a href="#">Document Types</a>
+                              <a href="/document-types">Document Types</a>
                             </li>
                             <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                               <FaCube />
-                              <a href="#">Number Ranges</a>
+                              <a href="/number-ranges">Number Ranges</a>
                             </li>
                           </ul>
                         )}
@@ -1211,11 +1212,13 @@ const Sidebar = () => {
 
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
-                        <a href="/define-tolerance-groups">Define Tolerance Groups for Employees</a>
+                        <a href="/define-tolerance-groups">
+                          Define Tolerance Groups for Employees
+                        </a>
                       </li>
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
-                        <a href="#">
+                        <a href="/tax-on-sales-and-purchase">
                           Tax on Sales & Purchases (Define Tax Codes)
                         </a>
                       </li>
@@ -1243,15 +1246,82 @@ const Sidebar = () => {
                     <ul className="pl-6 mt-1 space-y-0">
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
-                        <a href="#">GL Account Types</a>
+                        <a href="/define-gl-account-types">
+                          Define G/L Account Types
+                        </a>
                       </li>
-                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
-                        <FaCube />
-                        <a href="#">GL Account Master Data Control</a>
+                      {/* G/L Account Master Control */}
+                      <li>
+                        <div
+                          onClick={() => toggleMenu("glMasterControl")}
+                          className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                        >
+                          <div className="flex items-center space-x-2">
+                            {openMenus.glMasterControl ? (
+                              <FaFolderOpen />
+                            ) : (
+                              <FaFolder />
+                            )}
+                            <span>G/L Account Master Control</span>
+                          </div>
+                          {openMenus.glMasterControl ? (
+                            <FiChevronDown />
+                          ) : (
+                            <FiChevronRight />
+                          )}
+                        </div>
+
+                        {openMenus.glMasterControl && (
+                          <ul className="pl-6 mt-1 space-y-0">
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="/charts-of-accounts-level-fields">
+                                Chart of Accounts Level Fields
+                              </a>
+                            </li>
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="/company-code-level-fields">
+                                Company Code Level Fields
+                              </a>
+                            </li>
+                          </ul>
+                        )}
                       </li>
-                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
-                        <FaCube />
-                        <a href="#">Parallel Accounting / Ledgers</a>
+
+                      {/* Parallel Accounting / Ledgers (T-Code: FINSC_LEDGER) */}
+                      <li>
+                        <div
+                          onClick={() => toggleMenu("parallelLedger")}
+                          className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                        >
+                          <div className="flex items-center space-x-2">
+                            {openMenus.parallelLedger ? (
+                              <FaFolderOpen />
+                            ) : (
+                              <FaFolder />
+                            )}
+                            <span>Parallel Accounting / Ledgers</span>
+                          </div>
+                          {openMenus.parallelLedger ? (
+                            <FiChevronDown />
+                          ) : (
+                            <FiChevronRight />
+                          )}
+                        </div>
+
+                        {openMenus.parallelLedger && (
+                          <ul className="pl-6 mt-1 space-y-0">
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Ledger Definition Fields</a>
+                            </li>
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Ledger Relationship Fields</a>
+                            </li>
+                          </ul>
+                        )}
                       </li>
                     </ul>
                   )}

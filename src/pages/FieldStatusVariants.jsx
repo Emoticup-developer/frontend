@@ -88,7 +88,7 @@ const FieldStatusVariants = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="field_status_variant_id"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Field Status Variant ID
                         </label>
@@ -107,7 +107,7 @@ const FieldStatusVariants = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="field_status_groups"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Field Status Groups
                         </label>
@@ -126,7 +126,7 @@ const FieldStatusVariants = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="assign_company_code"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Assign Company Code
                         </label>

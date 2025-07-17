@@ -93,7 +93,7 @@ const DefineAccountGroups = () => {
                     <div className="space-y-2">
                       {/* Chart of Accounts */}
                       <div className="flex items-center">
-                        <label className="w-56 text-left text-xs font-medium">
+                        <label className="w-64 text-left text-xs font-medium">
                           Chart of Accounts
                         </label>
                         <input
@@ -108,7 +108,7 @@ const DefineAccountGroups = () => {
 
                       {/* Account Group */}
                       <div className="flex items-center">
-                        <label className="w-56 text-left text-xs font-medium">
+                        <label className="w-64 text-left text-xs font-medium">
                           Account Group
                         </label>
                         <input
@@ -123,7 +123,7 @@ const DefineAccountGroups = () => {
 
                       {/* Name (Dropdown) */}
                       <div className="flex items-center">
-                        <label className="w-56 text-left text-xs font-medium">
+                        <label className="w-64 text-left text-xs font-medium">
                           Name
                         </label>
                         <select
@@ -160,7 +160,7 @@ const DefineAccountGroups = () => {
 
                       {/* Number Range */}
                       <div className="flex items-center">
-                        <label className="w-56 text-left text-xs font-medium">
+                        <label className="w-64 text-left text-xs font-medium">
                           Number Range
                         </label>
                         <input
@@ -175,7 +175,7 @@ const DefineAccountGroups = () => {
 
                       {/* Field Status Group */}
                       <div className="flex items-center">
-                        <label className="w-56 text-left text-xs font-medium">
+                        <label className="w-64 text-left text-xs font-medium">
                           Field Status Group
                         </label>
                         <input
@@ -190,7 +190,7 @@ const DefineAccountGroups = () => {
 
                       {/* Blocked (Checkbox) */}
                       <div className="flex items-center">
-                        <label className="w-56 text-left text-xs font-medium">
+                        <label className="w-64 text-left text-xs font-medium">
                           Blocked
                         </label>
                         <input

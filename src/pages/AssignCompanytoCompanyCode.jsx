@@ -96,7 +96,7 @@ const AssignCompanytoCompanyCode = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="companyCode"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Company Code
                         </label>
@@ -115,7 +115,7 @@ const AssignCompanytoCompanyCode = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="companyName"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Company Name
                         </label>

@@ -96,7 +96,7 @@ const CreateCompanyCode = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="companyCode"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Company Code
                         </label>
@@ -115,7 +115,7 @@ const CreateCompanyCode = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="companyName"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Company Name
                         </label>
@@ -134,7 +134,7 @@ const CreateCompanyCode = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="city"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           City
                         </label>
@@ -153,7 +153,7 @@ const CreateCompanyCode = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="country"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Country
                         </label>
@@ -172,7 +172,7 @@ const CreateCompanyCode = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="currency"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Currency
                         </label>
@@ -191,7 +191,7 @@ const CreateCompanyCode = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="language"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Language
                         </label>
@@ -210,7 +210,7 @@ const CreateCompanyCode = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="chartOfAccounts"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Chart of Accounts
                         </label>
@@ -229,7 +229,7 @@ const CreateCompanyCode = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="fiscalYearVariant"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Fiscal Year Variant
                         </label>
@@ -248,7 +248,7 @@ const CreateCompanyCode = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="fieldStatusVariant"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Field Status Variant
                         </label>
@@ -267,7 +267,7 @@ const CreateCompanyCode = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="postingPeriodVariant"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Posting Period Variant
                         </label>
@@ -286,7 +286,7 @@ const CreateCompanyCode = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="countrySettings"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Country-Specific Settings
                         </label>

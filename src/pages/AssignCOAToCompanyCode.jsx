@@ -90,7 +90,7 @@ const AssignCOAToCompanyCode = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="companyCode"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Company Code
                         </label>
@@ -109,7 +109,7 @@ const AssignCOAToCompanyCode = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="chartOfAccounts"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Chart of Accounts
                         </label>
@@ -128,7 +128,7 @@ const AssignCOAToCompanyCode = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="yearDependentFiscal"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Yr-dependent fiscal year variant
                         </label>
@@ -146,7 +146,7 @@ const AssignCOAToCompanyCode = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="groupChartOfAccounts"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Group Chart of Accounts
                         </label>
@@ -165,7 +165,7 @@ const AssignCOAToCompanyCode = () => {
                       <div className="flex items-center">
                         <label
                           htmlFor="alternativeCoa"
-                          className="w-56 text-left text-xs font-medium"
+                          className="w-64 text-left text-xs font-medium"
                         >
                           Alternative CoA
                         </label>

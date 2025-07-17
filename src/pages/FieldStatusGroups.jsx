@@ -86,7 +86,7 @@ const FieldStatusGroups = () => {
                   <div className="p-4 space-y-4">
                     <div className="space-y-2">
                       <div className="flex items-center">
-                        <label className="w-56 text-left text-xs font-medium">
+                        <label className="w-64 text-left text-xs font-medium">
                           Field Group
                         </label>
                         <input
@@ -100,7 +100,7 @@ const FieldStatusGroups = () => {
                       </div>
 
                       <div className="flex items-center">
-                        <label className="w-56 text-left text-xs font-medium">
+                        <label className="w-64 text-left text-xs font-medium">
                           Required/Optional/Suppress
                         </label>
                         <select
@@ -117,7 +117,7 @@ const FieldStatusGroups = () => {
                       </div>
 
                       <div className="flex items-center mt-2">
-                        <label className="w-56 text-left text-xs font-medium">
+                        <label className="w-64 text-left text-xs font-medium">
                           Posting Key Dependence
                         </label>
                         <select
@@ -134,7 +134,7 @@ const FieldStatusGroups = () => {
                       </div>
 
                       <div className="flex items-center">
-                        <label className="w-56 text-left text-xs font-medium">
+                        <label className="w-64 text-left text-xs font-medium">
                           G/L Account Control
                         </label>
                         <input

@@ -4,10 +4,12 @@ import { MdCancelScheduleSend, MdOutlinePreview } from "react-icons/md";
 import { FiChevronDown } from "react-icons/fi";
 import { IoIosPrint } from "react-icons/io";
 
-const AssignFiscalYeartoCompanyCode = () => {
+const FieldStatusGroups = () => {
   const [formData, setFormData] = useState({
-    company_code: "",
-    fiscal_year_variant: "",
+    fieldGroup: "",
+    requiredOptionalSuppress: "",
+    postingKeyDependence: "",
+    glAccountControl: "",
   });
 
   const handleChange = (e) => {
@@ -21,6 +23,7 @@ const AssignFiscalYeartoCompanyCode = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Submitted data:", formData);
+    // Add your API call here
   };
 
   return (
@@ -79,53 +82,83 @@ const AssignFiscalYeartoCompanyCode = () => {
               {/* Scrollable Content */}
               <div className="relative w-full h-[404px] overflow-y-auto">
                 <div className="min-h-[404px] w-full">
-                  {/* Table Fields (Styled like Form Fields) */}
-                  <div className="p-4 space-y-2">
+                  {/* Form Fields */}
+                  <div className="p-4 space-y-4">
                     <div className="space-y-2">
-                      {/* Fiscal Year Variant */}
                       <div className="flex items-center">
                         <label className="w-56 text-left text-xs font-medium">
-                          Company Code
+                          Field Group
                         </label>
                         <input
                           type="text"
-                          id="company_code"
-                          name="company_code"
-                          placeholder="C001"
-                          value={formData.company_code}
+                          name="fieldGroup"
+                          placeholder="e.g., Bank Details"
+                          value={formData.fieldGroup}
                           onChange={handleChange}
-                          className="w-10 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                          className="w-26 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                         />
                       </div>
 
-                      {/* Fiscal Year Variant */}
                       <div className="flex items-center">
                         <label className="w-56 text-left text-xs font-medium">
-                          Fiscal Year Variant
+                          Required/Optional/Suppress
+                        </label>
+                        <select
+                          name="requiredOptionalSuppress"
+                          value={formData.requiredOptionalSuppress}
+                          onChange={handleChange}
+                          className="w-20 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        >
+                          <option value="">----------</option>
+                          <option value="Required">Required</option>
+                          <option value="Optional">Optional</option>
+                          <option value="Suppress">Suppress</option>
+                        </select>
+                      </div>
+
+                      <div className="flex items-center mt-2">
+                        <label className="w-56 text-left text-xs font-medium">
+                          Posting Key Dependence
+                        </label>
+                        <select
+                          name="postingKeyDependence"
+                          value={formData.postingKeyDependence}
+                          onChange={handleChange}
+                          className="w-16 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        >
+                          <option value="">-------</option>
+                          <option value="Debit">Debit</option>
+                          <option value="Credit">Credit</option>
+                          <option value="Both">Both</option>
+                        </select>
+                      </div>
+
+                      <div className="flex items-center">
+                        <label className="w-56 text-left text-xs font-medium">
+                          G/L Account Control
                         </label>
                         <input
                           type="text"
-                          id="fiscal_year_variant"
-                          name="fiscal_year_variant"
-                          placeholder="K1"
-                          value={formData.fiscal_year_variant}
+                          name="glAccountControl"
+                          placeholder="Control via field status group"
+                          value={formData.glAccountControl}
                           onChange={handleChange}
-                          className="w-6 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                          className="w-42 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                         />
                       </div>
                     </div>
                   </div>
 
-                  {/* Info Section */}
+                  {/* Information Section */}
                   <div className="p-4">
                     <label className="block text-xs font-bold text-gray-700 mb-1">
                       Information:
                     </label>
                     <div className="w-full border border-gray-300 rounded-sm bg-white p-2 text-xs leading-relaxed text-gray-800">
-                      This section defines the fiscal year variant used in your
-                      company for financial postings and reports. It helps in
-                      organizing months, posting periods, and year dependency
-                      for your accounting system.
+                      Field Status Groups control the input behavior for fields
+                      in transactions. They define which fields are required,
+                      optional, or suppressed, and can vary based on posting
+                      keys or G/L account types.
                     </div>
                   </div>
                 </div>
@@ -138,4 +171,4 @@ const AssignFiscalYeartoCompanyCode = () => {
   );
 };
 
-export default AssignFiscalYeartoCompanyCode;
+export default FieldStatusGroups;

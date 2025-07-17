@@ -4,10 +4,12 @@ import { MdCancelScheduleSend, MdOutlinePreview } from "react-icons/md";
 import { FiChevronDown } from "react-icons/fi";
 import { IoIosPrint } from "react-icons/io";
 
-const AssignFiscalYeartoCompanyCode = () => {
+const PostingPeriodVariant = () => {
   const [formData, setFormData] = useState({
-    company_code: "",
-    fiscal_year_variant: "",
+    variant_code: "",
+    from_to_period: "",
+    year: "",
+    authorization_group: "",
   });
 
   const handleChange = (e) => {
@@ -21,6 +23,7 @@ const AssignFiscalYeartoCompanyCode = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Submitted data:", formData);
+    // API call here if needed
   };
 
   return (
@@ -79,53 +82,86 @@ const AssignFiscalYeartoCompanyCode = () => {
               {/* Scrollable Content */}
               <div className="relative w-full h-[404px] overflow-y-auto">
                 <div className="min-h-[404px] w-full">
-                  {/* Table Fields (Styled like Form Fields) */}
-                  <div className="p-4 space-y-2">
+                  {/* Form Fields */}
+                  <div className="p-4 space-y-4">
                     <div className="space-y-2">
-                      {/* Fiscal Year Variant */}
                       <div className="flex items-center">
-                        <label className="w-56 text-left text-xs font-medium">
-                          Company Code
+                        <label
+                          htmlFor="variant_code"
+                          className="w-56 text-left text-xs font-medium"
+                        >
+                          Variant Code
                         </label>
                         <input
                           type="text"
-                          id="company_code"
-                          name="company_code"
-                          placeholder="C001"
-                          value={formData.company_code}
+                          id="variant_code"
+                          name="variant_code"
+                          value={formData.variant_code}
                           onChange={handleChange}
-                          className="w-10 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                         />
                       </div>
-
-                      {/* Fiscal Year Variant */}
                       <div className="flex items-center">
-                        <label className="w-56 text-left text-xs font-medium">
-                          Fiscal Year Variant
+                        <label
+                          htmlFor="from_to_period"
+                          className="w-56 text-left text-xs font-medium"
+                        >
+                          From / To Period
                         </label>
                         <input
                           type="text"
-                          id="fiscal_year_variant"
-                          name="fiscal_year_variant"
-                          placeholder="K1"
-                          value={formData.fiscal_year_variant}
+                          id="from_to_period"
+                          name="from_to_period"
+                          value={formData.from_to_period}
                           onChange={handleChange}
-                          className="w-6 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="year"
+                          className="w-56 text-left text-xs font-medium"
+                        >
+                          Year
+                        </label>
+                        <input
+                          type="text"
+                          id="year"
+                          name="year"
+                          value={formData.year}
+                          onChange={handleChange}
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="authorization_group"
+                          className="w-56 text-left text-xs font-medium"
+                        >
+                          Authorization Group
+                        </label>
+                        <input
+                          type="text"
+                          id="authorization_group"
+                          name="authorization_group"
+                          value={formData.authorization_group}
+                          onChange={handleChange}
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                         />
                       </div>
                     </div>
                   </div>
 
-                  {/* Info Section */}
+                  {/* Information Section */}
                   <div className="p-4">
                     <label className="block text-xs font-bold text-gray-700 mb-1">
                       Information:
                     </label>
                     <div className="w-full border border-gray-300 rounded-sm bg-white p-2 text-xs leading-relaxed text-gray-800">
-                      This section defines the fiscal year variant used in your
-                      company for financial postings and reports. It helps in
-                      organizing months, posting periods, and year dependency
-                      for your accounting system.
+                      Posting Period Variant defines rules for opening and
+                      closing accounting periods, controlling when financial
+                      postings can occur for specific account types or company
+                      codes.
                     </div>
                   </div>
                 </div>
@@ -138,4 +174,4 @@ const AssignFiscalYeartoCompanyCode = () => {
   );
 };
 
-export default AssignFiscalYeartoCompanyCode;
+export default PostingPeriodVariant;

@@ -86,60 +86,65 @@ const AssignCompanytoCompanyCode = () => {
                 </div>
               </div>
 
-              {/* Form Fields */}
-              <div className="p-4 space-y-4">
-                <div className="space-y-2">
-                  {/* Company Code */}
-                  <div className="flex items-center">
-                    <label
-                      htmlFor="companyCode"
-                      className="w-56 text-left text-xs font-medium"
-                    >
-                      Company Code
-                    </label>
-                    <input
-                      type="text"
-                      id="companyCode"
-                      name="companyCode"
-                      placeholder="1000"
-                      value={formData.companyCode}
-                      onChange={handleChange}
-                      className="w-10 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                    />
+              {/* Scrollable Content */}
+              <div className="relative w-full h-[404px] overflow-y-auto">
+                <div className="min-h-[404px] w-full">
+                  {/* Form Fields */}
+                  <div className="p-4 space-y-4">
+                    <div className="space-y-2">
+                      {/* Company Code */}
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="companyCode"
+                          className="w-56 text-left text-xs font-medium"
+                        >
+                          Company Code
+                        </label>
+                        <input
+                          type="text"
+                          id="companyCode"
+                          name="companyCode"
+                          placeholder="1000"
+                          value={formData.companyCode}
+                          onChange={handleChange}
+                          className="w-10 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+
+                      {/* Company Name */}
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="companyName"
+                          className="w-56 text-left text-xs font-medium"
+                        >
+                          Company Name
+                        </label>
+                        <input
+                          type="text"
+                          id="companyName"
+                          name="companyName"
+                          placeholder="Unitech Ltd."
+                          value={formData.companyName}
+                          onChange={handleChange}
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Company Name */}
-                  <div className="flex items-center">
-                    <label
-                      htmlFor="companyName"
-                      className="w-56 text-left text-xs font-medium"
-                    >
-                      Company Name
+                  {/* Information Box */}
+                  <div className="p-4">
+                    <label className="block text-xs font-bold text-gray-700 mb-1">
+                      Information:
                     </label>
-                    <input
-                      type="text"
-                      id="companyName"
-                      name="companyName"
-                      placeholder="Unitech Ltd."
-                      value={formData.companyName}
-                      onChange={handleChange}
-                      className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                    />
+                    <div className="w-full border border-gray-300 rounded-sm bg-white p-2 text-xs leading-relaxed text-gray-800">
+                      This form assigns critical financial and organizational
+                      configuration to a company code. These settings are
+                      essential for financial reporting, legal compliance, and
+                      system behavior. It includes localization, fiscal periods,
+                      and account structures.
+                    </div>
                   </div>
-                </div>
-              </div>
-
-              {/* Information Box */}
-              <div className="p-4">
-                <label className="block text-xs font-bold text-gray-700 mb-1">
-                  Information:
-                </label>
-                <div className="w-full border border-gray-300 rounded-sm bg-white p-2 text-xs leading-relaxed text-gray-800">
-                  This form assigns critical financial and organizational
-                  configuration to a company code. These settings are essential
-                  for financial reporting, legal compliance, and system
-                  behavior. It includes localization, fiscal periods, and
-                  account structures.
                 </div>
               </div>
             </div>

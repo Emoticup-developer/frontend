@@ -36,6 +36,10 @@ import AssignFiscalYeartoCompanyCode from "./pages/AssignFiscalYeartoCompanyCode
 import AssignCompanytoCompanyCode from "./pages/AssignCompanytoCompanyCode";
 import DefineAccountGroups from "./pages/DefineAccountGroups";
 import FieldStatusVariants from "./pages/FieldStatusVariants";
+import FieldStatusGroups from "./pages/FieldStatusGroups";
+import TypicalFieldGroups from "./pages/TypicalFieldGroups";
+import PostingPeriodVariant from "./pages/PostingPeriodVariant";
+import DefineToleranceGroups from "./pages/DefineToleranceGroups";
 
 const ThemedPage = ({ children }) => {
   const { colors } = useTheme();
@@ -85,7 +89,6 @@ export default function App() {
                   </ThemedPage>
                 }
               />
-
               <Route
                 path="/gl-account-document"
                 element={
@@ -147,6 +150,38 @@ export default function App() {
                 element={
                   <ThemedPage>
                     <FieldStatusVariants />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/field-status-groups"
+                element={
+                  <ThemedPage>
+                    <FieldStatusGroups />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/typical-field-groups"
+                element={
+                  <ThemedPage>
+                    <TypicalFieldGroups />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/posting-period-variant"
+                element={
+                  <ThemedPage>
+                    <PostingPeriodVariant />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/define-tolerance-groups"
+                element={
+                  <ThemedPage>
+                    <DefineToleranceGroups />
                   </ThemedPage>
                 }
               />
@@ -262,7 +297,6 @@ export default function App() {
                   </ThemedPage>
                 }
               />
-
               <Route
                 path="/glaccount-details"
                 element={

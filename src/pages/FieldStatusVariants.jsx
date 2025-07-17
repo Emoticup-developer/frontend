@@ -78,79 +78,82 @@ const FieldStatusVariants = () => {
                 </div>
               </div>
 
-              {/* Form Fields */}
-              <div className="p-4 space-y-4">
-                <div className="space-y-2">
-                  {/* Field Status Variant ID */}
-                  <div className="flex items-center">
-                    <label
-                      htmlFor="field_status_variant_id"
-                      className="w-56 text-left text-xs font-medium"
-                    >
-                      Field Status Variant ID
-                    </label>
-                    <input
-                      type="text"
-                      id="field_status_variant_id"
-                      name="field_status_variant_id"
-                      placeholder="e.g. 0001"
-                      value={formData.field_status_variant_id}
-                      onChange={handleChange}
-                      className="w-16 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                    />
+              {/* Scrollable Content */}
+              <div className="relative w-full h-[404px] overflow-y-auto">
+                <div className="min-h-[404px] w-full">
+                  {/* Form Fields */}
+                  <div className="p-4 space-y-4">
+                    <div className="space-y-2">
+                      {/* Field Status Variant ID */}
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="field_status_variant_id"
+                          className="w-56 text-left text-xs font-medium"
+                        >
+                          Field Status Variant ID
+                        </label>
+                        <input
+                          type="text"
+                          id="field_status_variant_id"
+                          name="field_status_variant_id"
+                          placeholder="e.g. 0001"
+                          value={formData.field_status_variant_id}
+                          onChange={handleChange}
+                          className="w-16 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+
+                      {/* Field Status Groups */}
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="field_status_groups"
+                          className="w-56 text-left text-xs font-medium"
+                        >
+                          Field Status Groups
+                        </label>
+                        <input
+                          type="text"
+                          id="field_status_groups"
+                          name="field_status_groups"
+                          placeholder="Enter group names"
+                          value={formData.field_status_groups}
+                          onChange={handleChange}
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+
+                      {/* Assign Company Code */}
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="assign_company_code"
+                          className="w-56 text-left text-xs font-medium"
+                        >
+                          Assign Company Code
+                        </label>
+                        <input
+                          type="text"
+                          id="assign_company_code"
+                          name="assign_company_code"
+                          placeholder="1000"
+                          value={formData.assign_company_code}
+                          onChange={handleChange}
+                          className="w-16 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Field Status Groups */}
-                  <div className="flex items-center">
-                    <label
-                      htmlFor="field_status_groups"
-                      className="w-56 text-left text-xs font-medium"
-                    >
-                      Field Status Groups
+                  {/* Information Box */}
+                  <div className="p-4">
+                    <label className="block text-xs font-bold text-gray-700 mb-1">
+                      Information:
                     </label>
-                    <input
-                      type="text"
-                      id="field_status_groups"
-                      name="field_status_groups"
-                      placeholder="Enter group names"
-                      value={formData.field_status_groups}
-                      onChange={handleChange}
-                      className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                    />
+                    <div className="w-full border border-gray-300 rounded-sm bg-white p-2 text-xs leading-relaxed text-gray-800">
+                      Defining field status variants allows you to control which
+                      fields are required, optional, suppressed, or displayed
+                      during transactions.
+                    </div>
                   </div>
-
-                  {/* Assign Company Code */}
-                  <div className="flex items-center">
-                    <label
-                      htmlFor="assign_company_code"
-                      className="w-56 text-left text-xs font-medium"
-                    >
-                      Assign Company Code
-                    </label>
-                    <input
-                      type="text"
-                      id="assign_company_code"
-                      name="assign_company_code"
-                      placeholder="1000"
-                      value={formData.assign_company_code}
-                      onChange={handleChange}
-                      className="w-16 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Information Box */}
-              <div className="p-4">
-                <label className="block text-xs font-bold text-gray-700 mb-1">
-                  Information:
-                </label>
-                <div className="w-full border border-gray-300 rounded-sm bg-white p-2 text-xs leading-relaxed text-gray-800">
-                  This form assigns critical financial and organizational
-                  configuration to a company code. These settings are essential
-                  for financial reporting, legal compliance, and system
-                  behavior. It includes localization, fiscal periods, and
-                  account structures.
                 </div>
               </div>
             </div>

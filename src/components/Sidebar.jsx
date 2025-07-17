@@ -45,6 +45,9 @@ const Sidebar = () => {
     reportingConfiguration: false,
     userRoles: false,
     systemSettings: false,
+    fieldStatus: false,
+    chartOfAccounts: false,
+    documentControl: false,
 
     // quick access
     quickMaster: false,
@@ -1114,47 +1117,107 @@ const Sidebar = () => {
 
                   {openMenus.fiSettings && (
                     <ul className="pl-6 mt-1 space-y-0">
+                      {/* Chart of Accounts */}
+                      <li>
+                        <div
+                          onClick={() => toggleMenu("chartOfAccounts")}
+                          className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                        >
+                          <div className="flex items-center space-x-2">
+                            {openMenus.chartOfAccounts ? (
+                              <FaFolderOpen />
+                            ) : (
+                              <FaFolder />
+                            )}
+                            <span>Chart of Accounts</span>
+                          </div>
+                          {openMenus.chartOfAccounts ? (
+                            <FiChevronDown />
+                          ) : (
+                            <FiChevronRight />
+                          )}
+                        </div>
+
+                        {openMenus.chartOfAccounts && (
+                          <ul className="pl-6 mt-1 space-y-0">
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="/charts-of-accounts">
+                                Define Chart of Accounts
+                              </a>
+                            </li>
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="/assign-coa-to-company-code">
+                                Assign CoA to Company Code
+                              </a>
+                            </li>
+                          </ul>
+                        )}
+                      </li>
+
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
-                        <a href="/charts-of-accounts">
-                          Define Chart of Accounts
+                        <a href="/define-account-groups">
+                          Define Account Groups
                         </a>
                       </li>
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
-                        <a href="/assign-coa-to-company-code">
-                          Assign CoA to Company Code
+                        <a href="/field-status-variants">
+                          Field Status Variants
                         </a>
                       </li>
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
-                        <a href="/define-account-groups">Define Account Groups</a>
+                        <a href="/posting-period-variant">
+                          Posting Period Variant
+                        </a>
                       </li>
+
+                      <li>
+                        <div
+                          onClick={() => toggleMenu("documentControl")}
+                          className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                        >
+                          <div className="flex items-center space-x-2">
+                            {openMenus.documentControl ? (
+                              <FaFolderOpen />
+                            ) : (
+                              <FaFolder />
+                            )}
+                            <span>Document Types & Number Ranges</span>
+                          </div>
+                          {openMenus.documentControl ? (
+                            <FiChevronDown />
+                          ) : (
+                            <FiChevronRight />
+                          )}
+                        </div>
+
+                        {openMenus.documentControl && (
+                          <ul className="pl-6 mt-1 space-y-0">
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Document Types</a>
+                            </li>
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="#">Number Ranges</a>
+                            </li>
+                          </ul>
+                        )}
+                      </li>
+
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
-                        <a href="/field-status-variants">Field Status Variants</a>
-                      </li>
-                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
-                        <FaCube />
-                        <a href="#">Posting Period Variant</a>
-                      </li>
-                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
-                        <FaCube />
-                        <a href="#">Document Types & Number Ranges</a>
+                        <a href="/define-tolerance-groups">Define Tolerance Groups for Employees</a>
                       </li>
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
                         <a href="#">
                           Tax on Sales & Purchases (Define Tax Codes)
                         </a>
-                      </li>
-                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
-                        <FaCube />
-                        <a href="#">Tolerance Groups</a>
-                      </li>
-                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
-                        <FaCube />
-                        <a href="#">Withholding Tax Settings</a>
                       </li>
                     </ul>
                   )}
@@ -1512,9 +1575,43 @@ const Sidebar = () => {
                         <FaCube />
                         <a href="#">Define Roles</a>
                       </li>
-                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
-                        <FaCube />
-                        <a href="#">Field Status Groups</a>
+
+                      <li>
+                        <div
+                          onClick={() => toggleMenu("fieldStatus")}
+                          className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                        >
+                          <div className="flex items-center space-x-2">
+                            {openMenus.fieldStatus ? (
+                              <FaFolderOpen />
+                            ) : (
+                              <FaFolder />
+                            )}
+                            <span>Field Status Groups</span>
+                          </div>
+                          {openMenus.fieldStatus ? (
+                            <FiChevronDown />
+                          ) : (
+                            <FiChevronRight />
+                          )}
+                        </div>
+
+                        {openMenus.fieldStatus && (
+                          <ul className="pl-6 mt-1 space-y-0">
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="/field-status-groups">
+                                Define Field Status Groups
+                              </a>
+                            </li>
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="/typical-field-groups">
+                                Typical Field Groups
+                              </a>
+                            </li>
+                          </ul>
+                        )}
                       </li>
                     </ul>
                   )}

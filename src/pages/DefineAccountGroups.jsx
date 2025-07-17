@@ -85,135 +85,141 @@ const DefineAccountGroups = () => {
                 </div>
               </div>
 
-              {/* Form Fields */}
-              <div className="p-4 space-y-4">
-                <div className="space-y-2">
-                  {/* Chart of Accounts */}
-                  <div className="flex items-center">
-                    <label className="w-56 text-left text-xs font-medium">
-                      Chart of Accounts
-                    </label>
-                    <input
-                      type="text"
-                      name="chart_of_accounts"
-                      placeholder="IN01"
-                      value={formData.chart_of_accounts}
-                      onChange={handleChange}
-                      className="w-10 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                    />
-                  </div>
+              {/* Scrollable Content */}
+              <div className="relative w-full h-[404px] overflow-y-auto">
+                <div className="min-h-[404px] w-full">
+                  {/* Form Fields */}
+                  <div className="p-4 space-y-4">
+                    <div className="space-y-2">
+                      {/* Chart of Accounts */}
+                      <div className="flex items-center">
+                        <label className="w-56 text-left text-xs font-medium">
+                          Chart of Accounts
+                        </label>
+                        <input
+                          type="text"
+                          name="chart_of_accounts"
+                          placeholder="IN01"
+                          value={formData.chart_of_accounts}
+                          onChange={handleChange}
+                          className="w-10 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
 
-                  {/* Account Group */}
-                  <div className="flex items-center">
-                    <label className="w-56 text-left text-xs font-medium">
-                      Account Group
-                    </label>
-                    <input
-                      type="text"
-                      name="account_group"
-                      placeholder="ASST"
-                      value={formData.account_group}
-                      onChange={handleChange}
-                      className="w-10 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                    />
-                  </div>
+                      {/* Account Group */}
+                      <div className="flex items-center">
+                        <label className="w-56 text-left text-xs font-medium">
+                          Account Group
+                        </label>
+                        <input
+                          type="text"
+                          name="account_group"
+                          placeholder="ASST"
+                          value={formData.account_group}
+                          onChange={handleChange}
+                          className="w-10 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
 
-                  {/* Name (Dropdown) */}
-                  <div className="flex items-center">
-                    <label className="w-56 text-left text-xs font-medium">
-                      Name
-                    </label>
-                    <select
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      className="w-48 h-5 border rounded px-1 text-xs bg-white"
-                    >
-                      <option value="">------</option>
-                      <option value="Assets">Assets</option>
-                      <option value="Liabilities">Liabilities</option>
-                      <option value="Revenues">Revenues</option>
-                      <option value="Expenses">Expenses</option>
-                      <option value="Bank Accounts">Bank Accounts</option>
-                      <option value="Cash Accounts">Cash Accounts</option>
-                      <option value="Equity Accounts">Equity Accounts</option>
-                      <option value="Tax Accounts">Tax Accounts</option>
-                      <option value="Adjustment Accounts">
-                        Adjustment Accounts
-                      </option>
-                      <option value="Inventory/Stock Accounts">
-                        Inventory/Stock Accounts
-                      </option>
-                      <option
-                        value="Fixed Asset
+                      {/* Name (Dropdown) */}
+                      <div className="flex items-center">
+                        <label className="w-56 text-left text-xs font-medium">
+                          Name
+                        </label>
+                        <select
+                          name="name"
+                          value={formData.name}
+                          onChange={handleChange}
+                          className="w-48 h-5 border rounded px-1 text-xs bg-white"
+                        >
+                          <option value="">------</option>
+                          <option value="Assets">Assets</option>
+                          <option value="Liabilities">Liabilities</option>
+                          <option value="Revenues">Revenues</option>
+                          <option value="Expenses">Expenses</option>
+                          <option value="Bank Accounts">Bank Accounts</option>
+                          <option value="Cash Accounts">Cash Accounts</option>
+                          <option value="Equity Accounts">
+                            Equity Accounts
+                          </option>
+                          <option value="Tax Accounts">Tax Accounts</option>
+                          <option value="Adjustment Accounts">
+                            Adjustment Accounts
+                          </option>
+                          <option value="Inventory/Stock Accounts">
+                            Inventory/Stock Accounts
+                          </option>
+                          <option
+                            value="Fixed Asset
                         Clearing Accounts"
-                      >
-                        Fixed Asset Clearing Accounts
-                      </option>
-                    </select>
+                          >
+                            Fixed Asset Clearing Accounts
+                          </option>
+                        </select>
+                      </div>
+
+                      {/* Number Range */}
+                      <div className="flex items-center">
+                        <label className="w-56 text-left text-xs font-medium">
+                          Number Range
+                        </label>
+                        <input
+                          type="text"
+                          name="number_range"
+                          placeholder="100000-199999"
+                          value={formData.number_range}
+                          onChange={handleChange}
+                          className="w-40 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+
+                      {/* Field Status Group */}
+                      <div className="flex items-center">
+                        <label className="w-56 text-left text-xs font-medium">
+                          Field Status Group
+                        </label>
+                        <input
+                          type="text"
+                          name="field_status_group"
+                          placeholder="OBC4"
+                          value={formData.field_status_group}
+                          onChange={handleChange}
+                          className="w-16 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+
+                      {/* Blocked (Checkbox) */}
+                      <div className="flex items-center">
+                        <label className="w-56 text-left text-xs font-medium">
+                          Blocked
+                        </label>
+                        <input
+                          type="checkbox"
+                          name="blocked"
+                          checked={formData.blocked}
+                          onChange={(e) =>
+                            setFormData((prev) => ({
+                              ...prev,
+                              blocked: e.target.checked,
+                            }))
+                          }
+                          className="w-4 h-4 border rounded text-blue-600 focus:ring-blue-500"
+                        />
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Number Range */}
-                  <div className="flex items-center">
-                    <label className="w-56 text-left text-xs font-medium">
-                      Number Range
+                  {/* Info Section */}
+                  <div className="p-4">
+                    <label className="block text-xs font-bold text-gray-700 mb-1">
+                      Information:
                     </label>
-                    <input
-                      type="text"
-                      name="number_range"
-                      placeholder="100000-199999"
-                      value={formData.number_range}
-                      onChange={handleChange}
-                      className="w-40 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                    />
+                    <div className="w-full border border-gray-300 rounded-sm bg-white p-2 text-xs leading-relaxed text-gray-800">
+                      Defining account groups allows classification of G/L
+                      accounts, assigns number ranges, and controls field status
+                      during their creation.
+                    </div>
                   </div>
-
-                  {/* Field Status Group */}
-                  <div className="flex items-center">
-                    <label className="w-56 text-left text-xs font-medium">
-                      Field Status Group
-                    </label>
-                    <input
-                      type="text"
-                      name="field_status_group"
-                      placeholder="OBC4"
-                      value={formData.field_status_group}
-                      onChange={handleChange}
-                      className="w-16 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                    />
-                  </div>
-
-                  {/* Blocked (Checkbox) */}
-                  <div className="flex items-center">
-                    <label className="w-56 text-left text-xs font-medium">
-                      Blocked
-                    </label>
-                    <input
-                      type="checkbox"
-                      name="blocked"
-                      checked={formData.blocked}
-                      onChange={(e) =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          blocked: e.target.checked,
-                        }))
-                      }
-                      className="w-4 h-4 border rounded text-blue-600 focus:ring-blue-500"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Info Section */}
-              <div className="p-4">
-                <label className="block text-xs font-bold text-gray-700 mb-1">
-                  Information:
-                </label>
-                <div className="w-full border border-gray-300 rounded-sm bg-white p-2 text-xs leading-relaxed text-gray-800">
-                  This section defines the fiscal year variant used in your
-                  company for financial postings and reports. It helps in
-                  organizing months, posting periods, and year dependency for
-                  your accounting system.
                 </div>
               </div>
             </div>

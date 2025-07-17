@@ -65,7 +65,7 @@ const CreateCompany = () => {
         <div className="flex-grow w-full bg-[#f0f4f8] text-sm font-sans flex flex-col">
           <form onSubmit={handleSubmit}>
             <div className="h-full w-full bg-gray-100 shadow-md border border-gray-300 rounded-sm flex flex-col">
-              {/* Top Action Bar */}
+              {/* 🔷 Header Action Bar (non-scrollable) */}
               <div className="bg-gray-50 p-2">
                 <div className="flex justify-between space-x-6 text-sm text-gray-700">
                   <div className="flex px-2">
@@ -112,204 +112,207 @@ const CreateCompany = () => {
                 </div>
               </div>
 
-              {/* Form Section */}
-              <div className="p-4 space-y-4">
-                {/* Primary Information */}
-                <div className="space-y-2">
-                  {/* Company */}
-                  <div className="flex items-center">
-                    <label
-                      htmlFor="company"
-                      className="w-56 text-left text-xs font-medium"
-                    >
-                      Company
-                    </label>
-                    <input
-                      type="text"
-                      id="company"
-                      name="company"
-                      value={formData.company}
-                      onChange={handleChange}
-                      className="w-9 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                    />
-                  </div>
+              {/* Scrollable Content */}
+              <div className="relative w-full h-[404px] overflow-y-auto">
+                <div className="min-h-[404px] w-full">
+                  <div className="p-4 space-y-4">
+                    <div className="space-y-2">
+                      {/* Company */}
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="company"
+                          className="w-56 text-left text-xs font-medium"
+                        >
+                          Company
+                        </label>
+                        <input
+                          type="text"
+                          id="company"
+                          name="company"
+                          value={formData.company}
+                          onChange={handleChange}
+                          className="w-9 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
 
-                  {/* Company Name */}
-                  <div className="flex items-center">
-                    <label
-                      htmlFor="companyName"
-                      className="w-56 text-left text-xs font-medium"
-                    >
-                      Company Name
-                    </label>
-                    <input
-                      type="text"
-                      id="companyName"
-                      name="companyName"
-                      value={formData.companyName}
-                      onChange={handleChange}
-                      className="w-80 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                    />
-                  </div>
+                      {/* Company Name */}
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="companyName"
+                          className="w-56 text-left text-xs font-medium"
+                        >
+                          Company Name
+                        </label>
+                        <input
+                          type="text"
+                          id="companyName"
+                          name="companyName"
+                          value={formData.companyName}
+                          onChange={handleChange}
+                          className="w-80 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
 
-                  {/* Name of Company 2 */}
-                  <div className="flex items-center">
-                    <label
-                      htmlFor="companyName2"
-                      className="w-56 text-left text-xs font-medium"
-                    >
-                      Name of Company 2
-                    </label>
-                    <input
-                      type="text"
-                      id="companyName2"
-                      name="companyName2"
-                      value={formData.companyName2}
-                      onChange={handleChange}
-                      className="w-80 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                    />
-                  </div>
+                      {/* Name of Company 2 */}
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="companyName2"
+                          className="w-56 text-left text-xs font-medium"
+                        >
+                          Name of Company 2
+                        </label>
+                        <input
+                          type="text"
+                          id="companyName2"
+                          name="companyName2"
+                          value={formData.companyName2}
+                          onChange={handleChange}
+                          className="w-80 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
 
-                  {/* Street */}
-                  <div className="flex items-center">
-                    <label
-                      htmlFor="street"
-                      className="w-56 text-left text-xs font-medium"
-                    >
-                      Street
-                    </label>
-                    <input
-                      type="text"
-                      id="street"
-                      name="street"
-                      value={formData.street}
-                      onChange={handleChange}
-                      className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                    />
-                  </div>
+                      {/* Street */}
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="street"
+                          className="w-56 text-left text-xs font-medium"
+                        >
+                          Street
+                        </label>
+                        <input
+                          type="text"
+                          id="street"
+                          name="street"
+                          value={formData.street}
+                          onChange={handleChange}
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
 
-                  {/* PO Box */}
-                  <div className="flex items-center">
-                    <label
-                      htmlFor="poBox"
-                      className="w-56 text-left text-xs font-medium"
-                    >
-                      PO Box
-                    </label>
-                    <input
-                      type="text"
-                      id="poBox"
-                      name="poBox"
-                      value={formData.poBox}
-                      onChange={handleChange}
-                      className="w-32 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                    />
-                  </div>
+                      {/* PO Box */}
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="poBox"
+                          className="w-56 text-left text-xs font-medium"
+                        >
+                          PO Box
+                        </label>
+                        <input
+                          type="text"
+                          id="poBox"
+                          name="poBox"
+                          value={formData.poBox}
+                          onChange={handleChange}
+                          className="w-32 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
 
-                  {/* Postal Code */}
-                  <div className="flex items-center">
-                    <label
-                      htmlFor="postalCode"
-                      className="w-56 text-left text-xs font-medium"
-                    >
-                      Postal Code
-                    </label>
-                    <input
-                      type="text"
-                      id="postalCode"
-                      name="postalCode"
-                      value={formData.postalCode}
-                      onChange={handleChange}
-                      className="w-32 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                    />
-                  </div>
+                      {/* Postal Code */}
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="postalCode"
+                          className="w-56 text-left text-xs font-medium"
+                        >
+                          Postal Code
+                        </label>
+                        <input
+                          type="text"
+                          id="postalCode"
+                          name="postalCode"
+                          value={formData.postalCode}
+                          onChange={handleChange}
+                          className="w-32 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
 
-                  {/* City */}
-                  <div className="flex items-center">
-                    <label
-                      htmlFor="city"
-                      className="w-56 text-left text-xs font-medium"
-                    >
-                      City
-                    </label>
-                    <input
-                      type="text"
-                      id="city"
-                      name="city"
-                      value={formData.city}
-                      onChange={handleChange}
-                      className="w-40 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                    />
-                  </div>
+                      {/* City */}
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="city"
+                          className="w-56 text-left text-xs font-medium"
+                        >
+                          City
+                        </label>
+                        <input
+                          type="text"
+                          id="city"
+                          name="city"
+                          value={formData.city}
+                          onChange={handleChange}
+                          className="w-40 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
 
-                  {/* Country */}
-                  <div className="flex items-center">
-                    <label
-                      htmlFor="country"
-                      className="w-56 text-left text-xs font-medium"
-                    >
-                      Country
-                    </label>
-                    <input
-                      type="text"
-                      id="country"
-                      name="country"
-                      value={formData.country}
-                      onChange={handleChange}
-                      className="w-40 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                    />
-                  </div>
+                      {/* Country */}
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="country"
+                          className="w-56 text-left text-xs font-medium"
+                        >
+                          Country
+                        </label>
+                        <input
+                          type="text"
+                          id="country"
+                          name="country"
+                          value={formData.country}
+                          onChange={handleChange}
+                          className="w-40 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
 
-                  {/* Language Key */}
-                  <div className="flex items-center">
-                    <label
-                      htmlFor="languageKey"
-                      className="w-56 text-left text-xs font-medium"
-                    >
-                      Language Key
-                    </label>
-                    <input
-                      type="text"
-                      id="languageKey"
-                      name="languageKey"
-                      value={formData.languageKey}
-                      onChange={handleChange}
-                      className="w-20 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                    />
-                  </div>
+                      {/* Language Key */}
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="languageKey"
+                          className="w-56 text-left text-xs font-medium"
+                        >
+                          Language Key
+                        </label>
+                        <input
+                          type="text"
+                          id="languageKey"
+                          name="languageKey"
+                          value={formData.languageKey}
+                          onChange={handleChange}
+                          className="w-20 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
 
-                  {/* Currency */}
-                  <div className="flex items-center">
-                    <label
-                      htmlFor="currency"
-                      className="w-56 text-left text-xs font-medium"
-                    >
-                      Currency
-                    </label>
-                    <input
-                      type="text"
-                      id="currency"
-                      name="currency"
-                      value={formData.currency}
-                      onChange={handleChange}
-                      className="w-20 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                    />
+                      {/* Currency */}
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="currency"
+                          className="w-56 text-left text-xs font-medium"
+                        >
+                          Currency
+                        </label>
+                        <input
+                          type="text"
+                          id="currency"
+                          name="currency"
+                          value={formData.currency}
+                          onChange={handleChange}
+                          className="w-20 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              {/* Information Section */}
-              <div className="p-4">
-                <label className="block text-xs font-bold text-gray-700 mb-1">
-                  Information:
-                </label>
-                <div className="w-full border border-gray-300 rounded-sm bg-white p-2 text-xs leading-relaxed text-gray-800">
-                  Creating a company involves entering key organizational
-                  details such as its legal name, address, country, and
-                  language. This information forms the foundation of enterprise
-                  structure within the system and is essential for legal
-                  reporting, financial integration, and business operations.
-                  Currency and language settings ensure accurate communication
-                  and transaction processing across modules.
+                  {/* Information Section */}
+                  <div className="p-4">
+                    <label className="block text-xs font-bold text-gray-700 mb-1">
+                      Information:
+                    </label>
+                    <div className="w-full border border-gray-300 rounded-sm bg-white p-2 text-xs leading-relaxed text-gray-800">
+                      Creating a company involves entering key organizational
+                      details such as its legal name, address, country, and
+                      language. This information forms the foundation of
+                      enterprise structure within the system and is essential
+                      for legal reporting, financial integration, and business
+                      operations. Currency and language settings ensure accurate
+                      communication and transaction processing across modules.
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

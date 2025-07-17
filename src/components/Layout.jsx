@@ -43,6 +43,11 @@ const Layout = () => {
     "/charts-of-accounts": "Charts of Accounts",
     "/assign-coa-to-company-code": "Assign CoA to Company Code",
     "/create-company-code": "Define Company Code",
+    "/field-status-variants": "Define Field Status Variants",
+    "/field-status-groups": "Define Field Status Groups",
+    "/typical-field-groups": "Typical Field Groups",
+    "/posting-period-variant": "Posting Period Variant",
+    "/define-tolerance-groups": "Define Tolerance Groups",
   };
 
   const pageTitle = routeTitles[location.pathname] || "Dashboard";

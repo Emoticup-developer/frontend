@@ -1314,7 +1314,9 @@ const Sidebar = () => {
                           <ul className="pl-6 mt-1 space-y-0">
                             <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                               <FaCube />
-                              <a href="#">Ledger Definition Fields</a>
+                              <a href="/ledger-definition-fields">
+                                Ledger Definition Fields
+                              </a>
                             </li>
                             <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                               <FaCube />
@@ -1723,7 +1725,9 @@ const Sidebar = () => {
                       </li>
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
-                        <a href="#">Currency & Exchange Rate Types</a>
+                        <a href="/define-currency-and-exchange-rate-types">
+                          Define Currency & Exchange Rate Types
+                        </a>
                       </li>
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
@@ -1848,11 +1852,15 @@ const Sidebar = () => {
                           <ul className="pl-6 mt-1 space-y-0">
                             <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                               <FaCube />
-                              <a href="#">Post Journal Entry</a>
+                              <a href="/post-journal-entry">
+                                Post Journal Entry
+                              </a>
                             </li>
                             <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                               <FaCube />
-                              <a href="#">Display GL Balances</a>
+                              <a href="/display-gl-balances">
+                                Display GL Balances
+                              </a>
                             </li>
                             <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                               <FaCube />

@@ -57,6 +57,11 @@ const Layout = () => {
     "/define-gl-account-types": "Define G/L Account Types",
     "/charts-of-accounts-level-fields": "Charts of Accounts Level Fields",
     "/company-code-level-fields": "Company Code Level Fields",
+    "/ledger-definition-fields": "Ledger Definition Fields",
+    "/define-currency-and-exchange-rate-types":
+      "Define Currency & Exchange Rate Types",
+    "/post-journal-entry": "Post Journal Entry",
+    "/display-gl-balances": "Display G/L Balances",
   };
 
   const pageTitle = routeTitles[location.pathname] || "Dashboard";

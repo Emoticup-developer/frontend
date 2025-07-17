@@ -46,6 +46,10 @@ import NumberRanges from "./pages/NumberRanges";
 import DefineGLAccountTypes from "./pages/DefineGLAccountTypes";
 import ChartsAccountsFields from "./pages/ChartsAccountsFields";
 import CompanyCodeFields from "./pages/CompanyCodeFields";
+import LedgerDefinitionFields from "./pages/LedgerDefinitionFields";
+import DefineCurrencyandExchangeRateTypes from "./pages/DefineCurrencyandExchangeRateTypes";
+import PostJournalEntry from "./pages/PostJournalEntry";
+import DisplayGLBalances from "./pages/DisplayGLBalances";
 
 const ThemedPage = ({ children }) => {
   const { colors } = useTheme();
@@ -232,10 +236,42 @@ export default function App() {
                 }
               />
               <Route
+                path="/post-journal-entry"
+                element={
+                  <ThemedPage>
+                    <PostJournalEntry />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/display-gl-balances"
+                element={
+                  <ThemedPage>
+                    <DisplayGLBalances />
+                  </ThemedPage>
+                }
+              />
+              <Route
                 path="/company-code-level-fields"
                 element={
                   <ThemedPage>
                     <CompanyCodeFields />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/ledger-definition-fields"
+                element={
+                  <ThemedPage>
+                    <LedgerDefinitionFields />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/define-currency-and-exchange-rate-types"
+                element={
+                  <ThemedPage>
+                    <DefineCurrencyandExchangeRateTypes />
                   </ThemedPage>
                 }
               />

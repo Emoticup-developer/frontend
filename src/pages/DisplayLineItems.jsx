@@ -1,62 +1,33 @@
 import { useState } from "react";
-import { FaSave } from "react-icons/fa";
-import { FiChevronDown } from "react-icons/fi";
-import { IoIosPrint, IoMdCreate, IoMdSave } from "react-icons/io";
+import { IoMdCreate, IoMdSave } from "react-icons/io";
 import { MdCancelScheduleSend, MdOutlinePreview } from "react-icons/md";
+import { FiChevronDown } from "react-icons/fi";
+import { IoIosPrint } from "react-icons/io";
 
-const CreateCompany = () => {
+const DisplayLineItems = () => {
   const [formData, setFormData] = useState({
-    company: "",
-    companyName: "",
-    companyName2: "",
-    street: "",
-    poBox: "",
-    postalCode: "",
-    city: "",
-    country: "",
-    languageKey: "",
-    currency: "",
+    gl_account: "",
+    company_code: "",
+    posting_date_range: "",
+    document_number: "",
+    open_closed_items: "",
+    cost_center: "",
+    text: "",
+    layout: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    try {
-      const response = await axios.post(
-        "http://192.168.0.235:8000/api/companies",
-        formData,
-        { withCredentials: true }
-      );
-
-      if (response.status === 201 || response.status === 200) {
-        toast.success("Company data saved successfully!");
-        setFormData({
-          company: "",
-          companyName: "",
-          companyName2: "",
-          street: "",
-          poBox: "",
-          postalCode: "",
-          city: "",
-          country: "",
-          languageKey: "",
-          currency: "",
-        });
-      } else {
-        toast.error("Failed to save company data!");
-      }
-    } catch (error) {
-      console.error("Save error:", error);
-      toast.error("An error occurred while saving data!");
-    }
+    console.log("Submitted data:", formData);
+    // You can connect to API or backend here
   };
 
   return (
@@ -65,7 +36,7 @@ const CreateCompany = () => {
         <div className="flex-grow w-full bg-[#f0f4f8] text-sm font-sans flex flex-col">
           <form onSubmit={handleSubmit}>
             <div className="h-full w-full bg-gray-100 shadow-md border border-gray-300 rounded-sm flex flex-col">
-              {/* 🔷 Header Action Bar (non-scrollable) */}
+              {/* Top Action Bar */}
               <div className="bg-gray-50 p-2">
                 <div className="flex justify-between space-x-6 text-sm text-gray-700">
                   <div className="flex px-2">
@@ -115,203 +86,153 @@ const CreateCompany = () => {
               {/* Scrollable Content */}
               <div className="relative w-full h-[404px] overflow-y-auto">
                 <div className="min-h-[404px] w-full">
+                  {/* Form Fields */}
                   <div className="p-4 space-y-4">
                     <div className="space-y-2">
-                      {/* Company */}
                       <div className="flex items-center">
                         <label
-                          htmlFor="company"
+                          htmlFor="gl_account"
                           className="w-64 text-left text-xs font-medium"
                         >
-                          Company
+                          G/L Account
                         </label>
                         <input
                           type="text"
-                          id="company"
-                          name="company"
-                          placeholder="AB01"
-                          value={formData.company}
-                          onChange={handleChange}
-                          className="w-9 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                        />
-                      </div>
-
-                      {/* Company Name */}
-                      <div className="flex items-center">
-                        <label
-                          htmlFor="companyName"
-                          className="w-64 text-left text-xs font-medium"
-                        >
-                          Company Name
-                        </label>
-                        <input
-                          type="text"
-                          id="companyName"
-                          name="companyName"
-                          value={formData.companyName}
-                          onChange={handleChange}
-                          className="w-80 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                        />
-                      </div>
-
-                      {/* Name of Company 2 */}
-                      <div className="flex items-center">
-                        <label
-                          htmlFor="companyName2"
-                          className="w-64 text-left text-xs font-medium"
-                        >
-                          Name of Company 2
-                        </label>
-                        <input
-                          type="text"
-                          id="companyName2"
-                          name="companyName2"
-                          value={formData.companyName2}
-                          onChange={handleChange}
-                          className="w-80 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                        />
-                      </div>
-
-                      {/* Street */}
-                      <div className="flex items-center">
-                        <label
-                          htmlFor="street"
-                          className="w-64 text-left text-xs font-medium"
-                        >
-                          Street
-                        </label>
-                        <input
-                          type="text"
-                          id="street"
-                          name="street"
-                          value={formData.street}
+                          id="gl_account"
+                          name="gl_account"
+                          value={formData.gl_account}
                           onChange={handleChange}
                           className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                         />
                       </div>
-
-                      {/* PO Box */}
                       <div className="flex items-center">
                         <label
-                          htmlFor="poBox"
+                          htmlFor="company_code"
                           className="w-64 text-left text-xs font-medium"
                         >
-                          PO Box
+                          Company Code
                         </label>
                         <input
                           type="text"
-                          id="poBox"
-                          name="poBox"
-                          value={formData.poBox}
+                          id="company_code"
+                          name="company_code"
+                          value={formData.company_code}
                           onChange={handleChange}
-                          className="w-32 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                         />
                       </div>
-
-                      {/* Postal Code */}
                       <div className="flex items-center">
                         <label
-                          htmlFor="postalCode"
+                          htmlFor="posting_date_range"
                           className="w-64 text-left text-xs font-medium"
                         >
-                          Postal Code
+                          Posting Date Range
                         </label>
                         <input
                           type="text"
-                          id="postalCode"
-                          name="postalCode"
-                          value={formData.postalCode}
+                          id="posting_date_range"
+                          name="posting_date_range"
+                          value={formData.posting_date_range}
                           onChange={handleChange}
-                          className="w-32 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                         />
                       </div>
-
-                      {/* City */}
                       <div className="flex items-center">
                         <label
-                          htmlFor="city"
+                          htmlFor="document_number"
                           className="w-64 text-left text-xs font-medium"
                         >
-                          City
+                          Document Number
                         </label>
                         <input
                           type="text"
-                          id="city"
-                          name="city"
-                          value={formData.city}
+                          id="document_number"
+                          name="document_number"
+                          value={formData.document_number}
                           onChange={handleChange}
-                          className="w-40 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                         />
                       </div>
-
-                      {/* Country */}
                       <div className="flex items-center">
                         <label
-                          htmlFor="country"
+                          htmlFor="open_closed_items"
                           className="w-64 text-left text-xs font-medium"
                         >
-                          Country
+                          Open / Closed Items
                         </label>
                         <input
                           type="text"
-                          id="country"
-                          name="country"
-                          value={formData.country}
+                          id="open_closed_items"
+                          name="open_closed_items"
+                          value={formData.open_closed_items}
                           onChange={handleChange}
-                          className="w-40 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                         />
                       </div>
-
-                      {/* Language Key */}
                       <div className="flex items-center">
                         <label
-                          htmlFor="languageKey"
+                          htmlFor="cost_center"
                           className="w-64 text-left text-xs font-medium"
                         >
-                          Language Key
+                          Cost Center
                         </label>
                         <input
                           type="text"
-                          id="languageKey"
-                          name="languageKey"
-                          value={formData.languageKey}
+                          id="cost_center"
+                          name="cost_center"
+                          value={formData.cost_center}
                           onChange={handleChange}
-                          className="w-20 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                         />
                       </div>
-
-                      {/* Currency */}
                       <div className="flex items-center">
                         <label
-                          htmlFor="currency"
+                          htmlFor="text"
                           className="w-64 text-left text-xs font-medium"
                         >
-                          Currency
+                          Text
                         </label>
                         <input
                           type="text"
-                          id="currency"
-                          name="currency"
-                          value={formData.currency}
+                          id="text"
+                          name="text"
+                          value={formData.text}
                           onChange={handleChange}
-                          className="w-20 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="layout"
+                          className="w-64 text-left text-xs font-medium"
+                        >
+                          Layout
+                        </label>
+                        <input
+                          type="text"
+                          id="layout"
+                          name="layout"
+                          value={formData.layout}
+                          onChange={handleChange}
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                         />
                       </div>
                     </div>
                   </div>
+
                   {/* Information Section */}
                   <div className="p-4">
                     <label className="block text-xs font-bold text-gray-700 mb-1">
                       Information:
                     </label>
                     <div className="w-full border border-gray-300 rounded-sm bg-white p-2 text-xs leading-relaxed text-gray-800">
-                      Creating a company involves entering key organizational
-                      details such as its legal name, address, country, and
-                      language. This information forms the foundation of
-                      enterprise structure within the system and is essential
-                      for legal reporting, financial integration, and business
-                      operations. Currency and language settings ensure accurate
-                      communication and transaction processing across modules.
+                      Display Line Items enables users to view individual
+                      postings made to G/L accounts within a selected time
+                      frame. It shows detailed entries including document
+                      number, posting date, amount, and description. This
+                      function is vital for transaction-level analysis,
+                      troubleshooting discrepancies, and ensuring transparency
+                      in financial reporting.
                     </div>
                   </div>
                 </div>
@@ -324,4 +245,4 @@ const CreateCompany = () => {
   );
 };
 
-export default CreateCompany;
+export default DisplayLineItems;

@@ -4,10 +4,13 @@ import { MdCancelScheduleSend, MdOutlinePreview } from "react-icons/md";
 import { FiChevronDown } from "react-icons/fi";
 import { IoIosPrint } from "react-icons/io";
 
-const AssignCompanytoCompanyCode = () => {
+const BankReconciliationReport = () => {
   const [formData, setFormData] = useState({
-    company: "",
-    company_code: "",
+    house_bank: "",
+    account_id: "",
+    statement_date: "",
+    reconciliation_status: "",
+    gl_account: "",
   });
 
   const handleChange = (e) => {
@@ -21,7 +24,7 @@ const AssignCompanytoCompanyCode = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Submitted data:", formData);
-    // Add your API call here
+    // You can connect to API or backend here
   };
 
   return (
@@ -83,57 +86,101 @@ const AssignCompanytoCompanyCode = () => {
                   {/* Form Fields */}
                   <div className="p-4 space-y-4">
                     <div className="space-y-2">
-                      {/* Company */}
                       <div className="flex items-center">
                         <label
-                          htmlFor="company"
+                          htmlFor="house_bank"
                           className="w-64 text-left text-xs font-medium"
                         >
-                          Company
+                          House Bank
                         </label>
                         <input
                           type="text"
-                          id="company"
-                          name="company"
-                          placeholder="AB01"
-                          value={formData.company}
+                          id="house_bank"
+                          name="house_bank"
+                          value={formData.house_bank}
                           onChange={handleChange}
-                          className="w-10 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                         />
                       </div>
-
-                      {/* Company Code */}
                       <div className="flex items-center">
                         <label
-                          htmlFor="company_code"
+                          htmlFor="account_id"
                           className="w-64 text-left text-xs font-medium"
                         >
-                          Company Code
+                          Account ID
                         </label>
                         <input
                           type="text"
-                          id="company_code"
-                          name="company_code"
-                          placeholder="1000"
-                          value={formData.company_code}
+                          id="account_id"
+                          name="account_id"
+                          value={formData.account_id}
                           onChange={handleChange}
-                          className="w-10 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="statement_date"
+                          className="w-64 text-left text-xs font-medium"
+                        >
+                          Statement Date
+                        </label>
+                        <input
+                          type="date"
+                          id="statement_date"
+                          name="statement_date"
+                          value={formData.statement_date}
+                          onChange={handleChange}
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="reconciliation_status"
+                          className="w-64 text-left text-xs font-medium"
+                        >
+                          Reconciliation Status
+                        </label>
+                        <input
+                          type="text"
+                          id="reconciliation_status"
+                          name="reconciliation_status"
+                          value={formData.reconciliation_status}
+                          onChange={handleChange}
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="gl_account"
+                          className="w-64 text-left text-xs font-medium"
+                        >
+                          G/L Account
+                        </label>
+                        <input
+                          type="text"
+                          id="gl_account"
+                          name="gl_account"
+                          value={formData.gl_account}
+                          onChange={handleChange}
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                         />
                       </div>
                     </div>
                   </div>
 
-                  {/* Information Box */}
+                  {/* Information Section */}
                   <div className="p-4">
                     <label className="block text-xs font-bold text-gray-700 mb-1">
                       Information:
                     </label>
                     <div className="w-full border border-gray-300 rounded-sm bg-white p-2 text-xs leading-relaxed text-gray-800">
-                      This form assigns critical financial and organizational
-                      configuration to a company code. These settings are
-                      essential for financial reporting, legal compliance, and
-                      system behavior. It includes localization, fiscal periods,
-                      and account structures.
+                      The Bank Reconciliation Report compares the company’s
+                      internal ledger records with bank statements to identify
+                      discrepancies such as unrecorded transactions, errors, or
+                      timing differences. It ensures the accuracy of cash
+                      balances and supports financial integrity by reconciling
+                      bank and book records regularly.
                     </div>
                   </div>
                 </div>
@@ -146,4 +193,4 @@ const AssignCompanytoCompanyCode = () => {
   );
 };
 
-export default AssignCompanytoCompanyCode;
+export default BankReconciliationReport;

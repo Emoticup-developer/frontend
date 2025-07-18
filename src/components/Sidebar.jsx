@@ -1713,6 +1713,10 @@ const Sidebar = () => {
                     <ul className="pl-6 mt-1 space-y-0">
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
+                        <a href="/define-number-ranges">Define Number Ranges</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
                         <a href="/define-fiscal-year">
                           Define Fiscal Year Variant
                         </a>
@@ -1852,7 +1856,7 @@ const Sidebar = () => {
                           <ul className="pl-6 mt-1 space-y-0">
                             <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                               <FaCube />
-                              <a href="/post-journal-entry">
+                              <a href="/gl-account-document">
                                 Post Journal Entry
                               </a>
                             </li>
@@ -1864,7 +1868,9 @@ const Sidebar = () => {
                             </li>
                             <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                               <FaCube />
-                              <a href="#">Display Line Items</a>
+                              <a href="/display-line-items">
+                                Display Line Items
+                              </a>
                             </li>
                           </ul>
                         )}
@@ -2091,31 +2097,35 @@ const Sidebar = () => {
                     <ul className="pl-6 mt-1 space-y-0">
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
-                        <a href="#">Trial Balance</a>
+                        <a href="/trial-balance">Trial Balance</a>
                       </li>
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
-                        <a href="#">Profit & Loss</a>
+                        <a href="/profit-loss-statement">
+                          Profit & Loss (P&L) Statement
+                        </a>
                       </li>
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
-                        <a href="#">Balance Sheet</a>
+                        <a href="/balance-sheet">Balance Sheet</a>
                       </li>
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
-                        <a href="#">AP/AR Aging</a>
+                        <a href="/ap-ar-aging">AP/AR Aging</a>
                       </li>
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
-                        <a href="#">Tax Reports (GST/TDS)</a>
+                        <a href="/tax-report">Tax Reports (GST/TDS)</a>
                       </li>
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
-                        <a href="#">Asset Register</a>
+                        <a href="/asset-register">Asset Register</a>
                       </li>
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
-                        <a href="#">Bank Reconciliation Report</a>
+                        <a href="/bank_reconciliation_report">
+                          Bank Reconciliation Report
+                        </a>
                       </li>
                     </ul>
                   )}

@@ -50,6 +50,16 @@ import LedgerDefinitionFields from "./pages/LedgerDefinitionFields";
 import DefineCurrencyandExchangeRateTypes from "./pages/DefineCurrencyandExchangeRateTypes";
 import PostJournalEntry from "./pages/PostJournalEntry";
 import DisplayGLBalances from "./pages/DisplayGLBalances";
+import DisplayLineItems from "./pages/DisplayLineItems";
+import TrialBalance from "./pages/TrialBalance";
+import ProfitandLossStatement from "./pages/ProfitandLossStatement";
+import BalanceSheet from "./pages/BalanceSheet";
+import APARAging from "./pages/APARAging";
+import TaxReport from "./pages/TaxReport";
+import AssetRegister from "./pages/AssetRegister";
+import BankReconciliationReport from "./pages/BankReconciliationReport";
+import DefineNumberRanges from "./pages/DefineNumberRanges";
+import FieldTableForm from "./pages/FieldTableForm";
 
 const ThemedPage = ({ children }) => {
   const { colors } = useTheme();
@@ -128,6 +138,22 @@ export default function App() {
                 element={
                   <ThemedPage>
                     <DefineFiscalYear />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/define-number-ranges"
+                element={
+                  <ThemedPage>
+                    <DefineNumberRanges />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/field-table"
+                element={
+                  <ThemedPage>
+                    <FieldTableForm />
                   </ThemedPage>
                 }
               />
@@ -248,6 +274,70 @@ export default function App() {
                 element={
                   <ThemedPage>
                     <DisplayGLBalances />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/display-line-items"
+                element={
+                  <ThemedPage>
+                    <DisplayLineItems />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/trial-balance"
+                element={
+                  <ThemedPage>
+                    <TrialBalance />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/profit-loss-statement"
+                element={
+                  <ThemedPage>
+                    <ProfitandLossStatement />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/balance-sheet"
+                element={
+                  <ThemedPage>
+                    <BalanceSheet />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/ap-ar-aging"
+                element={
+                  <ThemedPage>
+                    <APARAging />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/tax-report"
+                element={
+                  <ThemedPage>
+                    <TaxReport />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/asset-register"
+                element={
+                  <ThemedPage>
+                    <AssetRegister />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/bank_reconciliation_report"
+                element={
+                  <ThemedPage>
+                    <BankReconciliationReport />
                   </ThemedPage>
                 }
               />

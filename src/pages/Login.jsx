@@ -246,7 +246,7 @@ const Login = () => {
                 </button>
               </div>
 
-              <hr className="border-[#031015] border w-[750px]" />
+              <hr className="border-[#031015] border w-[738px]" />
 
               <div className="w-[750px] h-16 font-semibold rounded-sm text-black mt-2">
                 AERP - Accelerated Enterprise Resource Planning that integrates

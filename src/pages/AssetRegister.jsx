@@ -4,10 +4,13 @@ import { MdCancelScheduleSend, MdOutlinePreview } from "react-icons/md";
 import { FiChevronDown } from "react-icons/fi";
 import { IoIosPrint } from "react-icons/io";
 
-const AssignCompanytoCompanyCode = () => {
+const AssetRegister = () => {
   const [formData, setFormData] = useState({
-    company: "",
     company_code: "",
+    asset_class: "",
+    asset_number_range: "",
+    fiscal_year: "",
+    display_layout: "",
   });
 
   const handleChange = (e) => {
@@ -21,7 +24,7 @@ const AssignCompanytoCompanyCode = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Submitted data:", formData);
-    // Add your API call here
+    // You can connect to API or backend here
   };
 
   return (
@@ -83,26 +86,6 @@ const AssignCompanytoCompanyCode = () => {
                   {/* Form Fields */}
                   <div className="p-4 space-y-4">
                     <div className="space-y-2">
-                      {/* Company */}
-                      <div className="flex items-center">
-                        <label
-                          htmlFor="company"
-                          className="w-64 text-left text-xs font-medium"
-                        >
-                          Company
-                        </label>
-                        <input
-                          type="text"
-                          id="company"
-                          name="company"
-                          placeholder="AB01"
-                          value={formData.company}
-                          onChange={handleChange}
-                          className="w-10 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                        />
-                      </div>
-
-                      {/* Company Code */}
                       <div className="flex items-center">
                         <label
                           htmlFor="company_code"
@@ -114,26 +97,90 @@ const AssignCompanytoCompanyCode = () => {
                           type="text"
                           id="company_code"
                           name="company_code"
-                          placeholder="1000"
                           value={formData.company_code}
                           onChange={handleChange}
-                          className="w-10 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="asset_class"
+                          className="w-64 text-left text-xs font-medium"
+                        >
+                          Asset Class
+                        </label>
+                        <input
+                          type="text"
+                          id="asset_class"
+                          name="asset_class"
+                          value={formData.asset_class}
+                          onChange={handleChange}
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="asset_number_range"
+                          className="w-64 text-left text-xs font-medium"
+                        >
+                          Asset Number Range
+                        </label>
+                        <input
+                          type="text"
+                          id="asset_number_range"
+                          name="asset_number_range"
+                          value={formData.asset_number_range}
+                          onChange={handleChange}
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="fiscal_year"
+                          className="w-64 text-left text-xs font-medium"
+                        >
+                          Fiscal Year
+                        </label>
+                        <input
+                          type="text"
+                          id="fiscal_year"
+                          name="fiscal_year"
+                          value={formData.fiscal_year}
+                          onChange={handleChange}
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="display_layout"
+                          className="w-64 text-left text-xs font-medium"
+                        >
+                          Display Layout
+                        </label>
+                        <input
+                          type="text"
+                          id="display_layout"
+                          name="display_layout"
+                          value={formData.display_layout}
+                          onChange={handleChange}
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                         />
                       </div>
                     </div>
                   </div>
 
-                  {/* Information Box */}
+                  {/* Information Section */}
                   <div className="p-4">
                     <label className="block text-xs font-bold text-gray-700 mb-1">
                       Information:
                     </label>
                     <div className="w-full border border-gray-300 rounded-sm bg-white p-2 text-xs leading-relaxed text-gray-800">
-                      This form assigns critical financial and organizational
-                      configuration to a company code. These settings are
-                      essential for financial reporting, legal compliance, and
-                      system behavior. It includes localization, fiscal periods,
-                      and account structures.
+                      The Tax Report provides a summary of tax-related
+                      transactions for a defined period, including input and
+                      output taxes such as GST, VAT, or sales tax. It supports
+                      accurate tax filing, compliance with regulatory
+                      authorities, and internal audits by presenting detailed
+                      tax amounts, rates, and associated documents.
                     </div>
                   </div>
                 </div>
@@ -146,4 +193,4 @@ const AssignCompanytoCompanyCode = () => {
   );
 };
 
-export default AssignCompanytoCompanyCode;
+export default AssetRegister;

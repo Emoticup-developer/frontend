@@ -4,10 +4,14 @@ import { MdCancelScheduleSend, MdOutlinePreview } from "react-icons/md";
 import { FiChevronDown } from "react-icons/fi";
 import { IoIosPrint } from "react-icons/io";
 
-const AssignCompanytoCompanyCode = () => {
+const TrialBalance = () => {
   const [formData, setFormData] = useState({
-    company: "",
     company_code: "",
+    fiscal_year: "",
+    period_from_to: "",
+    ledger: "",
+    group_gl_account: "",
+    output_format: "",
   });
 
   const handleChange = (e) => {
@@ -21,7 +25,7 @@ const AssignCompanytoCompanyCode = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Submitted data:", formData);
-    // Add your API call here
+    // You can connect to API or backend here
   };
 
   return (
@@ -83,26 +87,6 @@ const AssignCompanytoCompanyCode = () => {
                   {/* Form Fields */}
                   <div className="p-4 space-y-4">
                     <div className="space-y-2">
-                      {/* Company */}
-                      <div className="flex items-center">
-                        <label
-                          htmlFor="company"
-                          className="w-64 text-left text-xs font-medium"
-                        >
-                          Company
-                        </label>
-                        <input
-                          type="text"
-                          id="company"
-                          name="company"
-                          placeholder="AB01"
-                          value={formData.company}
-                          onChange={handleChange}
-                          className="w-10 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                        />
-                      </div>
-
-                      {/* Company Code */}
                       <div className="flex items-center">
                         <label
                           htmlFor="company_code"
@@ -114,26 +98,107 @@ const AssignCompanytoCompanyCode = () => {
                           type="text"
                           id="company_code"
                           name="company_code"
-                          placeholder="1000"
                           value={formData.company_code}
                           onChange={handleChange}
-                          className="w-10 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="fiscal_year"
+                          className="w-64 text-left text-xs font-medium"
+                        >
+                          Fiscal Year
+                        </label>
+                        <input
+                          type="text"
+                          id="fiscal_year"
+                          name="fiscal_year"
+                          value={formData.fiscal_year}
+                          onChange={handleChange}
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="period_from_to"
+                          className="w-64 text-left text-xs font-medium"
+                        >
+                          Period From / To
+                        </label>
+                        <input
+                          type="text"
+                          id="period_from_to"
+                          name="period_from_to"
+                          value={formData.period_from_to}
+                          onChange={handleChange}
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="ledger"
+                          className="w-64 text-left text-xs font-medium"
+                        >
+                          Ledger
+                        </label>
+                        <input
+                          type="text"
+                          id="ledger"
+                          name="ledger"
+                          value={formData.ledger}
+                          onChange={handleChange}
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="group_gl_account"
+                          className="w-64 text-left text-xs font-medium"
+                        >
+                          Group G/L Account
+                        </label>
+                        <input
+                          type="text"
+                          id="group_gl_account"
+                          name="group_gl_account"
+                          value={formData.group_gl_account}
+                          onChange={handleChange}
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="output_format"
+                          className="w-64 text-left text-xs font-medium"
+                        >
+                          Output Format
+                        </label>
+                        <input
+                          type="text"
+                          id="output_format"
+                          name="output_format"
+                          value={formData.output_format}
+                          onChange={handleChange}
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                         />
                       </div>
                     </div>
                   </div>
 
-                  {/* Information Box */}
+                  {/* Information Section */}
                   <div className="p-4">
                     <label className="block text-xs font-bold text-gray-700 mb-1">
                       Information:
                     </label>
                     <div className="w-full border border-gray-300 rounded-sm bg-white p-2 text-xs leading-relaxed text-gray-800">
-                      This form assigns critical financial and organizational
-                      configuration to a company code. These settings are
-                      essential for financial reporting, legal compliance, and
-                      system behavior. It includes localization, fiscal periods,
-                      and account structures.
+                      Display Line Items enables users to view individual
+                      postings made to G/L accounts within a selected time
+                      frame. It shows detailed entries including document
+                      number, posting date, amount, and description. This
+                      function is vital for transaction-level analysis,
+                      troubleshooting discrepancies, and ensuring transparency
+                      in financial reporting.
                     </div>
                   </div>
                 </div>
@@ -146,4 +211,4 @@ const AssignCompanytoCompanyCode = () => {
   );
 };
 
-export default AssignCompanytoCompanyCode;
+export default TrialBalance;

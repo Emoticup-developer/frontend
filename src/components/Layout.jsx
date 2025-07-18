@@ -62,6 +62,15 @@ const Layout = () => {
       "Define Currency & Exchange Rate Types",
     "/post-journal-entry": "Post Journal Entry",
     "/display-gl-balances": "Display G/L Balances",
+    "/display-line-items": "Display Line Items",
+    "/trial-balance": "Trial Balance",
+    "/profit-loss-statement": "Profit & Loss (P&L) Statement",
+    "/balance-sheet": "Balance Sheet",
+    "/ap-ar-aging": "AP/AR Aging",
+    "/tax-report": "Tax Reports (GST/TDS)",
+    "/asset-register": "Asset Register",
+    "/bank_reconciliation_report": "Bank Reconciliation Report",
+    "/define-number-ranges": "Define Number Ranges",
   };
 
   const pageTitle = routeTitles[location.pathname] || "Dashboard";
@@ -181,7 +190,9 @@ const Layout = () => {
       {/* App Header */}
       <div className="relative flex justify-between items-center p-2 bg-[#9abddc] h-12">
         <h1 className="text-black font-bold text-3xl ml-2">AERP</h1>
-        <FaHome className="mr-2" />
+        <a href="/home">
+          <FaHome className="mr-2" />
+        </a>
       </div>
 
       {/* Control Panel */}

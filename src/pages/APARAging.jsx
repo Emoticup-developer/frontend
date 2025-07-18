@@ -4,10 +4,13 @@ import { MdCancelScheduleSend, MdOutlinePreview } from "react-icons/md";
 import { FiChevronDown } from "react-icons/fi";
 import { IoIosPrint } from "react-icons/io";
 
-const AssignCompanytoCompanyCode = () => {
+const APARAging = () => {
   const [formData, setFormData] = useState({
-    company: "",
     company_code: "",
+    key_date: "",
+    aging_buckets: "",
+    vendor_customer: "",
+    sort_variant: "",
   });
 
   const handleChange = (e) => {
@@ -21,7 +24,7 @@ const AssignCompanytoCompanyCode = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Submitted data:", formData);
-    // Add your API call here
+    // You can connect to API or backend here
   };
 
   return (
@@ -83,26 +86,6 @@ const AssignCompanytoCompanyCode = () => {
                   {/* Form Fields */}
                   <div className="p-4 space-y-4">
                     <div className="space-y-2">
-                      {/* Company */}
-                      <div className="flex items-center">
-                        <label
-                          htmlFor="company"
-                          className="w-64 text-left text-xs font-medium"
-                        >
-                          Company
-                        </label>
-                        <input
-                          type="text"
-                          id="company"
-                          name="company"
-                          placeholder="AB01"
-                          value={formData.company}
-                          onChange={handleChange}
-                          className="w-10 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                        />
-                      </div>
-
-                      {/* Company Code */}
                       <div className="flex items-center">
                         <label
                           htmlFor="company_code"
@@ -114,26 +97,90 @@ const AssignCompanytoCompanyCode = () => {
                           type="text"
                           id="company_code"
                           name="company_code"
-                          placeholder="1000"
                           value={formData.company_code}
                           onChange={handleChange}
-                          className="w-10 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="key_date"
+                          className="w-64 text-left text-xs font-medium"
+                        >
+                          Key Date
+                        </label>
+                        <input
+                          type="date"
+                          id="key_date"
+                          name="key_date"
+                          value={formData.key_date}
+                          onChange={handleChange}
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="aging_buckets"
+                          className="w-64 text-left text-xs font-medium"
+                        >
+                          Aging Buckets
+                        </label>
+                        <input
+                          type="text"
+                          id="aging_buckets"
+                          name="aging_buckets"
+                          value={formData.aging_buckets}
+                          onChange={handleChange}
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="vendor_customer"
+                          className="w-64 text-left text-xs font-medium"
+                        >
+                          Vendor Customer
+                        </label>
+                        <input
+                          type="text"
+                          id="vendor_customer"
+                          name="vendor_customer"
+                          value={formData.vendor_customer}
+                          onChange={handleChange}
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                        />
+                      </div>
+                      <div className="flex items-center">
+                        <label
+                          htmlFor="sort_variant"
+                          className="w-64 text-left text-xs font-medium"
+                        >
+                          Sort Variant
+                        </label>
+                        <input
+                          type="text"
+                          id="sort_variant"
+                          name="sort_variant"
+                          value={formData.sort_variant}
+                          onChange={handleChange}
+                          className="w-60 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                         />
                       </div>
                     </div>
                   </div>
 
-                  {/* Information Box */}
+                  {/* Information Section */}
                   <div className="p-4">
                     <label className="block text-xs font-bold text-gray-700 mb-1">
                       Information:
                     </label>
                     <div className="w-full border border-gray-300 rounded-sm bg-white p-2 text-xs leading-relaxed text-gray-800">
-                      This form assigns critical financial and organizational
-                      configuration to a company code. These settings are
-                      essential for financial reporting, legal compliance, and
-                      system behavior. It includes localization, fiscal periods,
-                      and account structures.
+                      The AP/AR Aging report provides a breakdown of outstanding
+                      payables (AP) and receivables (AR) categorized by aging
+                      buckets such as current, 30 days, 60 days, 90 days, and
+                      beyond. It helps monitor overdue amounts, assess credit
+                      risks, and manage cash flow effectively by highlighting
+                      aging trends for vendors and customers.
                     </div>
                   </div>
                 </div>
@@ -146,4 +193,4 @@ const AssignCompanytoCompanyCode = () => {
   );
 };
 
-export default AssignCompanytoCompanyCode;
+export default APARAging;

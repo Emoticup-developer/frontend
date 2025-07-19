@@ -1,67 +1,15 @@
 import { useEffect, useState } from "react";
-import { IoMdCreate, IoMdSave } from "react-icons/io";
-import {
-  MdCancelScheduleSend,
-  MdOutlineError,
-  MdOutlinePreview,
-} from "react-icons/md";
-import { FiChevronDown } from "react-icons/fi";
-import { IoIosPrint } from "react-icons/io";
-import { FaMinusCircle, FaPlusCircle } from "react-icons/fa";
+import { IoMdSave } from "react-icons/io";
+import { MdCancelScheduleSend, MdOutlinePreview } from "react-icons/md";
+
+import { RiDeleteBin2Fill } from "react-icons/ri";
+
+import { toast } from "react-toastify";
 import axios from "axios";
+import { IoIosPrint } from "react-icons/io";
+import { FaEdit } from "react-icons/fa";
 
 const DefineNumberRanges = () => {
-  const [selectedRows, setSelectedRows] = useState([]);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [yearOptions, setYearOptions] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get("http://192.168.0.235:8000/api/years", { withCredentials: true })
-      .then((res) => {
-        setYearOptions(res.data); // assuming API returns an array of years
-      })
-      .catch((err) => {
-        console.error("Failed to fetch years:", err);
-      });
-  }, []);
-
-  const [lineItems, setLineItems] = useState(
-    Array.from({ length: 1 }, () => ({
-      field: "",
-      suffix: "",
-      start_from: "",
-      end_to: "",
-      year: "",
-      description: "",
-      is_blocked: false,
-    }))
-  );
-
-  const addNewLine = () => {
-    setLineItems([
-      ...lineItems,
-      {
-        field: "",
-        suffix: "",
-        start_from: "",
-        end_to: "",
-        year: "",
-        description: "",
-        is_blocked: false,
-      },
-    ]);
-  };
-
-  const updateLineItem = (index, field, value) => {
-    const updatedItems = [...lineItems];
-    updatedItems[index] = {
-      ...updatedItems[index],
-      [field]: value,
-    };
-    setLineItems(updatedItems);
-  };
-
   const [formData, setFormData] = useState({
     field: "",
     suffix: "",
@@ -72,349 +20,435 @@ const DefineNumberRanges = () => {
     is_blocked: false,
   });
 
+  const [years, setYears] = useState([]);
+  const [recordRanges, setRecordRanges] = useState([]);
+  const [editingId, setEditingId] = useState(null);
+  const [editData, setEditData] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [yearsRes, recordsRes] = await Promise.all([
+          axios.get("http://192.168.0.235:8000/api/years"),
+          axios.get("http://192.168.0.235:8000/api/record_range"),
+        ]);
+        setYears(yearsRes.data);
+        setRecordRanges(recordsRes.data);
+      } catch {
+        toast.error("Failed to fetch data.");
+      }
+    };
+    fetchData();
+  }, []);
+
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
     }));
+  };
+
+  const handleEditChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setEditData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  const handleCancel = async (e) => {
+    e.preventDefault();
+
+    setFormData({
+      field: "",
+      suffix: "",
+      start_from: "",
+      end_to: "",
+      year: "",
+      description: "",
+      is_blocked: false,
+    });
+  };
+
+  const handleEditClick = (item) => {
+    setEditingId(item.id);
+    setEditData(item);
+  };
+
+  const handleSaveEdit = async () => {
+    try {
+      await axios.put(
+        `http://192.168.0.235:8000/api/record_range/${editingId}`,
+        editData,
+        {
+          withCredentials: true,
+        }
+      );
+      toast.success("Updated successfully!");
+      const res = await axios.get("http://192.168.0.235:8000/api/record_range");
+      setRecordRanges(res.data);
+      setEditingId(null);
+    } catch {
+      toast.error("Update failed.");
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+    setEditData({});
+  };
+
+  const handleDelete = async (id) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this entry?"
+    );
+    if (!confirmed) return;
+
+    try {
+      await axios.delete(`http://192.168.0.235:8000/api/record_range/${id}`, {
+        withCredentials: true,
+      });
+      toast.success("Deleted successfully!");
+      const res = await axios.get("http://192.168.0.235:8000/api/record_range");
+      setRecordRanges(res.data);
+    } catch {
+      toast.error("Delete failed.");
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await axios.post(
-        "http://192.168.0.235:8000/api/record_range",
-        lineItems,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
-
-      toast.success("Number ranges submitted successfully!");
-      console.log("Response:", response.data);
-    } catch (error) {
-      console.error("Error posting data:", error);
-      if (error.response && error.response.data) {
-        toast.error(
-          `Submission failed: ${error.response.data.message || "Bad Request"}`
-        );
-      } else {
-        toast.error("Submission failed. Please try again.");
-      }
+      await axios.post("http://192.168.0.235:8000/api/record_range", formData, {
+        withCredentials: true,
+      });
+      toast.success("Created successfully!");
+      setFormData({
+        field: "",
+        suffix: "",
+        start_from: "",
+        end_to: "",
+        year: "",
+        description: "",
+        is_blocked: false,
+      });
+      const res = await axios.get("http://192.168.0.235:8000/api/record_range");
+      setRecordRanges(res.data);
+    } catch {
+      toast.error("Create failed.");
     }
   };
 
   return (
-    <div className="flex flex-col min-h-screen w-full bg-gray-50 font-sans text-xs">
-      <div className="flex-grow w-full bg-[#f0f4f8] text-sm font-sans flex flex-col">
-        <form onSubmit={handleSubmit}>
-          <div className="h-full w-full bg-gray-100 shadow-md border border-gray-300 rounded-sm flex flex-col">
-            {/* Top Action Bar */}
-            <div className="bg-gray-50 border-b border-gray-300 p-2">
-              <div className="flex justify-between space-x-6 text-sm text-gray-700">
-                <div className="flex px-2">
-                  <button
-                    type="button"
-                    className="flex items-center space-x-1 cursor-pointer hover:text-blue-600"
-                  >
-                    <IoMdCreate />
-                    <span className="mr-5">Edit</span>
-                  </button>
-                  <button
-                    type="submit"
-                    onSubmit={handleSubmit}
-                    className="flex items-center space-x-1 cursor-pointer hover:text-blue-600"
-                  >
-                    <IoMdSave />
-                    <span className="mr-5">Save</span>
-                  </button>
-                  <button
-                    type="button"
-                    className="flex items-center space-x-1 cursor-pointer hover:text-blue-600"
-                  >
-                    <MdCancelScheduleSend />
-                    <span className="mr-5">Cancel</span>
-                  </button>
-                  <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                    <MdOutlinePreview />
-                    <span className="mr-5">Review</span>
-                  </div>
-                  <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                    <span>More</span>
-                    <FiChevronDown size={14} />
-                  </div>
-                </div>
-                <div className="flex">
-                  <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                    <IoIosPrint />
-                  </div>
-                  <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-600">
-                    <a href="/home">
-                      <span className="px-2">Exit</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
+    <div className="p-4 bg-gray-50 min-h-screen">
+      {/* Action Bar */}
+      <div className="mb-4 flex justify-between items-center bg-white p-2 rounded shadow text-sm">
+        <div className="flex space-x-4">
+          <button
+            type="submit"
+            form="rangeForm"
+            className="flex items-center cursor-pointer space-x-1 text-green-600"
+          >
+            <IoMdSave />
+            <span>Create</span>
+          </button>
+          <button
+            className="flex items-center cursor-pointer space-x-1 text-gray-600"
+            onClick={handleCancel}
+          >
+            <MdCancelScheduleSend />
+            <span>Cancel</span>
+          </button>
+          <button className="flex items-center cursor-pointer space-x-1 text-indigo-600">
+            <MdOutlinePreview />
+            <span>Review</span>
+          </button>
+        </div>
+        <div className="flex space-x-2">
+          <IoIosPrint className="cursor-pointer" />
+          <a href="/home" className="text-blue-500">
+            Exit
+          </a>
+        </div>
+      </div>
 
-            {/* Scrollable Content */}
-            <div className="relative w-full h-[404px] overflow-y-auto">
-              <div className="min-h-[404px] w-full">
-                <div className="max-h-[230px] overflow-y-auto">
-                  <table className="w-full min-w-[800px] table-fixed border-separate border-spacing-0">
-                    <thead className="sticky top-0 z-10 bg-gray-50">
-                      <tr>
-                        <th className="p-2 border-b border-gray-300 text-center text-xs font-bold text-gray-600 min-w-[30px] w-[30px] whitespace-nowrap truncate">
-                          Del
-                        </th>
-                        <th className="p-2 border-b border-gray-300 text-center text-xs font-bold text-gray-600 min-w-[40px] w-[40px] whitespace-nowrap truncate">
-                          S. No
-                        </th>
-                        <th className="p-2 border-b border-gray-300 text-center text-xs font-bold text-gray-600 resize-x min-w-[180px] w-[180px] whitespace-nowrap truncate">
-                          Field
-                        </th>
-                        <th className="p-2 border-b border-gray-300 text-center text-xs font-bold text-gray-600 min-w-[45px] w-[45px] whitespace-nowrap truncate">
-                          Suffix
-                        </th>
-                        <th className="p-2 border-b border-gray-300 text-center text-xs font-bold text-gray-600 resize-x min-w-[70px] w-[70px] whitespace-nowrap truncate">
-                          From
-                        </th>
-                        <th className="p-2 border-b border-gray-300 text-center text-xs font-bold text-gray-600 resize-x min-w-[70px] w-[70px] whitespace-nowrap truncate">
-                          To
-                        </th>
-                        <th className="p-2 border-b border-gray-300 text-center text-xs font-bold text-gray-600 resize-x min-w-[50px] w-[50px] whitespace-nowrap truncate">
-                          Year
-                        </th>
-                        <th className="p-2 border-b border-gray-300 text-center text-xs font-bold text-gray-600 resize-x min-w-[180px] w-[180px] whitespace-nowrap truncate">
-                          Description
-                        </th>
-                        <th className="p-2 border-b border-gray-300 text-center text-xs font-bold text-gray-600 resize-x min-w-[50px] w-[50px] whitespace-nowrap truncate">
-                          Blocked
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white">
-                      {lineItems.map((item, index) => (
-                        <tr
-                          key={index}
-                          className="border-b border-gray-200 hover:bg-gray-50"
-                        >
-                          {/* Select Checkbox */}
-                          <td className="p-1 text-center border border-gray-200">
-                            <input
-                              type="checkbox"
-                              checked={selectedRows.includes(index)}
-                              onChange={(e) => {
-                                if (e.target.checked) {
-                                  setSelectedRows([...selectedRows, index]);
-                                } else {
-                                  setSelectedRows(
-                                    selectedRows.filter((i) => i !== index)
-                                  );
-                                }
-                              }}
-                              className="w-4 h-4 border-gray-300 border rounded"
-                            />
-                          </td>
+      {/* Input Row for Adding or Editing a Range */}
+      <form id="rangeForm" onSubmit={handleSubmit}>
+        <div className="flex flex-wrap gap-2 mb-4 bg-white p-4 rounded shadow text-xs">
+          {/* Field Name Input */}
+          <input
+            type="text"
+            name="field"
+            placeholder="Field"
+            value={formData.field}
+            onChange={handleChange}
+            className="w-40 h-5 border rounded px-1 py-0.5 bg-white"
+          />
 
-                          {/* Serial Number */}
-                          <td className="p-1 text-center border border-gray-200">
-                            {index + 1}
-                          </td>
+          {/* Suffix Input */}
+          <input
+            type="text"
+            name="suffix"
+            placeholder="Suffix"
+            value={formData.suffix}
+            maxLength={4}
+            onChange={handleChange}
+            className="w-20 h-5 border rounded px-1 py-0.5 bg-white"
+          />
 
-                          {/* Field */}
-                          <td className="p-1 border border-gray-200">
-                            <input
-                              type="text"
-                              name="field"
-                              value={item.field}
-                              onChange={(e) =>
-                                updateLineItem(index, "field", e.target.value)
-                              }
-                              className="w-full border border-gray-300 h-5 rounded px-1 py-0.5 text-xs"
-                            />
-                          </td>
+          {/* Start From Input */}
+          <input
+            type="text"
+            name="start_from"
+            placeholder="Start From"
+            value={formData.start_from}
+            maxLength={12}
+            onChange={handleChange}
+            className="w-24 h-5 border rounded px-1 py-0.5 bg-white"
+          />
 
-                          {/* Suffix */}
-                          <td className="p-1 border border-gray-200">
-                            <input
-                              type="text"
-                              name="suffix"
-                              value={item.suffix}
-                              onChange={(e) =>
-                                updateLineItem(index, "suffix", e.target.value)
-                              }
-                              className="w-full border border-gray-300 h-5 rounded px-1 py-0.5 text-xs"
-                            />
-                          </td>
+          {/* End To Input */}
+          <input
+            type="text"
+            name="end_to"
+            placeholder="End To"
+            value={formData.end_to}
+            maxLength={12}
+            onChange={handleChange}
+            className="w-24 h-5 border rounded px-1 py-0.5 bg-white"
+          />
 
-                          {/* From */}
-                          <td className="p-1 border border-gray-200">
-                            <input
-                              type="text"
-                              name="start_from"
-                              value={item.start_from}
-                              onChange={(e) =>
-                                updateLineItem(
-                                  index,
-                                  "start_from",
-                                  e.target.value
-                                )
-                              }
-                              className="w-full border border-gray-300 h-5 rounded px-1 py-0.5 text-xs bg-white"
-                            />
-                          </td>
+          {/* Dropdown for Year Selection (fetched from API) */}
+          <select
+            name="year"
+            value={formData.year}
+            onChange={handleChange}
+            className="w-24 h-5 border rounded px-1 py-0.5 bg-white"
+          >
+            <option value="">Year</option>
+            {years.map((y) => (
+              <option key={y.year} value={y.year}>
+                {y.year}
+              </option>
+            ))}
+          </select>
 
-                          {/* To */}
-                          <td className="p-1 border border-gray-200">
-                            <input
-                              type="text"
-                              name="end_to"
-                              value={item.end_to}
-                              onChange={(e) =>
-                                updateLineItem(index, "end_to", e.target.value)
-                              }
-                              className="w-full border border-gray-300 h-5 rounded px-1 py-0.5 text-xs bg-white"
-                            />
-                          </td>
+          {/* Description Field: Max 25 characters, free text input */}
+          <input
+            type="text"
+            name="description"
+            placeholder="Description"
+            value={formData.description}
+            onChange={handleChange}
+            maxLength={25}
+            className="w-40 h-5 border rounded px-1 py-0.5 bg-white"
+          />
 
-                          {/* Year Dropdown */}
-                          <td className="p-1 border border-gray-200">
-                            <select
-                              name="year"
-                              value={item.year}
-                              onChange={(e) =>
-                                updateLineItem(index, "year", e.target.value)
-                              }
-                              className="w-full border border-gray-300 h-5 rounded px-1 py-0.5 text-xs bg-white"
-                            >
-                              <option value="">----</option>
-                              {yearOptions.map((obj) => (
-                                <option key={obj.year} value={obj.year}>
-                                  {obj.year}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
+          {/* Blocked Checkbox */}
+          <label className="flex items-center space-x-1 text-gray-700">
+            <input
+              type="checkbox"
+              name="is_blocked"
+              checked={formData.is_blocked}
+              onChange={handleChange}
+              className="h-4 w-4"
+            />
+            <span>Blocked</span>
+          </label>
+        </div>
+      </form>
 
-                          {/* Description */}
-                          <td className="p-1 border border-gray-200">
-                            <input
-                              type="text"
-                              name="description"
-                              value={item.description}
-                              onChange={(e) =>
-                                updateLineItem(
-                                  index,
-                                  "description",
-                                  e.target.value
-                                )
-                              }
-                              className="w-full border border-gray-300 h-5 rounded px-1 py-0.5 text-xs"
-                            />
-                          </td>
+      <div className="overflow-y-auto max-h-[290px]">
+        <table className="w-full min-w-[800px] table-fixed border-collapse">
+          <thead className="sticky top-0 z-10 bg-gray-50">
+            <tr>
+              <th className="p-2 border-b border-gray-300 text-center text-xs font-bold text-gray-600 overflow-hidden min-w-[50px] w-[50px] whitespace-nowrap truncate">
+                Sl No.
+              </th>
+              <th className="p-2 border-b border-gray-300 text-center text-xs font-bold text-gray-600 resize-x overflow-hidden min-w-[150px] w-[150px] whitespace-nowrap truncate">
+                Field
+              </th>
+              <th className="p-2 border-b border-gray-300 text-center text-xs font-bold text-gray-600 overflow-hidden min-w-[45px] w-[45px] whitespace-nowrap truncate">
+                Suffix
+              </th>
+              <th className="p-2 border-b border-gray-300 text-center text-xs font-bold text-gray-600 resize-x overflow-hidden min-w-[80px] w-[80px] whitespace-nowrap truncate">
+                Start
+              </th>
+              <th className="p-2 border-b border-gray-300 text-center text-xs font-bold text-gray-600 resize-x overflow-hidden min-w-[80px] w-[80px] whitespace-nowrap truncate">
+                End
+              </th>
+              <th className="p-2 border-b border-gray-300 text-center text-xs font-bold text-gray-600 overflow-hidden min-w-[40px] w-[40px] whitespace-nowrap truncate">
+                Year
+              </th>
+              <th className="p-2 border-b border-gray-300 text-center text-xs font-bold text-gray-600 resize-x overflow-hidden min-w-[180px] w-[180px] whitespace-nowrap truncate">
+                Description
+              </th>
+              <th className="p-2 border-b border-gray-300 text-center text-xs font-bold text-gray-600 overflow-hidden min-w-[55px] w-[55px] whitespace-nowrap truncate">
+                Blocked
+              </th>
+              <th className="p-2 border-b border-gray-300 text-center text-xs font-bold text-gray-600 overflow-hidden min-w-[65px] w-[65px] whitespace-nowrap truncate">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white text-xs">
+            {recordRanges.map((item, index) => (
+              <tr
+                key={item.id || index}
+                className="border-b border-gray-200 hover:bg-gray-50"
+              >
+                <td className="p-1 text-center border-r border-gray-200">
+                  {index + 1}
+                </td>
+                {editingId === item.id ? (
+                  <>
+                    <td className="p-1 border-r border-gray-200">
+                      <input
+                        type="text"
+                        name="field"
+                        value={editData.field}
+                        onChange={handleEditChange}
+                        className="w-full border border-gray-300 h-5 rounded px-1 py-0.5"
+                      />
+                    </td>
+                    <td className="p-1 border-r border-gray-200">
+                      <input
+                        type="text"
+                        name="suffix"
+                        value={editData.suffix}
+                        maxLength={4}
+                        onChange={handleEditChange}
+                        className="w-full border border-gray-300 h-5 rounded px-1 py-0.5"
+                      />
+                    </td>
+                    <td className="p-1 border-r border-gray-200">
+                      <input
+                        type="text"
+                        name="start_from"
+                        value={editData.start_from}
+                        maxLength={12}
+                        onChange={handleEditChange}
+                        className="w-full border border-gray-300 h-5 rounded px-1 py-0.5"
+                      />
+                    </td>
+                    <td className="p-1 border-r border-gray-200">
+                      <input
+                        type="text"
+                        name="end_to"
+                        value={editData.end_to}
+                        onChange={handleEditChange}
+                        maxLength={12}
+                        className="w-full border border-gray-300 h-5 rounded px-1 py-0.5"
+                      />
+                    </td>
+                    <td className="p-1 border-r border-gray-200">
+                      <select
+                        name="year"
+                        value={editData.year}
+                        onChange={handleEditChange}
+                        className="w-full border border-gray-300 h-5 rounded px-1 py-0.5"
+                      >
+                        <option value="">----</option>
+                        {years.map((y) => (
+                          <option key={y.year} value={y.year}>
+                            {y.year}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                    <td className="p-1 border-r border-gray-200">
+                      <input
+                        type="text"
+                        name="description"
+                        value={editData.description}
+                        onChange={handleEditChange}
+                        maxLength={25}
+                        className="w-full border border-gray-300 h-5 rounded px-1 py-0.5"
+                      />
+                    </td>
+                    <td className="p-1 text-center border-r border-gray-200">
+                      <input
+                        type="checkbox"
+                        name="is_blocked"
+                        checked={editData.is_blocked}
+                        onChange={handleEditChange}
+                        className="w-4 h-4 border border-gray-300 rounded"
+                      />
+                    </td>
+                    <td className="p-1 text-center space-x-1">
+                      <button
+                        onClick={handleSaveEdit}
+                        className="text-green-600 hover:underline"
+                      >
+                        Save
+                      </button>
+                      <button
+                        onClick={handleCancelEdit}
+                        className="text-red-600 hover:underline"
+                      >
+                        Cancel
+                      </button>
+                    </td>
+                  </>
+                ) : (
+                  <>
+                    <td className="p-1 border-r border-gray-200">
+                      {item.field}
+                    </td>
+                    <td className="p-1 border-r border-gray-200">
+                      {item.suffix}
+                    </td>
+                    <td className="p-1 border-r border-gray-200">
+                      {item.start_from}
+                    </td>
+                    <td className="p-1 border-r border-gray-200">
+                      {item.end_to}
+                    </td>
+                    <td className="p-1 border-r border-gray-200">
+                      {item.year}
+                    </td>
+                    <td className="p-1 border-r border-gray-200">
+                      {item.description}
+                    </td>
+                    <td className="p-1 text-center border-r border-gray-200">
+                      <input
+                        type="checkbox"
+                        checked={item.is_blocked}
+                        onChange={(e) =>
+                          handleCheckboxChange(index, e.target.checked)
+                        }
+                        className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                      />
+                    </td>
 
-                          {/* Blocked */}
-                          <td className="p-1 text-center border border-gray-200">
-                            <input
-                              type="checkbox"
-                              name="is_blocked"
-                              checked={item.is_blocked}
-                              onChange={(e) =>
-                                updateLineItem(
-                                  index,
-                                  "is_blocked",
-                                  e.target.checked
-                                )
-                              }
-                              className="w-4 h-4 border-gray-300 border rounded"
-                            />
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-
-                {/* Buttons */}
-                <div className="flex justify-between items-center mt-2 px-4 py-2">
-                  {/* Left Buttons */}
-                  <div className="flex gap-2">
-                    <button
-                      onClick={addNewLine}
-                      className="flex items-center space-x-1 cursor-pointer hover:text-blue-600"
-                    >
-                      <FaPlusCircle className="text-sm" />
-                      <span className="mr-2"> Add Line</span>
-                    </button>
-                    <button
-                      onClick={() => {
-                        if (selectedRows.length > 0) setShowDeleteModal(true);
-                      }}
-                      className="flex items-center space-x-1 cursor-pointer hover:text-blue-600"
-                    >
-                      <FaMinusCircle />
-                      <span className="mr-2"> Delete Line</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Delete Confirmation Modal */}
-                {showDeleteModal && (
-                  <div className="fixed inset-0 bg-opacity-20 backdrop-blur-[2px] flex items-center justify-center z-50">
-                    <div className="bg-white p-6 rounded shadow-lg text-center w-[300px]">
-                      <div className="flex justify-center text-black text-4xl mb-2">
-                        <MdOutlineError />
-                      </div>
-                      <p className="text-gray-700 font-semibold mb-4">
-                        Are you sure you want to delete?
-                      </p>
-                      <div className="flex justify-center gap-4">
-                        <button
-                          onClick={() => {
-                            const updated = lineItems.filter(
-                              (_, i) => !selectedRows.includes(i)
-                            );
-                            setLineItems(updated);
-                            setSelectedRows([]);
-                            setShowDeleteModal(false);
-                          }}
-                          className="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded"
-                        >
-                          Yes
-                        </button>
-                        <button
-                          onClick={() => setShowDeleteModal(false)}
-                          className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-1 rounded"
-                        >
-                          No
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                    <td className="p-1 text-center space-x-2">
+                      <button
+                        className="text-indigo-600 hover:underline"
+                        onClick={() => handleEditClick(item)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="text-red-600 hover:underline"
+                        onClick={() => handleDelete(item.id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </>
                 )}
-
-                {/* Information Section */}
-                <div className="p-4">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">
-                    Information:
-                  </label>
-                  <div className="w-full border border-gray-300 rounded-sm bg-white p-2 text-xs leading-relaxed text-gray-800">
-                    Number Ranges define the intervals for document numbers.
-                    Each interval can be linked to specific document types and
-                    can be set as year-dependent for flexibility in financial
-                    postings across fiscal years.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </form>
+              </tr>
+            ))}
+            {recordRanges.length === 0 && (
+              <tr>
+                <td colSpan="9" className="text-center p-4 text-gray-500">
+                  No records found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

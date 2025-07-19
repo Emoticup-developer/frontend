@@ -125,6 +125,7 @@ export default function App() {
                   </ThemedPage>
                 }
               />
+
               <Route
                 path="/client"
                 element={

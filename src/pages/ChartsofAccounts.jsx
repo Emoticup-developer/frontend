@@ -1,19 +1,15 @@
 import { useState } from "react";
-import { FaEdit, FaPaperPlane, FaRegBookmark } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { RiSideBarFill } from "react-icons/ri";
 import { FiChevronDown } from "react-icons/fi";
 import { IoIosPrint, IoMdCreate, IoMdSave } from "react-icons/io";
 import { MdCancelScheduleSend, MdOutlinePreview } from "react-icons/md";
-import { BsCreditCardFill } from "react-icons/bs";
 
 const ChartsofAccounts = () => {
   const [formData, setFormData] = useState({
     chartOfAccounts: "",
     name: "",
     language: "",
-    glLength: "",
     groupChartOfAccounts: "",
     blockIndicator: "",
     manualCostElements: "",
@@ -42,7 +38,6 @@ const ChartsofAccounts = () => {
           chartOfAccounts: "",
           name: "",
           language: "",
-          glLength: "",
           groupChartOfAccounts: "",
           blockIndicator: "",
           manualCostElements: "",
@@ -169,25 +164,6 @@ const ChartsofAccounts = () => {
                           value={formData.language}
                           onChange={handleChange}
                           className="w-7 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                        />
-                      </div>
-
-                      {/* Length of G/L Account Number */}
-                      <div className="flex items-center">
-                        <label
-                          htmlFor="glLength"
-                          className="w-64 text-left text-xs font-medium"
-                        >
-                          Length of G/L Account Number
-                        </label>
-                        <input
-                          type="text"
-                          id="glLength"
-                          name="glLength"
-                          placeholder="0"
-                          value={formData.glLength}
-                          onChange={handleChange}
-                          className="w-4 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                         />
                       </div>
 

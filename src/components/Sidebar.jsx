@@ -1083,7 +1083,7 @@ const Sidebar = () => {
                       </li>
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
-                        <a href="#">Define Business Area</a>
+                        <a href="/define-business-area">Define Business Area</a>
                       </li>
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
@@ -1740,6 +1740,12 @@ const Sidebar = () => {
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
                         <a href="#">Backup/Restore Parameters</a>
+                      </li>
+                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                        <FaCube />
+                        <a href="/define-gl-account-types">
+                          Define G/L Account Types
+                        </a>
                       </li>
                     </ul>
                   )}

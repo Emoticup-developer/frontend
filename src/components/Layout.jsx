@@ -71,6 +71,8 @@ const Layout = () => {
     "/asset-register": "Asset Register",
     "/bank_reconciliation_report": "Bank Reconciliation Report",
     "/define-number-ranges": "Define Number Ranges",
+    "/define-business-area": "Define Business Area",
+    "/define-gl-account-types": "Define G/L Account Types",
   };
 
   const pageTitle = routeTitles[location.pathname] || "Dashboard";

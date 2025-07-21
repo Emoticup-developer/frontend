@@ -1,13 +1,9 @@
 import { useEffect, useState } from "react";
 import { IoMdSave } from "react-icons/io";
 import { MdCancelScheduleSend, MdOutlinePreview } from "react-icons/md";
-
-import { RiDeleteBin2Fill } from "react-icons/ri";
-
 import { toast } from "react-toastify";
 import axios from "axios";
 import { IoIosPrint } from "react-icons/io";
-import { FaEdit } from "react-icons/fa";
 
 const DefineNumberRanges = () => {
   const [formData, setFormData] = useState({
@@ -29,8 +25,8 @@ const DefineNumberRanges = () => {
     const fetchData = async () => {
       try {
         const [yearsRes, recordsRes] = await Promise.all([
-          axios.get("http://192.168.0.235:8000/api/years"),
-          axios.get("http://192.168.0.235:8000/api/record_range"),
+          axios.get("http://192.168.0.237:8000/api/years"),
+          axios.get("http://192.168.0.237:8000/api/record_range"),
         ]);
         setYears(yearsRes.data);
         setRecordRanges(recordsRes.data);
@@ -79,14 +75,14 @@ const DefineNumberRanges = () => {
   const handleSaveEdit = async () => {
     try {
       await axios.put(
-        `http://192.168.0.235:8000/api/record_range/${editingId}`,
+        `http://192.168.0.237:8000/api/record_range/${editingId}`,
         editData,
         {
           withCredentials: true,
         }
       );
       toast.success("Updated successfully!");
-      const res = await axios.get("http://192.168.0.235:8000/api/record_range");
+      const res = await axios.get("http://192.168.0.237:8000/api/record_range");
       setRecordRanges(res.data);
       setEditingId(null);
     } catch {
@@ -106,11 +102,11 @@ const DefineNumberRanges = () => {
     if (!confirmed) return;
 
     try {
-      await axios.delete(`http://192.168.0.235:8000/api/record_range/${id}`, {
+      await axios.delete(`http://192.168.0.237:8000/api/record_range/${id}`, {
         withCredentials: true,
       });
       toast.success("Deleted successfully!");
-      const res = await axios.get("http://192.168.0.235:8000/api/record_range");
+      const res = await axios.get("http://192.168.0.237:8000/api/record_range");
       setRecordRanges(res.data);
     } catch {
       toast.error("Delete failed.");
@@ -120,7 +116,7 @@ const DefineNumberRanges = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://192.168.0.235:8000/api/record_range", formData, {
+      await axios.post("http://192.168.0.237:8000/api/record_range", formData, {
         withCredentials: true,
       });
       toast.success("Created successfully!");
@@ -133,7 +129,7 @@ const DefineNumberRanges = () => {
         description: "",
         is_blocked: false,
       });
-      const res = await axios.get("http://192.168.0.235:8000/api/record_range");
+      const res = await axios.get("http://192.168.0.237:8000/api/record_range");
       setRecordRanges(res.data);
     } catch {
       toast.error("Create failed.");

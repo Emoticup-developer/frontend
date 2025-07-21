@@ -3,27 +3,113 @@ import { FiChevronDown } from "react-icons/fi";
 import { IoIosPrint, IoMdCreate, IoMdSave } from "react-icons/io";
 import { MdCancelScheduleSend, MdOutlinePreview } from "react-icons/md";
 import axios from "axios";
-import { FaInfoCircle, FaList, FaSearch, FaTimes } from "react-icons/fa";
+import { FaList, FaSearch, FaTimes } from "react-icons/fa";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import { Country, State, City } from "country-state-city";
 
 const CreateCompany = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isBlocked, setIsBlocked] = useState(false);
   const [formData, setFormData] = useState({
-    company: "",
-    companyName: "",
-    companyName2: "",
+    company_code: "",
+    company_name: "",
+    company_name_short: "",
     street: "",
-    poBox: "",
-    postalCode: "",
-    city: "",
+    po_box: "",
+    postal_code: "",
     country: "",
-    languageKey: "",
-    currency: "",
+    state: "",
+    city: "",
+    language: "",
+    currency: "INR",
+    description: "",
   });
 
-  const [range, setRange] = useState(null);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  useEffect(() => {
+    const fetchBlockStatus = async () => {
+      try {
+        const response = await axios.get(
+          "http://192.168.0.237:8000/api/record_range"
+        );
+        if (Array.isArray(response.data) && response.data.length > 0) {
+          setIsBlocked(response.data[0].is_blocked);
+        }
+      } catch (error) {
+        console.error("Error fetching block status:", error);
+        toast.error("Failed to fetch block status");
+      }
+    };
+
+    fetchBlockStatus();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "http://192.168.0.237:8000/api/company",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true, // ✅ This enables cookies/session
+        }
+      );
+
+      console.log("Form submitted successfully:", response.data);
+      toast.success("Company Created successfully!");
+
+      // Optional: Reset the form
+      setFormData({
+        company_code: "",
+        company_name: "",
+        company_name_short: "",
+        street: "",
+        po_box: "",
+        postal_code: "",
+        country: "",
+        state: "",
+        city: "",
+        language: "",
+        currency: "INR",
+        description: "",
+      });
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error("Invalid Company Code!");
+    }
+  };
+
+  const handleCancel = async (e) => {
+    e.preventDefault();
+
+    setFormData({
+      company_code: "",
+      company_name: "",
+      company_name_short: "",
+      street: "",
+      po_box: "",
+      postal_code: "",
+      country: "",
+      state: "",
+      city: "",
+      language: "",
+      currency: "INR",
+      description: "",
+    });
+  };
+
   const [existingCodes, setExistingCodes] = useState([]);
   const [showLanguageTooltip, setShowLanguageTooltip] = useState(false);
   const [languageList, setLanguageList] = useState([]);
@@ -37,7 +123,7 @@ const CreateCompany = () => {
   // Fetch all currencies
   const fetchCurrencies = async () => {
     try {
-      const res = await axios.get("http://192.168.0.235:8000/api/currency");
+      const res = await axios.get("http://192.168.0.237:8000/api/currency");
       setCurrencyList(res.data);
     } catch (err) {
       toast.error("Failed to fetch currencies");
@@ -122,68 +208,6 @@ const CreateCompany = () => {
       currency.currency_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // useEffect(() => {
-  //   const fetchAll = async () => {
-  //     try {
-  //       const [rangeRes, codesRes] = await Promise.all([
-  //         axios.get("http://192.168.0.235:8000/api/record_range", {
-  //           withCredentials: true,
-  //         }),
-  //         axios.get("http://192.168.0.235:8000/api/client", {
-  //           withCredentials: true,
-  //         }),
-  //       ]);
-
-  //       const rg = rangeRes.data.find(
-  //         (r) => r.field === "COMPANY" && !r.is_blocked
-  //       );
-  //       setRange(rg);
-
-  //       const used = codesRes.data.map((c) => c.company.toUpperCase());
-  //       setExistingCodes(used);
-  //     } catch (err) {
-  //       console.error(err);
-  //       toast.error("Failed to load configuration.");
-  //     }
-  //   };
-
-  //   fetchAll();
-  // }, []);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value.trim().toUpperCase() }));
-  };
-
-  const validateCompany = () => {
-    if (!range) {
-      toast.error("Company range not configured.");
-      return false;
-    }
-    const { suffix, start_from, end_to } = range;
-    const code = formData.company;
-    if (!code.startsWith(suffix)) {
-      toast.error(`Code must start with "${suffix}"`);
-      return false;
-    }
-    const num = parseInt(code.slice(suffix.length), 10);
-    if (isNaN(num)) {
-      toast.error("Code format invalid.");
-      return false;
-    }
-    if (num < +start_from || num > +end_to) {
-      toast.error(
-        `Number must be between ${suffix}${start_from} and ${suffix}${end_to}`
-      );
-      return false;
-    }
-    if (existingCodes.includes(code)) {
-      toast.error("Company code already exists.");
-      return false;
-    }
-    return true;
-  };
-
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedState, setSelectedState] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
@@ -211,42 +235,6 @@ const CreateCompany = () => {
     }
   }, [selectedState]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateCompany()) return;
-
-    try {
-      const res = await axios.post(
-        "http://192.168.0.235:8000/api/company",
-        formData,
-        {
-          withCredentials: true,
-        }
-      );
-      if (res.status === 200 || res.status === 201) {
-        toast.success("Company saved!");
-        setFormData({
-          company: "",
-          companyName: "",
-          companyName2: "",
-          street: "",
-          poBox: "",
-          postalCode: "",
-          country: "",
-          state: "",
-          city: "",
-          languageKey: "",
-          currency: "",
-        });
-      } else {
-        toast.error("Failed to save company.");
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error("Error saving company.");
-    }
-  };
-
   return (
     <div>
       <div className="flex flex-col min-h-screen w-full bg-gray-50 font-sans text-xs">
@@ -266,13 +254,15 @@ const CreateCompany = () => {
                     </button>
                     <button
                       type="submit"
+                      onClick={handleSubmit}
                       className="flex items-center space-x-1 cursor-pointer hover:text-blue-600"
                     >
                       <IoMdSave />
                       <span className="mr-5">Save</span>
                     </button>
                     <button
-                      type="button"
+                      type="submit"
+                      onClick={handleCancel}
                       className="flex items-center space-x-1 cursor-pointer hover:text-blue-600"
                     >
                       <MdCancelScheduleSend />
@@ -305,39 +295,42 @@ const CreateCompany = () => {
                 <div className="min-h-[404px] w-full">
                   <div className="p-4 space-y-4">
                     <div className="space-y-2">
-                      {/* Company */}
+                      {/* Company Code */}
                       <div className="flex items-center">
                         <label
-                          htmlFor="company"
+                          htmlFor="company_code"
                           className="w-64 text-left text-xs font-medium"
                         >
-                          Company <span className="text-amber-500">*</span>
+                          Company Code <span className="text-amber-500">*</span>
                         </label>
                         <input
                           type="text"
-                          id="company"
-                          name="company"
-                          placeholder="AB01"
-                          value={formData.company}
+                          id="company_code"
+                          name="company_code"
+                          placeholder="C100 - C999"
                           maxLength={4}
+                          value={formData.company_code}
                           onChange={handleChange}
-                          className="w-9 h-5 border rounded px-1 py-0.5 text-xs bg-white"
+                          readOnly={!isBlocked}
+                          className={`w-10 h-5 border rounded px-1 py-0.5 text-xs ${
+                            isBlocked ? "bg-white" : "bg-gray-200"
+                          }`}
                         />
                       </div>
 
                       {/* Company Name */}
                       <div className="flex items-center">
                         <label
-                          htmlFor="companyName"
+                          htmlFor="company_name"
                           className="w-64 text-left text-xs font-medium"
                         >
                           Company Name <span className="text-amber-500">*</span>
                         </label>
                         <input
                           type="text"
-                          id="companyName"
-                          name="companyName"
-                          value={formData.companyName}
+                          id="company_name"
+                          name="company_name"
+                          value={formData.company_name}
                           onChange={handleChange}
                           className="w-80 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                         />
@@ -346,16 +339,16 @@ const CreateCompany = () => {
                       {/* Name of Company 2 */}
                       <div className="flex items-center">
                         <label
-                          htmlFor="companyName2"
+                          htmlFor="company_name_short"
                           className="w-64 text-left text-xs font-medium"
                         >
                           Name of Company 2
                         </label>
                         <input
                           type="text"
-                          id="companyName2"
-                          name="companyName2"
-                          value={formData.companyName2}
+                          id="company_name_short"
+                          name="company_name_short"
+                          value={formData.company_name_short}
                           onChange={handleChange}
                           className="w-80 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                         />
@@ -382,16 +375,16 @@ const CreateCompany = () => {
                       {/* PO Box */}
                       <div className="flex items-center">
                         <label
-                          htmlFor="poBox"
+                          htmlFor="po_box"
                           className="w-64 text-left text-xs font-medium"
                         >
                           PO Box
                         </label>
                         <input
                           type="text"
-                          id="poBox"
-                          name="poBox"
-                          value={formData.poBox}
+                          id="po_box"
+                          name="po_box"
+                          value={formData.po_box}
                           onChange={handleChange}
                           className="w-26 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                         />
@@ -400,16 +393,16 @@ const CreateCompany = () => {
                       {/* Postal Code */}
                       <div className="flex items-center">
                         <label
-                          htmlFor="postalCode"
+                          htmlFor="postal_code"
                           className="w-64 text-left text-xs font-medium"
                         >
                           Postal Code
                         </label>
                         <input
                           type="text"
-                          id="postalCode"
-                          name="postalCode"
-                          value={formData.postalCode}
+                          id="postal_code"
+                          name="postal_code"
+                          value={formData.postal_code}
                           onChange={handleChange}
                           className="w-13 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                         />
@@ -440,7 +433,7 @@ const CreateCompany = () => {
                       {/* State */}
                       <div className="flex items-center">
                         <label className="w-64 text-left text-xs font-medium">
-                          State <span className="text-amber-500">*</span>
+                          State
                         </label>
                         <select
                           className="w-30 h-5 border rounded px-1 py-0.5 text-xs bg-white"
@@ -460,7 +453,7 @@ const CreateCompany = () => {
                       {/* City */}
                       <div className="flex items-center">
                         <label className="w-64 text-left text-xs font-medium">
-                          City <span className="text-amber-500">*</span>
+                          City
                         </label>
                         <select
                           className="w-30 h-5 border rounded px-1 py-0.5 text-xs bg-white"
@@ -523,21 +516,6 @@ const CreateCompany = () => {
                               onBlur={() => setShowCurrencyTooltip(false)}
                               className="w-10 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                             />
-
-                            {/* Info Icon */}
-                            <FaInfoCircle
-                              className="absolute -right-10 top-1 text-blue-600 cursor-pointer"
-                              onMouseEnter={() => setShowCurrencyTooltip(true)}
-                              onMouseLeave={() => setShowCurrencyTooltip(false)}
-                            />
-
-                            {/* Tooltip */}
-                            {showCurrencyTooltip && (
-                              <div className="absolute left-[60px] top-0 z-10 w-35 bg-gray-800 text-white text-xs p-2 rounded shadow-md">
-                                Currency code is required. Click the list icon
-                                to select one.
-                              </div>
-                            )}
                           </div>
 
                           {/* FaList Button */}
@@ -629,10 +607,10 @@ const CreateCompany = () => {
 
                       <div className="flex items-center">
                         <label
-                          htmlFor="company"
+                          htmlFor="description"
                           className="w-64 text-left text-xs font-medium"
                         >
-                          Other Details{" "}
+                          Other Details
                         </label>
                         <textarea
                           id="description"

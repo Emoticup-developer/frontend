@@ -8,7 +8,6 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Company from "./pages/Company";
 import CompanyCode from "./pages/CompanyCode";
-import BusinessArea from "./pages/BusinessArea";
 import Plant from "./pages/Plant";
 import EnterpriseStructure from "./pages/EnterpriseStructure";
 import GeneralLedger from "./pages/GeneralLedger";
@@ -60,6 +59,8 @@ import AssetRegister from "./pages/AssetRegister";
 import BankReconciliationReport from "./pages/BankReconciliationReport";
 import DefineNumberRanges from "./pages/DefineNumberRanges";
 import FieldTableForm from "./pages/FieldTableForm";
+import DefineBusinessArea from "./pages/DefineBusinessArea";
+import DefineGLAccountsTypes from "./pages/DefineGLAccountsTypes";
 
 const ThemedPage = ({ children }) => {
   const { colors } = useTheme();
@@ -155,6 +156,22 @@ export default function App() {
                 element={
                   <ThemedPage>
                     <FieldTableForm />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/define-gl-account-types"
+                element={
+                  <ThemedPage>
+                    <DefineGLAccountsTypes />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/define-business-area"
+                element={
+                  <ThemedPage>
+                    <DefineBusinessArea />
                   </ThemedPage>
                 }
               />
@@ -438,14 +455,7 @@ export default function App() {
                   </ThemedPage>
                 }
               />
-              <Route
-                path="/business-area"
-                element={
-                  <ThemedPage>
-                    <BusinessArea />
-                  </ThemedPage>
-                }
-              />
+
               <Route
                 path="/plant"
                 element={

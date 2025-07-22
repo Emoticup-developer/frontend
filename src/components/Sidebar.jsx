@@ -1067,10 +1067,43 @@ const Sidebar = () => {
 
                   {openMenus.enterprise && (
                     <ul className="pl-6 mt-1 space-y-0">
-                      <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
-                        <FaCube />
-                        <a href="/create-company">Define Company</a>
+                      {/* Company */}
+                      <li>
+                        <div
+                          onClick={() => toggleMenu("company")}
+                          className="flex items-center justify-between hover:bg-gray-100 pl-1 pr-2 py-1 rounded cursor-pointer"
+                        >
+                          <div className="flex items-center space-x-2">
+                            {openMenus.company ? (
+                              <FaFolderOpen />
+                            ) : (
+                              <FaFolder />
+                            )}
+                            <span>Company</span>
+                          </div>
+                          {openMenus.company ? (
+                            <FiChevronDown />
+                          ) : (
+                            <FiChevronRight />
+                          )}
+                        </div>
+
+                        {openMenus.company && (
+                          <ul className="pl-6 mt-1 space-y-0">
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="/create-company">Define Company</a>
+                            </li>
+                            <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
+                              <FaCube />
+                              <a href="/manage-company">
+                                Edit / Delete / View Company
+                              </a>
+                            </li>
+                          </ul>
+                        )}
                       </li>
+
                       <li className="hover:bg-gray-100 p-1 flex items-center gap-2 rounded cursor-pointer">
                         <FaCube />
                         <a href="/create-company-code">Define Company Code</a>

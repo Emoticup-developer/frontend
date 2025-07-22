@@ -10,6 +10,7 @@ import { Country, State, City } from "country-state-city";
 
 const CreateCompany = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [isBlocked, setIsBlocked] = useState(false);
   const [formData, setFormData] = useState({
     company_code: "",
@@ -37,9 +38,7 @@ const CreateCompany = () => {
   useEffect(() => {
     const fetchBlockStatus = async () => {
       try {
-        const response = await axios.get(
-          "http://192.168.0.237:8000/api/record_range"
-        );
+        const response = await axios.get(`${backendUrl}api/record_range`);
         if (Array.isArray(response.data) && response.data.length > 0) {
           setIsBlocked(response.data[0].is_blocked);
         }
@@ -56,16 +55,12 @@ const CreateCompany = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        "http://192.168.0.237:8000/api/company",
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true, // ✅ This enables cookies/session
-        }
-      );
+      const response = await axios.post(`${backendUrl}api/company`, formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true, // ✅ This enables cookies/session
+      });
 
       console.log("Form submitted successfully:", response.data);
       toast.success("Company Created successfully!");
@@ -110,8 +105,6 @@ const CreateCompany = () => {
     });
   };
 
-  const [existingCodes, setExistingCodes] = useState([]);
-  const [showLanguageTooltip, setShowLanguageTooltip] = useState(false);
   const [languageList, setLanguageList] = useState([]);
   const [language, setLanguage] = useState("EN");
   // const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
@@ -123,7 +116,7 @@ const CreateCompany = () => {
   // Fetch all currencies
   const fetchCurrencies = async () => {
     try {
-      const res = await axios.get("http://192.168.0.237:8000/api/currency");
+      const res = await axios.get(`${backendUrl}api/currency`);
       setCurrencyList(res.data);
     } catch (err) {
       toast.error("Failed to fetch currencies");

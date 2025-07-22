@@ -15,6 +15,7 @@ const DefineNumberRanges = () => {
     description: "",
     is_blocked: false,
   });
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const [years, setYears] = useState([]);
   const [recordRanges, setRecordRanges] = useState([]);
@@ -25,8 +26,8 @@ const DefineNumberRanges = () => {
     const fetchData = async () => {
       try {
         const [yearsRes, recordsRes] = await Promise.all([
-          axios.get("http://192.168.0.237:8000/api/years"),
-          axios.get("http://192.168.0.237:8000/api/record_range"),
+          axios.get(`${backendUrl}api/years`),
+          axios.get(`${backendUrl}api/record_range`),
         ]);
         setYears(yearsRes.data);
         setRecordRanges(recordsRes.data);
@@ -74,15 +75,11 @@ const DefineNumberRanges = () => {
 
   const handleSaveEdit = async () => {
     try {
-      await axios.put(
-        `http://192.168.0.237:8000/api/record_range/${editingId}`,
-        editData,
-        {
-          withCredentials: true,
-        }
-      );
+      await axios.put(`${backendUrl}api/record_range/${editingId}`, editData, {
+        withCredentials: true,
+      });
       toast.success("Updated successfully!");
-      const res = await axios.get("http://192.168.0.237:8000/api/record_range");
+      const res = await axios.get(`${backendUrl}api/record_range`);
       setRecordRanges(res.data);
       setEditingId(null);
     } catch {
@@ -102,11 +99,11 @@ const DefineNumberRanges = () => {
     if (!confirmed) return;
 
     try {
-      await axios.delete(`http://192.168.0.237:8000/api/record_range/${id}`, {
+      await axios.delete(`${backendUrl}api/record_range/${id}`, {
         withCredentials: true,
       });
       toast.success("Deleted successfully!");
-      const res = await axios.get("http://192.168.0.237:8000/api/record_range");
+      const res = await axios.get(`${backendUrl}api/record_range`);
       setRecordRanges(res.data);
     } catch {
       toast.error("Delete failed.");
@@ -116,7 +113,7 @@ const DefineNumberRanges = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://192.168.0.237:8000/api/record_range", formData, {
+      await axios.post(`${backendUrl}api/record_range`, formData, {
         withCredentials: true,
       });
       toast.success("Created successfully!");
@@ -129,7 +126,7 @@ const DefineNumberRanges = () => {
         description: "",
         is_blocked: false,
       });
-      const res = await axios.get("http://192.168.0.237:8000/api/record_range");
+      const res = await axios.get(`${backendUrl}api/record_range`);
       setRecordRanges(res.data);
     } catch {
       toast.error("Create failed.");

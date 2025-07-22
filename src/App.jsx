@@ -61,6 +61,7 @@ import DefineNumberRanges from "./pages/DefineNumberRanges";
 import FieldTableForm from "./pages/FieldTableForm";
 import DefineBusinessArea from "./pages/DefineBusinessArea";
 import DefineGLAccountsTypes from "./pages/DefineGLAccountsTypes";
+import EditDeleteViewCompany from "./pages/EditDeleteViewCompany";
 
 const ThemedPage = ({ children }) => {
   const { colors } = useTheme();
@@ -172,6 +173,14 @@ export default function App() {
                 element={
                   <ThemedPage>
                     <DefineBusinessArea />
+                  </ThemedPage>
+                }
+              />
+              <Route
+                path="/manage-company"
+                element={
+                  <ThemedPage>
+                    <EditDeleteViewCompany />
                   </ThemedPage>
                 }
               />

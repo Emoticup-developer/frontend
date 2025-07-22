@@ -10,6 +10,7 @@ import logo from "../assets/logoaerp.png";
 
 const Login = () => {
   const navigate = useNavigate();
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const [formData, setFormData] = useState({
     client_id: "",
@@ -29,7 +30,7 @@ const Login = () => {
   // Fetch all languages
   const fetchLanguages = async () => {
     try {
-      const res = await axios.get("http://192.168.0.237:8000/api/language");
+      const res = await axios.get(`${backendUrl}api/language`);
       setLanguageList(res.data);
     } catch (err) {
       toast.error("Failed to fetch languages");
@@ -49,10 +50,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post(
-        "http://192.168.0.237:8000/api/login",
-        formData
-      );
+      const res = await axios.post(`${backendUrl}api/login`, formData);
 
       if (res.status === 200) {
         Cookies.set("client_id", formData.client_id, { expires: 7 });

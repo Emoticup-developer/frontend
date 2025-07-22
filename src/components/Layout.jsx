@@ -72,7 +72,7 @@ const Layout = () => {
     "/bank_reconciliation_report": "Bank Reconciliation Report",
     "/define-number-ranges": "Define Number Ranges",
     "/define-business-area": "Define Business Area",
-    "/define-gl-account-types": "Define G/L Account Types",
+    "/manage-company": "Edit / Delete / View Company",
   };
 
   const pageTitle = routeTitles[location.pathname] || "Dashboard";

@@ -1,90 +1,81 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
 const EditDeleteViewCompany = () => {
-  const [formData, setFormData] = useState({
-    company_code: "",
-    company_name: "",
-    company_name_short: "",
-    street: "",
-    po_box: "",
-    postal_code: "",
-    country: "",
-    state: "",
-    city: "",
-    language: "",
-    currency: "INR",
-    description: "",
-  });
-
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
   const [companies, setCompanies] = useState([]);
-  const [editingId, setEditingId] = useState(null);
-  const [editData, setEditData] = useState({});
+  const [editingCode, setEditingCode] = useState(null);
+  const [formValues, setFormValues] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(`${backendUrl}api/company`);
-        setCompanies(res.data);
-      } catch {
-        toast.error("Failed to fetch company data.");
-      }
-    };
-    fetchData();
+    fetchCompanies();
   }, []);
 
-  const handleEditChange = (e) => {
+  const fetchCompanies = async () => {
+    try {
+      const res = await axios.get(`${backendUrl}api/company`);
+      setCompanies(res.data);
+    } catch {
+      toast.error("Failed to fetch company data.");
+    }
+  };
+
+  const handleEditClick = (item) => {
+    setEditingCode(item.company_code);
+    setFormValues({ ...item });
+  };
+
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setEditData((prev) => ({
+    setFormValues((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  const handleEditClick = (item) => {
-    setEditingId(item.id);
-    setEditData(item);
-  };
-
-  const handleSaveEdit = async () => {
+  const handleSave = async () => {
     try {
-      await axios.put(`${backendUrl}api/company/${editingId}`, editData, {
+      await axios.put(`${backendUrl}api/company/${editingCode}`, formValues, {
         withCredentials: true,
       });
-      toast.success("Updated successfully!");
-      const res = await axios.get(`${backendUrl}api/company`);
-      setCompanies(res.data);
-      setEditingId(null);
+      toast.success("Company updated successfully");
+
+      // Update local state instead of refetching
+      setCompanies((prev) =>
+        prev.map((comp) =>
+          comp.company_code === editingCode ? { ...formValues } : comp
+        )
+      );
+
+      setEditingCode(null);
+      setFormValues({});
     } catch {
-      toast.error("Update failed.");
+      toast.error("Failed to update company");
     }
   };
 
-  const handleCancelEdit = () => {
-    setEditingId(null);
-    setEditData({});
+  const handleCancel = () => {
+    setEditingCode(null);
+    setFormValues({});
   };
 
-  const handleDelete = async (id) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this company?"
-    );
-    if (!confirmed) return;
+  const handleDelete = async (company_code) => {
+    const confirm = window.confirm("Are you sure you want to delete this?");
+    if (!confirm) return;
 
     try {
-      await axios.delete(`${backendUrl}api/company/${id}/`, {
+      await axios.delete(`${backendUrl}api/company/${company_code}`, {
         withCredentials: true,
       });
-      toast.success("Deleted successfully!");
-      const res = await axios.get(`${backendUrl}api/company`);
-      setCompanies(res.data);
+      toast.success("Company deleted successfully");
+      setCompanies((prev) =>
+        prev.filter((item) => item.company_code !== company_code)
+      );
     } catch {
-      toast.error("Delete failed.");
+      toast.error("Failed to delete company");
     }
   };
 
@@ -95,7 +86,7 @@ const EditDeleteViewCompany = () => {
         <div className="flex space-x-4">
           <button
             onClick={() => navigate("/create-company")}
-            className="text-green-600 hover:underline"
+            className="text-gray-600 border border-black bg-gray-50 px-2 rounded-sm py-0.5 text-xs"
           >
             + Create Company
           </button>
@@ -103,11 +94,11 @@ const EditDeleteViewCompany = () => {
       </div>
 
       {/* Company Table */}
-      <div class="bg-white shadow-md rounded-md p-4 w-full max-w-[927px]">
-        <div class="overflow-x-auto">
-          <div class="max-h-[400px] overflow-y-auto">
-            <table class="min-w-[1200px] w-full divide-y divide-gray-300 text-sm">
-              <thead class="sticky top-0 bg-gray-100 z-10">
+      <div className="bg-white shadow-md rounded-md p-4 w-full max-w-[927px]">
+        <div className="overflow-x-auto">
+          <div className="max-h-[400px] overflow-y-auto">
+            <table className="min-w-[1200px] w-full divide-y divide-gray-300 text-sm">
+              <thead className="sticky top-0 bg-gray-100 z-10">
                 <tr>
                   <th className="p-2 border-b border-gray-300 text-center text-xs font-bold text-gray-600">
                     Sl No.
@@ -154,22 +145,22 @@ const EditDeleteViewCompany = () => {
                 </tr>
               </thead>
               <tbody className="bg-white text-xs">
-                {companies.map((company, index) => (
+                {companies.map((item, index) => (
                   <tr
-                    key={company.id || index}
+                    key={item.company_code}
                     className="border-b border-gray-200 hover:bg-gray-50"
                   >
                     <td className="p-1 text-center border-r border-gray-200">
                       {index + 1}
                     </td>
-                    {editingId === company.id ? (
+                    {editingCode === item.company_code ? (
                       <>
                         <td className="p-1 border-r border-gray-200">
                           <input
                             type="text"
                             name="company_code"
-                            value={editData.company_code}
-                            onChange={handleEditChange}
+                            value={formValues.company_code}
+                            onChange={handleChange}
                             className="w-full border border-gray-300 h-5 rounded px-1 py-0.5"
                             maxLength={4}
                           />
@@ -178,8 +169,8 @@ const EditDeleteViewCompany = () => {
                           <input
                             type="text"
                             name="company_name"
-                            value={editData.company_name}
-                            onChange={handleEditChange}
+                            value={formValues.company_name}
+                            onChange={handleChange}
                             className="w-full border border-gray-300 h-5 rounded px-1 py-0.5"
                           />
                         </td>
@@ -187,8 +178,8 @@ const EditDeleteViewCompany = () => {
                           <input
                             type="text"
                             name="company_name_short"
-                            value={editData.company_name_short}
-                            onChange={handleEditChange}
+                            value={formValues.company_name_short}
+                            onChange={handleChange}
                             className="w-full border border-gray-300 h-5 rounded px-1 py-0.5"
                           />
                         </td>
@@ -196,8 +187,8 @@ const EditDeleteViewCompany = () => {
                           <input
                             type="text"
                             name="street"
-                            value={editData.street}
-                            onChange={handleEditChange}
+                            value={formValues.street}
+                            onChange={handleChange}
                             className="w-full border border-gray-300 h-5 rounded px-1 py-0.5"
                           />
                         </td>
@@ -205,8 +196,8 @@ const EditDeleteViewCompany = () => {
                           <input
                             type="text"
                             name="po_box"
-                            value={editData.po_box}
-                            onChange={handleEditChange}
+                            value={formValues.po_box}
+                            onChange={handleChange}
                             className="w-full border border-gray-300 h-5 rounded px-1 py-0.5"
                           />
                         </td>
@@ -214,8 +205,8 @@ const EditDeleteViewCompany = () => {
                           <input
                             type="text"
                             name="postal_code"
-                            value={editData.postal_code}
-                            onChange={handleEditChange}
+                            value={formValues.postal_code}
+                            onChange={handleChange}
                             className="w-full border border-gray-300 h-5 rounded px-1 py-0.5"
                           />
                         </td>
@@ -223,8 +214,8 @@ const EditDeleteViewCompany = () => {
                           <input
                             type="text"
                             name="country"
-                            value={editData.country}
-                            onChange={handleEditChange}
+                            value={formValues.country}
+                            onChange={handleChange}
                             className="w-full border border-gray-300 h-5 rounded px-1 py-0.5"
                           />
                         </td>
@@ -232,8 +223,8 @@ const EditDeleteViewCompany = () => {
                           <input
                             type="text"
                             name="state"
-                            value={editData.state}
-                            onChange={handleEditChange}
+                            value={formValues.state}
+                            onChange={handleChange}
                             className="w-full border border-gray-300 h-5 rounded px-1 py-0.5"
                           />
                         </td>
@@ -241,8 +232,8 @@ const EditDeleteViewCompany = () => {
                           <input
                             type="text"
                             name="city"
-                            value={editData.city}
-                            onChange={handleEditChange}
+                            value={formValues.city}
+                            onChange={handleChange}
                             className="w-full border border-gray-300 h-5 rounded px-1 py-0.5"
                           />
                         </td>
@@ -250,8 +241,8 @@ const EditDeleteViewCompany = () => {
                           <input
                             type="text"
                             name="language"
-                            value={editData.language}
-                            onChange={handleEditChange}
+                            value={formValues.language}
+                            onChange={handleChange}
                             className="w-full border border-gray-300 h-5 rounded px-1 py-0.5"
                           />
                         </td>
@@ -259,8 +250,8 @@ const EditDeleteViewCompany = () => {
                           <input
                             type="text"
                             name="currency"
-                            value={editData.currency}
-                            onChange={handleEditChange}
+                            value={formValues.currency}
+                            onChange={handleChange}
                             className="w-full border border-gray-300 h-5 rounded px-1 py-0.5"
                             maxLength={3}
                           />
@@ -269,21 +260,21 @@ const EditDeleteViewCompany = () => {
                           <input
                             type="text"
                             name="description"
-                            value={editData.description}
-                            onChange={handleEditChange}
+                            value={formValues.description}
+                            onChange={handleChange}
                             className="w-full border border-gray-300 h-5 rounded px-1 py-0.5"
                             maxLength={25}
                           />
                         </td>
                         <td className="flex p-1 text-center space-x-1">
                           <button
-                            onClick={handleSaveEdit}
+                            onClick={handleSave}
                             className="text-green-600 hover:underline"
                           >
                             Save
                           </button>
                           <button
-                            onClick={handleCancelEdit}
+                            onClick={handleCancel}
                             className="text-red-600 hover:underline"
                           >
                             Cancel
@@ -293,51 +284,51 @@ const EditDeleteViewCompany = () => {
                     ) : (
                       <>
                         <td className="p-1 border-r border-gray-200">
-                          {company.company_code}
+                          {item.company_code}
                         </td>
                         <td className="p-1 border-r border-gray-200">
-                          {company.company_name}
+                          {item.company_name}
                         </td>
                         <td className="p-1 border-r border-gray-200">
-                          {company.company_name_short}
+                          {item.company_name_short}
                         </td>
                         <td className="p-1 border-r border-gray-200">
-                          {company.street}
+                          {item.street}
                         </td>
                         <td className="p-1 border-r border-gray-200">
-                          {company.po_box}
+                          {item.po_box}
                         </td>
                         <td className="p-1 border-r border-gray-200">
-                          {company.postal_code}
+                          {item.postal_code}
                         </td>
                         <td className="p-1 border-r border-gray-200">
-                          {company.country}
+                          {item.country}
                         </td>
                         <td className="p-1 border-r border-gray-200">
-                          {company.state}
+                          {item.state}
                         </td>
                         <td className="p-1 border-r border-gray-200">
-                          {company.city}
+                          {item.city}
                         </td>
                         <td className="p-1 border-r border-gray-200">
-                          {company.language}
+                          {item.language}
                         </td>
                         <td className="p-1 border-r border-gray-200">
-                          {company.currency}
+                          {item.currency}
                         </td>
                         <td className="p-1 border-r border-gray-200">
-                          {company.description}
+                          {item.description}
                         </td>
                         <td className="flex p-1 text-center space-x-2">
                           <button
                             className="text-indigo-600 hover:underline"
-                            onClick={() => handleEditClick(company)}
+                            onClick={() => handleEditClick(item)}
                           >
                             Edit
                           </button>
                           <button
                             className="text-red-600 hover:underline"
-                            onClick={() => handleDelete(company.id)}
+                            onClick={() => handleDelete(item.company_code)}
                           >
                             Delete
                           </button>

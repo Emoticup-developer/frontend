@@ -6,7 +6,7 @@ import axios from "axios";
 import { FaList, FaSearch, FaTimes } from "react-icons/fa";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
-import { Country, State, City } from "country-state-city";
+// import { Country, State, City } from "country-state-city";
 
 const CreateCompany = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -201,32 +201,74 @@ const CreateCompany = () => {
       currency.currency_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const [selectedCountry, setSelectedCountry] = useState("");
-  const [selectedState, setSelectedState] = useState("");
-  const [selectedCity, setSelectedCity] = useState("");
-
   const [countries, setCountries] = useState([]);
-  const [states, setStates] = useState([]);
-  const [cities, setCities] = useState([]);
 
   useEffect(() => {
-    setCountries(Country.getAllCountries());
+    // Fetch countries
+    axios
+      .get("http://192.168.1.178:8000/api/country")
+      .then((res) => {
+        setCountries(res.data);
+      })
+      .catch((err) => {
+        console.error("Error fetching countries:", err);
+      });
   }, []);
 
-  useEffect(() => {
-    if (selectedCountry) {
-      setStates(State.getStatesOfCountry(selectedCountry));
-      setSelectedState("");
-      setSelectedCity("");
-    }
-  }, [selectedCountry]);
+  const [states, setStates] = useState([]);
 
+  // Fetch states from API
   useEffect(() => {
-    if (selectedState) {
-      setCities(City.getCitiesOfState(selectedCountry, selectedState));
-      setSelectedCity("");
-    }
-  }, [selectedState]);
+    axios
+      .get("http://192.168.1.178:8000/api/state")
+      .then((response) => {
+        setStates(response.data); // Assuming response.data is an array
+      })
+      .catch((error) => {
+        console.error("Error fetching states:", error);
+      });
+  }, []);
+
+  const [cities, setCities] = useState([]);
+
+  // Fetch cities from API
+  useEffect(() => {
+    axios
+      .get("http://192.168.1.178:8000/api/city")
+      .then((response) => {
+        setCities(response.data); // Assuming response.data is an array
+      })
+      .catch((error) => {
+        console.error("Error fetching cities:", error);
+      });
+  }, []);
+
+  // const [selectedCountry, setSelectedCountry] = useState("");
+  // const [selectedState, setSelectedState] = useState("");
+  // const [selectedCity, setSelectedCity] = useState("");
+
+  // const [countries, setCountries] = useState([]);
+  // const [states, setStates] = useState([]);
+  // const [cities, setCities] = useState([]);
+
+  // useEffect(() => {
+  //   setCountries(Country.getAllCountries());
+  // }, []);
+
+  // useEffect(() => {
+  //   if (selectedCountry) {
+  //     setStates(State.getStatesOfCountry(selectedCountry));
+  //     setSelectedState("");
+  //     setSelectedCity("");
+  //   }
+  // }, [selectedCountry]);
+
+  // useEffect(() => {
+  //   if (selectedState) {
+  //     setCities(City.getCitiesOfState(selectedCountry, selectedState));
+  //     setSelectedCity("");
+  //   }
+  // }, [selectedState]);
 
   return (
     <div>
@@ -401,63 +443,63 @@ const CreateCompany = () => {
                         />
                       </div>
 
-                      {/* Country */}
                       <div className="flex items-center">
                         <label className="w-64 text-left text-xs font-medium">
                           Country <span className="text-amber-500">*</span>
                         </label>
                         <select
+                          name="country"
+                          value={formData.country}
+                          onChange={handleChange}
                           className="w-34 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                          value={selectedCountry}
-                          onChange={(e) => setSelectedCountry(e.target.value)}
                         >
                           <option value="">-- Select Country --</option>
-                          {countries.map((country) => (
+                          {countries.map((item) => (
                             <option
-                              key={country.isoCode}
-                              value={country.isoCode}
+                              key={item.country_code}
+                              value={item.country_name}
                             >
-                              {country.name}
+                              {item.country_name}
                             </option>
                           ))}
                         </select>
                       </div>
 
-                      {/* State */}
+                      {/* State Dropdown */}
                       <div className="flex items-center">
                         <label className="w-64 text-left text-xs font-medium">
-                          State
+                          State <span className="text-amber-500">*</span>
                         </label>
                         <select
-                          className="w-30 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                          value={selectedState}
-                          onChange={(e) => setSelectedState(e.target.value)}
-                          disabled={!selectedCountry}
+                          name="state"
+                          value={formData.state}
+                          onChange={handleChange}
+                          className="w-34 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                         >
                           <option value="">-- Select State --</option>
-                          {states.map((state) => (
-                            <option key={state.isoCode} value={state.isoCode}>
-                              {state.name}
+                          {states.map((item, index) => (
+                            <option key={index} value={item.state_name}>
+                              {item.state_name}
                             </option>
                           ))}
                         </select>
                       </div>
 
-                      {/* City */}
-                      <div className="flex items-center">
+                      {/* City Dropdown */}
+                      <div className="flex items-center mb-2">
                         <label className="w-64 text-left text-xs font-medium">
                           City
                         </label>
                         <select
-                          className="w-30 h-5 border rounded px-1 py-0.5 text-xs bg-white"
-                          value={selectedCity}
-                          onChange={(e) => setSelectedCity(e.target.value)}
-                          disabled={!selectedState}
+                          name="city"
+                          value={formData.city}
+                          onChange={handleChange}
+                          className="w-34 h-5 border rounded px-1 py-0.5 text-xs bg-white"
                         >
                           <option value="">-- Select City --</option>
-                          {cities.map((city) => (
-                            <option key={city.name} value={city.name}>
-                              {city.name}
+                          {cities.map((item, index) => (
+                            <option key={index} value={item.city_name}>
+                              {item.city_name}
                             </option>
                           ))}
                         </select>
